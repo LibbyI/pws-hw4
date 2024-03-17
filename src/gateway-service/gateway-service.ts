@@ -36,6 +36,17 @@ app.post('/api/signup', cors(corsOptions) , async(req, res) => {
   }
 });
 
+app.post('/api/login', cors(corsOptions) , async(req, res) => {
+  try{
+    const response = await axios.post(`${users_url}/login`, req.body);
+    
+    res.status(response.status).send(response.data);
+
+  } catch(error){
+    res.status(500).send(error);
+  }
+});
+
 app.put('/api/permissions', (req, res) => {
   res.redirect(`${users_url}/permissions`);
 });

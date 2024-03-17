@@ -48,6 +48,7 @@ export default function SignIn() {
       });
 
       console.log('User loged in successfully:', response.data);
+      alert("log in succsess!!");
       navigate('/catalog');
       // Optionally, you can redirect the user to another page after successful signup
     } catch (error) {
