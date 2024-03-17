@@ -1,0 +1,27 @@
+{
+  "name": "lecture-8-rabbitmq",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "build": "tsc",
+    "start-order": "node ./dist/order-service/order-service.js",
+    "start-inventory": "node ./dist/inventory-service/inventory-service.js",
+    "dev-order": "tsc-watch --onSuccess \"node ./dist/order-service/order-service.js\" --compiler typescript/bin/tsc",
+    "dev-inventory": "tsc-watch --onSuccess \"node ./dist/inventory-service/inventory-service.js\" --compiler typescript/bin/tsc"
+  },
+  "keywords": [],
+  "author": "nissano-wsp-2024",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^18.11.9",
+    "tsc-watch": "^5.0.3",
+    "typescript": "^4.9.3"
+  },
+  "dependencies": {
+    "@types/amqplib": "^0.10.0",
+    "amqplib": "^0.10.3",
+    "node-fetch": "^3.3.0"
+  }
+}
