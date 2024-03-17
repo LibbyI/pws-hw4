@@ -6,13 +6,15 @@ dotenv.config();
 
 
 
-// const dbURI = `mongodb+srv://libby6831:3q3qYJe12oRnH6ao@cluster0.pyjnubc.mongodb.net/?retryWrites=true&w=majority`;
 const dbURI = `mongodb+srv://libby6831:${process.env.DB_PASS}@cluster0.pyjnubc.mongodb.net/?retryWrites=true&w=majority`;
+import { options } from '../const.js';
 
-await mongoose.connect(dbURI);
+await mongoose.connect(dbURI, options);
 
 import User from "../models/user.js";
 const users = User;
+// const users = mongoose.model('User', User, 'users'); // Specify your collection name here
+
 
 
 
@@ -24,9 +26,9 @@ const port = process.env.USERS_PORT;
 app.get('/users', async(req, res) => {
   let user;
   try{
-    let user = await users.findOne({_id : "65e499c98bd84059ad63a970"}).exec();
+    let user = await users.findOne({_id : "65f6ad3df1d26a8b63e60933"}).exec();
     res.send(user.username);
-
+    return;
 
   } catch(error){
     res.statusCode = 404;

@@ -27,6 +27,6 @@ const userSchema = new mongoose.Schema(
   // Models are responsible for creating and reading documents from the underlying MongoDB database.
   // https://mongoosejs.com/docs/models.html
 
-  var User = mongoose.model('User' , userSchema);
+  var User = mongoose.model('User' , userSchema, 'users');
 
   export default mongoose.model("User", userSchema);
