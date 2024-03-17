@@ -11,9 +11,8 @@
     "dev-order": "tsc-watch --onSuccess \"node ./dist/order-service/order-service.js\" --compiler typescript/bin/tsc",
     "dev-inventory": "tsc-watch --onSuccess \"node ./dist/inventory-service/inventory-service.js\" --compiler typescript/bin/tsc",
     "dev-gateway": "tsc-watch --onSuccess \"node ./dist/gateway-service/gateway-service.js\" --compiler typescript/bin/tsc",
-    "dev-events": "tsc-watch --onSuccess \"node ./dist/events-service/events-service.js\" --compiler typescript/bin/tsc"
-
-
+    "dev-events": "tsc-watch --onSuccess \"node ./dist/events-service/events-service.js\" --compiler typescript/bin/tsc",
+    "dev-users": "tsc-watch --onSuccess \"node ./dist/users-service/users-service.js\" --compiler typescript/bin/tsc"
   },
   "keywords": [],
   "author": "noa_libby",
@@ -26,8 +25,10 @@
   "dependencies": {
     "@types/amqplib": "^0.10.0",
     "amqplib": "^0.10.3",
-    "dotenv": "^16.4.5",
+    "dotenv": "^16.0.3",
     "express": "^4.18.3",
+    "mongodb": "4.1",
+    "mongoose": "^6.8.0",
     "node-fetch": "^3.3.0"
   }
 }
