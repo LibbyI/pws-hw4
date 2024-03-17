@@ -7,10 +7,10 @@ import axios from 'axios';
 
 dotenv.config();
 const app = express();
-app.use(cors());
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(express.json())
+
 const port = process.env.GATEWAY_PORT;
+const users_url = process.env.USERS_SERVICE_URL;
 
 
 // TODO: check if cors is allowed
@@ -18,8 +18,6 @@ const corsOptions = {
   origin: 'http://localhost:5173',
 };
 
-app.get('/users', (req, res) => {
-  res.redirect('http://localhost:3002/users');
 app.use(cors({
   origin: 'http://localhost:5173'
 }));
@@ -38,22 +36,28 @@ app.post('/api/signup', cors(corsOptions) , async(req, res) => {
   }
 });
 
-  // req.url = '/api/user';
-  // next()
-  // res.send('Express + TypeScript Server');
+app.put('/api/permissions', (req, res) => {
+  res.redirect(`${users_url}/permissions`);
 });
 
 app.get('/events', (req, res) => {
-    res.redirect('http://localhost:3001/');
-  });
+  res.redirect('http://localhost:3001/');
+});
 
 app.post('/events', (req, res) => {
-    res.redirect('http://localhost:3001/');
-  });
+  res.redirect('http://localhost:3001/');
+});
+
+app.get('/', (req, res) => {
+  res.send('Express + TypeScript Server');
+});
 
 app.get('/', (req, res) => {
     res.send('Express + TypeScript Server');
 });
-  
 
-export default app;
+
+  
+  app.listen(port, () => {
+    console.log(`[server]: Server is running at http://localhost:${port}`);
+  });
