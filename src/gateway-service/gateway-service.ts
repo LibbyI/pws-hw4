@@ -26,12 +26,13 @@ app.use(cors({
 app.post('/api/signup', cors(corsOptions) , async(req, res) => {
   try{
     const response = await axios.post(`${users_url}/signup`, req.body);
-    console.log(response.status, response.data);
-    res.status(response.status).send(response.data);
+    
+    // console.log(response);
+    // res.status(response.status).send(response.data);
 
   } catch(error){
-    console.log(error.status);
-    res.status(500).send('Internal Server Error');
+    console.log(error);
+    res.status(error.status).send(error.message);
   }
 });
 

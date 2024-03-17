@@ -62,7 +62,7 @@ export const signupRoute = async(req: express.Request, res: express.Response) =>
         res.statusCode = 201; // Created a new user!
         res.send(JSON.stringify({username, }));
       }catch(error){
-        res.statusCode = 400;
-        res.send(JSON.stringify({message: "username is already exsist",}))
+        // res.statusCode = 400;
+        res.status(400).send(JSON.stringify({message: "username is already exsist",}));
       }
 }

@@ -17,8 +17,7 @@ const port = process.env.USERS_PORT;
 
 
 app.post('/signup', async(req, res) => {
-  const resp = await signupRoute(req, res);
-  console.log(resp);
+    await signupRoute(req, res);
   });
 
 
