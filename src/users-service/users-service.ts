@@ -5,7 +5,6 @@ import { options } from '../const.js';
 import User from "../models/user.js";
 import { signupRoute, permissionRoute } from "./user-routs.js";
 
-
 dotenv.config();
 
 const dbURI = `mongodb+srv://libby6831:${process.env.DB_PASS}@cluster0.pyjnubc.mongodb.net/?retryWrites=true&w=majority`;
@@ -16,9 +15,9 @@ const app = express();
 app.use(express.json())
 const port = process.env.USERS_PORT;
 
+
 app.post('/signup', async(req, res) => {
-    let body = req.body;
-    signupRoute(req, res)
+    await signupRoute(req, res);
   });
 
 
