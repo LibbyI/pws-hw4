@@ -7,6 +7,7 @@ import { pageState } from '../entities.ts'
 import React from "react";
 import { HashRouter as Router, Route, Link, BrowserRouter, Routes } from 'react-router-dom';
 import ReactDOM from "react-dom/client";
+import { CatalogPage } from './catalog/catalogPage.tsx'
 
 
 
@@ -16,7 +17,8 @@ function App() {
       <Routes>
         <Route path="/" element={<SignUp />}></Route>
         <Route path="/signin" element={<SignIn />}></Route>
-
+        <Route path="/catalog" element={<CatalogPage/>}></Route>
+        <Route path="/alert/:id" element={<h1>Alert </h1>}></Route>
       </Routes>
     </BrowserRouter>
   );
