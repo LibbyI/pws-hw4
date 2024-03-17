@@ -8,6 +8,7 @@ export const userSchema = new mongoose.Schema(
       username: { type: String, unique:true, required: true }, //TODO: add validation to uniqe name befor saving!!
       password: { type: String, required: true },
       permission: {type: String, required: true, enum: permissionValidTypes},  //TODO:change type
+      eventIds: {type: [String], required: false, default: []},  //TODO:change type
        
     },
     { timestamps: true }

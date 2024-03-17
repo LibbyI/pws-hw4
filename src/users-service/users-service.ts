@@ -3,7 +3,7 @@ import * as dotenv from "dotenv";
 import * as mongoose from "mongoose";
 import { options } from '../const.js';
 import User from "../models/user.js";
-import { signupRoute, permissionRoute, loginRoute } from "./user-routs.js";
+import { signupRoute, permissionRoute, loginRoute, getUser, getUserById} from "./user-routs.js";
 
 dotenv.config();
 
@@ -15,6 +15,11 @@ const app = express();
 app.use(express.json())
 const port = process.env.USERS_PORT;
 
+app.get('/:id', async(req, res) => {
+  const id = req.params.id;
+  await getUserById(req, res);
+
+});
 
 app.post('/signup', async(req, res) => {
     await signupRoute(req, res);
