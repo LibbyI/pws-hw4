@@ -1,19 +1,23 @@
 import express, { Application } from "express";
 import * as dotenv from "dotenv";
+import cors from "cors";
+
 
 dotenv.config();
-export const app = express();
+const app = express();
+app.use(cors());
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 const port = process.env.GATEWAY_PORT;
-const users_url = process.env.USERS_SERVICE_URL;
 
 
 
-app.post('/api/signup', (req, res) => {
-  res.redirect(`${users_url}/signup`);
-});
+app.get('/users', (req, res) => {
+  res.redirect('http://localhost:3002/users');
 
-app.put('/api/permissions', (req, res) => {
-  res.redirect(`${users_url}/permissions`);
+  // req.url = '/api/user';
+  // next()
+  // res.send('Express + TypeScript Server');
 });
 
 app.get('/events', (req, res) => {
@@ -28,6 +32,5 @@ app.get('/', (req, res) => {
     res.send('Express + TypeScript Server');
 });
   
-  app.listen(port, () => {
-    console.log(`[server]: Server is running at http://localhost:${port}`);
-  });
+
+export default app;
