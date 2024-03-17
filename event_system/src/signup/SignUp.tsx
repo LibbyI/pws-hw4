@@ -60,11 +60,10 @@ export default function SignUp() {
 
       console.log('User created successfully:', response.data);
       navigate('/signin');
-      // Optionally, you can redirect the user to another page after successful signup
     } catch (error) {
       
       console.error('Error creating user:', error);
-      alert('This is a popup message!');
+      alert('user name already exsit, try another name'); //TODO: show the right messege for each case
     }
 
   };

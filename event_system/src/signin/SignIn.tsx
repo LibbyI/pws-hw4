@@ -12,6 +12,9 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+
 
 function Copyright(props: any) {
   return (
@@ -30,13 +33,27 @@ function Copyright(props: any) {
 const defaultTheme = createTheme();
 
 export default function SignIn() {
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const navigate = useNavigate();
+
+  const handleSubmit = async(event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
+    try {
+      const username = data.get('username');
+      const password = data.get('password');
+
+      const response = await axios.post('http://localhost:3000/api/login', {
+        "username": username,
+        "password": password
+      });
+
+      console.log('User loged in successfully:', response.data);
+      navigate('/catalog');
+      // Optionally, you can redirect the user to another page after successful signup
+    } catch (error) {
+      
+      console.error('Error login in user:', error);
+    }
   };
 
   return (
@@ -63,9 +80,9 @@ export default function SignIn() {
               required
               fullWidth
               id="email"
-              label="Email Address"
-              name="email"
-              autoComplete="email"
+              label="User Name"
+              name="username"
+              autoComplete="username"
               autoFocus
             />
             <TextField
@@ -78,10 +95,6 @@ export default function SignIn() {
               id="password"
               autoComplete="current-password"
             />
-            <FormControlLabel
-              control={<Checkbox value="remember" color="primary" />}
-              label="Remember me"
-            />
             <Button
               type="submit"
               fullWidth
@@ -90,14 +103,22 @@ export default function SignIn() {
             >
               Sign In
             </Button>
+            <Button
+              onClick={() => {navigate('/');}}
+              fullWidth
+              variant="contained"
+              sx={{ mt: 3, mb: 2 }}
+            >
+              go back
+            </Button>
             <Grid container>
               <Grid item xs>
-                <Link href="#" variant="body2">
+                <Link href="" variant="body2">
                   Forgot password?
                 </Link>
               </Grid>
               <Grid item>
-                <Link href="#" variant="body2">
+                <Link href="" variant="body2" onClick={() => {navigate('/');}}>
                   {"Don't have an account? Sign Up"}
                 </Link>
               </Grid>
