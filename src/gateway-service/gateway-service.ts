@@ -28,11 +28,11 @@ app.post('/api/signup', cors(corsOptions) , async(req, res) => {
     const response = await axios.post(`${users_url}/signup`, req.body);
     
     // console.log(response);
-    // res.status(response.status).send(response.data);
+    res.status(response.status).send(response.data);
 
   } catch(error){
-    console.log(error);
-    res.status(error.status).send(error.message);
+    // console.log(error.response);
+    res.status(500).send(error);
   }
 });
 
