@@ -3,7 +3,7 @@ import * as dotenv from "dotenv";
 
 
 dotenv.config();
-const app = express();
+export const app = express();
 const port = process.env.GATEWAY_PORT;
 
 
@@ -17,11 +17,11 @@ app.get('/users', (req, res) => {
 });
 
 app.get('/events', (req, res) => {
-    res.redirect('http://localhost:3001/events');
+    res.redirect('http://localhost:3001/');
+  });
 
-    // req.url = '/api/user';
-    // next()
-    // res.send('Express + TypeScript Server');
+app.post('/events', (req, res) => {
+    res.redirect('http://localhost:3001/');
   });
 
 app.get('/', (req, res) => {
