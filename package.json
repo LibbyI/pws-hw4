@@ -6,10 +6,11 @@
   "type": "module",
   "scripts": {
     "build": "tsc",
-    "start-order": "node ./dist/order-service/order-service.js",
-    "start-inventory": "node ./dist/inventory-service/inventory-service.js",
-    "dev-order": "tsc-watch --onSuccess \"node ./dist/order-service/order-service.js\" --compiler typescript/bin/tsc",
-    "dev-inventory": "tsc-watch --onSuccess \"node ./dist/inventory-service/inventory-service.js\" --compiler typescript/bin/tsc",
+
+    "start-gateway": "node ./dist/gateway-service/gateway-service.js",
+    "start-events": "node ./dist/events-service/events-service.js",
+    "start-users": "node ./dist/users-service/users-service.js",
+    
     "dev-gateway": "tsc-watch --onSuccess \"node ./dist/gateway-service/gateway-service.js\" --compiler typescript/bin/tsc",
     "dev-events": "tsc-watch --onSuccess \"node ./dist/events-service/events-service.js\" --compiler typescript/bin/tsc",
     "dev-users": "tsc-watch --onSuccess \"node ./dist/users-service/users-service.js\" --compiler typescript/bin/tsc"
