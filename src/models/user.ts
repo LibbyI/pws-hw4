@@ -1,11 +1,13 @@
 import * as mongoose from "mongoose";
 
+export const permissionValidTypes = ["None", "A", "M", "W"];
 
-const userSchema = new mongoose.Schema(
+
+export const userSchema = new mongoose.Schema(
     {
       username: { type: String, unique:true, required: true }, //TODO: add validation to uniqe name befor saving!!
       password: { type: String, required: true },
-      permission: {type: String, required: true},  //TODO:change type
+      permission: {type: String, required: true, enum: permissionValidTypes},  //TODO:change type
        
     },
     { timestamps: true }
