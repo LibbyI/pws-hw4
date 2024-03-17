@@ -1,5 +1,5 @@
 {
-  "name": "lecture-8-rabbitmq",
+  "name": "hw4-noa-libby",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -9,10 +9,14 @@
     "start-order": "node ./dist/order-service/order-service.js",
     "start-inventory": "node ./dist/inventory-service/inventory-service.js",
     "dev-order": "tsc-watch --onSuccess \"node ./dist/order-service/order-service.js\" --compiler typescript/bin/tsc",
-    "dev-inventory": "tsc-watch --onSuccess \"node ./dist/inventory-service/inventory-service.js\" --compiler typescript/bin/tsc"
+    "dev-inventory": "tsc-watch --onSuccess \"node ./dist/inventory-service/inventory-service.js\" --compiler typescript/bin/tsc",
+    "dev-gateway": "tsc-watch --onSuccess \"node ./dist/gateway-service/gateway-service.js\" --compiler typescript/bin/tsc",
+    "dev-events": "tsc-watch --onSuccess \"node ./dist/events-service/events-service.js\" --compiler typescript/bin/tsc"
+
+
   },
   "keywords": [],
-  "author": "nissano-wsp-2024",
+  "author": "noa_libby",
   "license": "ISC",
   "devDependencies": {
     "@types/node": "^18.11.9",
@@ -22,6 +26,8 @@
   "dependencies": {
     "@types/amqplib": "^0.10.0",
     "amqplib": "^0.10.3",
+    "dotenv": "^16.4.5",
+    "express": "^4.18.3",
     "node-fetch": "^3.3.0"
   }
 }
