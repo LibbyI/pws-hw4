@@ -3,7 +3,12 @@ import * as bcrypt from "bcrypt";
 import express from "express";
 import User from "../models/user.js";
 import userSchema from "../models/user.js";
+import jwt from "jsonwebtoken";
+import * as dotenv from "dotenv";
 
+dotenv.config();
+
+const secretKey = process.env.SECRET_KEY;
 
 const users = User;
 
@@ -65,4 +70,53 @@ export const signupRoute = async(req: express.Request, res: express.Response) =>
         // res.statusCode = 400;
         res.status(400).send(JSON.stringify({message: "username is already exsist",}));
       }
+}
+
+
+export const loginRoute = async(req: express.Request, res: express.Response) => {
+    if (!(req.body.username && req.body.password)){
+        res.statusCode = 400;
+        res.send(
+          JSON.stringify({
+            message: "BadRequest.",
+          })
+        );
+      }
+    const username = req.body.username;
+    const password = req.body.password;
+    const userId = await getUser(username);
+    if (!userId){
+    res.status(404).send(JSON.stringify({message: "username dosent exsist",}));
+    }
+    let user;
+    try{
+        user = await users.findOne({_id: userId}).exec();
+    }catch(error){
+        res.status(404).send(JSON.stringify({message: "username dosent exsist",}));
+        return;
+    }
+    const passwordMatch = await bcrypt.compare(
+        password,
+        user.password
+        
+    );
+
+    if (!passwordMatch) {
+      res.statusCode = 401;
+      res.end(
+        JSON.stringify({
+          message: "Invalid username or password.",
+        })
+      );
+      return;
+    }
+    const token = jwt.sign({ id: user.toObject()._id}, secretKey, {
+        expiresIn: 86400, // expires in 24 hours
+      });
+    res.status(200).send(
+        JSON.stringify({
+            token: token,
+        })
+    );
+    
 }
