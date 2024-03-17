@@ -3,10 +3,11 @@ import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
 import  SignUp from './signup/SignUp.tsx'
+import { pageState } from '../entities.ts'
 
 function App() {
-  type pageState = 'signup' | 'login';
-  const [page, setPage] = useState<pageState>('signup');
+  pageState: pageState;
+  const [page, setPage] = useState<pageState>(pageState.signup);
 
   // const endsignup = () => { 
   //   setPage('login');
@@ -15,8 +16,7 @@ function App() {
   if (page == 'signup'){
     return (
       <>
-        <SignUp></SignUp>
-  
+        <SignUp></SignUp>  
       </>
     )
   }

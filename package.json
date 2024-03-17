@@ -6,9 +6,11 @@
   "type": "module",
   "scripts": {
     "build": "tsc",
+
     "start-gateway": "node ./dist/gateway-service/gateway-service.js",
     "start-events": "node ./dist/events-service/events-service.js",
     "start-users": "node ./dist/users-service/users-service.js",
+    
     "dev-gateway": "tsc-watch --onSuccess \"node ./dist/gateway-service/gateway-service.js\" --compiler typescript/bin/tsc",
     "dev-events": "tsc-watch --onSuccess \"node ./dist/events-service/events-service.js\" --compiler typescript/bin/tsc",
     "dev-users": "tsc-watch --onSuccess \"node ./dist/users-service/users-service.js\" --compiler typescript/bin/tsc"

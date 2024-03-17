@@ -1,6 +1,9 @@
-import express, { Application } from "express";
+import express from "express";
 import * as dotenv from "dotenv";
+import EventType from "../models/event.js";
 import * as mongoose from "mongoose";
+
+
 
 dotenv.config();
 const app = express();
@@ -8,15 +11,60 @@ const port = process.env.EVENTS_PORT;
 
 const dbURI = `mongodb+srv://libby6831:${process.env.DB_PASS}@cluster0.pyjnubc.mongodb.net/?retryWrites=true&w=majority`;
 import { options } from '../const.js';
+
 await mongoose.connect(dbURI, options);
 
-import Event from "../models/event.js";
-const events = Event;
 
-app.get('/events', (req, res) => {
-    res.send('EVENTS');
+app.use(express.json());
+const events = EventType;
+
+
+app.get('/', async (req, res) => {
+  try {
+
+   const result = await events.find().exec();
+   res.send(result);
+  } catch (error) {
+    res.status(500).send(error);
+  }
   });
+
+app.get('/:id', async (req, res) => {
+  try {
+
+    const result = await events.findById(req.params.id).exec();
+    res.send(result);
+   } catch (error) {
+     res.status(500).send(error);
+   }
+});
+
+app.post('/', async (req, res) => {
+  try{
+    const event = new EventType(req.body);
+    await event.validate();
+    const result = await event.save();
+    res.send(result);
+
+  }
+  catch (error){
+    if (error.name === "ValidationError"){
+      res.status(400).send(error.message);
+    }
+    else{
+      res.status(500).send(error);
+    }}
+
+});
+
+
+app.patch('/ticket/:id',(req, res) => {
+});
+
+app.patch('/date/:id',(req, res) => {
+});
+
   
-  app.listen(port, () => {
-    console.log(`[server]: Server is running at http://localhost:${port}`);
-  });
+app.listen(port, () => {
+  console.log(`[server]: Server is running at http://localhost:${port}`);
+});
