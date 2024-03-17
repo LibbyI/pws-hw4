@@ -13,6 +13,8 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+
 
 
 function Copyright(props: any) {
@@ -32,6 +34,8 @@ function Copyright(props: any) {
 const defaultTheme = createTheme();
 
 export default function SignUp() {
+  const navigate = useNavigate();
+
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     
@@ -55,6 +59,7 @@ export default function SignUp() {
       });
 
       console.log('User created successfully:', response.data);
+      navigate('/signin');
       // Optionally, you can redirect the user to another page after successful signup
     } catch (error) {
       
@@ -129,7 +134,7 @@ export default function SignUp() {
             </Button>
             <Grid container justifyContent="flex-end">
               <Grid item>
-                <Link href="#" variant="body2">
+                <Link href="#" variant="body2" onClick={() => {navigate('/signin');}}>
                   Already have an account? Sign in
                 </Link>
               </Grid>

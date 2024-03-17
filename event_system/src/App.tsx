@@ -1,34 +1,26 @@
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
 import './App.css'
 import  SignUp from './signup/SignUp.tsx'
+import  SignIn from './signin/SignIn.tsx'
+
 import { pageState } from '../entities.ts'
+import React from "react";
+import { HashRouter as Router, Route, Link, BrowserRouter, Routes } from 'react-router-dom';
+import ReactDOM from "react-dom/client";
+
+
 
 function App() {
-  pageState: pageState;
-  const [page, setPage] = useState<pageState>(pageState.signup);
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<SignUp />}></Route>
+        <Route path="/signin" element={<SignIn />}></Route>
 
-  // const endsignup = () => { 
-  //   setPage('login');
-  // };
-  // const [count, setCount] = useState(0)
-  if (page == 'signup'){
-    return (
-      <>
-        <SignUp></SignUp>  
-      </>
-    )
-  }
-  else{
-    return(
-      <>
-      <h1>not signup</h1>
-
-      </>
-    )
-  }
-  
+      </Routes>
+    </BrowserRouter>
+  );
 }
-
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(<App />)
 export default App
