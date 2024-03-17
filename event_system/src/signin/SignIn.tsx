@@ -42,7 +42,7 @@ export default function SignIn() {
       const username = data.get('username');
       const password = data.get('password');
 
-      const response = await axios.post('http://localhost:3000/api/login', {
+      const response = await axios.post('https://localhost:3000/api/login', {
         "username": username,
         "password": password
       });
