@@ -61,13 +61,13 @@ app.post('/', async (req, res) => {
 
 app.patch('/tickets/:id', async (req, res) => {
   try {
-    console.log(req.body.name, req.body.quantity, req.params.id);
     const result = await events.findOneAndUpdate(
       { _id: req.params.id },
       { $inc: { "tickets.$[elem].quantity": req.body.quantity } },
-      { arrayFilters:[{ "elem.name": req.body.name }] ,
-        returnDocument: "after"}
-  );
+      { arrayFilters:[{$and:[ {"elem.name": req.body.name} , {"elem.quantity": {$gte: -req.body.quantity}}]}]});
+      if (result.tickets.filter((t)=> t.name === req.body.name)[0].quantity < -req.body.quantity){
+        res.status(400).send("not enough tickets");
+      }
   res.send(result);
   } catch (error) {
     res.status(500).send(error.message);
