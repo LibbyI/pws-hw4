@@ -9,6 +9,7 @@ export interface IUser {
 }
 
 export interface scrabedIUser {
+  id: string | null;
   username: string | null;
   eventIds: [String] | null;
   token: string | null;

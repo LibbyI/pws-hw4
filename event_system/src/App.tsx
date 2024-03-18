@@ -14,12 +14,12 @@ import { scrabedIUser } from "../../src/models/user.js";
 
 function App() {
 
-  const [userState, setUserState] = useState<scrabedIUser>({username: null,
+  const [userState, setUserState] = useState<scrabedIUser>({id: null, username: null,
     eventIds: null,
     token: null})
 
   const logout = () => {
-    setUserState({username: null,
+    setUserState({id: null, username: null,
       eventIds: null,
       token: null});
   };

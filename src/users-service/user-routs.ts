@@ -131,7 +131,7 @@ export const loginRoute = async(req: express.Request, res: express.Response) => 
     const token = jwt.sign({ id: user.toObject()._id}, secretKey, {
         expiresIn: 86400, // expires in 24 hours
       });
-    const userdetails: scrabedIUser = {username: user.username,
+    const userdetails: scrabedIUser = {id: user.id, username: user.username,
     eventIds: user.eventIds,
     token: token,
     }
