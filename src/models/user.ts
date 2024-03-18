@@ -8,6 +8,12 @@ interface IUser {
     permission: string;
 }
 
+export interface IUserFront {
+  username: string;
+  eventIds: [String];
+  token: string;
+}
+
 
 export const userSchema = new mongoose.Schema(
     {

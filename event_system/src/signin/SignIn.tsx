@@ -14,6 +14,9 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { login } from '../requests.ts';
+import IUserFront from "../../src/models/user.js";
+
 
 
 function Copyright(props: any) {
@@ -38,21 +41,29 @@ export default function SignIn() {
   const handleSubmit = async(event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
+    
     try {
-      const username = data.get('username');
-      const password = data.get('password');
-
-      const response = await axios.post('https://localhost:3000/api/login', {
-        "username": username,
-        "password": password
-      });
-
-      console.log('User loged in successfully:', response.data);
-      alert("log in succsess!!");
-      alert(response.data);
-
-      navigate('/catalog');
-      // Optionally, you can redirect the user to another page after successful signup
+      
+      const username = data.get('username')?.toString();
+      const password = data.get('password')?.toString();
+      
+      if(username && password){
+        const userDetails: IUserFront | null = await login(username, password);
+        if (userDetails){
+          console.log('User loged in successfully:', userDetails);
+  
+          alert("log in succsess!!");
+          alert(userDetails.token);
+    
+          navigate('/catalog');
+        } else{
+          console.log('username or password is wrong:');
+          alert("username or password is wrong");
+        }
+      }
+      else{
+        alert("empty username or password");
+      }
     } catch (error) {
       
       console.error('Error login in user:', error);
