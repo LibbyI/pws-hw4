@@ -9,14 +9,6 @@ interface Ticket{
     quantity: number;
     price: number;
 }
-const ticketSchema = new mongoose.Schema<Ticket,mongoose.Model<Ticket>>(
-  {
-    name: { type: String, required: true , minlength: [1, 'ticket type cant be empty']},
-    quantity: { type: Number, required: true, min: [1, 'quantity must be greater than 0']},
-    price: { type: Number, required: true, min: [1, 'price must be greater than 0']}
-  }
-);
-
 export interface IEvent {
     _id: string;
     title: string;
