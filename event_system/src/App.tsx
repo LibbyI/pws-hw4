@@ -12,7 +12,6 @@ import { scrabedIUser } from "../../src/models/user.js";
 import { EventPage } from './events/eventPage.tsx';
 
 
-
 function App() {
   let userState = localStorage.getItem("userState");
   if (userState == null)
@@ -23,10 +22,6 @@ function App() {
           nextEvent: null};
       localStorage.setItem("userState", JSON.stringify(userState));
     }
-  // const [userState, setUserState] = useState<scrabedIUser>({id: null, username: null,
-  //   eventIds: null,
-  //   token: null,
-  //   nextEvent: null})
   const setUserState = (newuserstate: scrabedIUser) =>{
     localStorage.setItem("userState", JSON.stringify(newuserstate));
   }
