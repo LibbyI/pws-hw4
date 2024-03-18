@@ -3,7 +3,7 @@ import * as dotenv from "dotenv";
 import * as mongoose from "mongoose";
 import { options } from '../const.js';
 import User from "../models/user.js";
-import { signupRoute, permissionRoute, loginRoute, getUser, getUserById} from "./user-routs.js";
+import { signupRoute, permissionRoute, loginRoute, getUserById, getPremission} from "./user-routs.js";
 
 dotenv.config();
 
@@ -53,9 +53,19 @@ app.post('/login', async(req, res) => {
 
 
   app.put('/permissions', async(req, res) => {
-    let body = req.body;
-    permissionRoute(req, res)
+    await permissionRoute(req, res)
   });
+
+  app.get('/permissions/:id', async(req, res) => {
+    const userPermission = await getPremission(req, res);
+    res.status = 200;
+    res.send(JSON.stringify({permission: userPermission}))
+
+  });
+
+  // app.patch('/addevent', async(req, res) => {
+  //   await addevent(req, res);
+  // });
 
 
   

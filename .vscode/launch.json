@@ -11,7 +11,7 @@
             "skipFiles": [
                 "<node_internals>/**"
             ],
-            "program": "${workspaceFolder}\\src\\users-service\\users-service.ts",
+            "program": "${workspaceFolder}\\src\\gateway-service\\gateway-service.ts",
             "outFiles": [
                 "${workspaceFolder}/**/*.js"
             ]
