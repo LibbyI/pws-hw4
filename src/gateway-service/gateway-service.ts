@@ -78,6 +78,10 @@ app.get('/events', (req, res) => {
   res.redirect(`http://localhost:3001/?availableOnly=${req.query.availableOnly}`);
 });
 
+app.get('/events/:id', (req, res) => {
+  res.redirect(`http://localhost:3001/${req.params.id}`);
+});
+
 app.post('/events', (req, res) => {
   res.redirect('http://localhost:3001/');
 });
