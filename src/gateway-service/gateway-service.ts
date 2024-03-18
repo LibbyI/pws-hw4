@@ -78,6 +78,11 @@ app.get('/', (req, res) => {
     res.send('Express + TypeScript Server');
 });
 
+app.patch('/tickets/:eventId', (req, res) => {
+  console.log(req.params.eventId);
+  res.redirect(`http://localhost:3001/tickets/${req.params.eventId}`);
+});
+
 
   
   app.listen(port, () => {
