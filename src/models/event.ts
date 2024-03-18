@@ -4,7 +4,7 @@ import * as mongoose from "mongoose";
 
 export const categoryValidTypes = ["CharityEvent","Concert","Conference","Convention","Exhibition",'Festival', "ProductLaunch", "SportsEvent"];
 
-type Ticket = {
+interface Ticket{
     name: string;
     quantity: number;
     price: number;
@@ -19,11 +19,12 @@ export interface IEvent {
     start_date: Date;
     end_date: Date;
     location: string;
-    tickets: Ticket[];
+    tickets: mongoose.Types.DocumentArray<Ticket>;
     image?: string;
+    isAvailable?: boolean;
   }
 
-const eventSchema = new mongoose.Schema(
+const eventSchema = new mongoose.Schema<IEvent,mongoose.Model<IEvent>>(
     {
       title: { type: String, required: true, validate: {
         validator: function(value) {
@@ -45,7 +46,7 @@ const eventSchema = new mongoose.Schema(
       
       },
       location: { type: String, required: true },
-      tickets: { type: mongoose.Schema.Types.Mixed, required: true, validate: {
+      tickets: { type: [{name: String,  quantity: Number, price: Number}], required: true, validate: {
         validator: function(value) {
           if (value.length < 1){return false;}
           else{
@@ -62,6 +63,7 @@ const eventSchema = new mongoose.Schema(
         }
       },
       image: { type: String, required: false }, 
+      isAvailable: { type: Boolean, required: true }
     }
     // { timestamps: true }
   ); // for adding a timestamp in each document.

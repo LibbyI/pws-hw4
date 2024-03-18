@@ -68,7 +68,7 @@ app.put('/api/permissions', (req, res) => {
 });
 
 app.get('/events', (req, res) => {
-  res.redirect('http://localhost:3001/');
+  res.redirect(`http://localhost:3001/?availableOnly=${req.query.availableOnly}`);
 });
 
 app.post('/events', (req, res) => {
@@ -81,6 +81,11 @@ app.get('/', (req, res) => {
 
 app.get('/', (req, res) => {
     res.send('Express + TypeScript Server');
+});
+
+app.patch('/tickets/:eventId', (req, res) => {
+  console.log(req.params.eventId);
+  res.redirect(`http://localhost:3001/tickets/${req.params.eventId}`);
 });
 
 

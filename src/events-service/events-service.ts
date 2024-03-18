@@ -21,8 +21,9 @@ const events = EventType;
 
 app.get('/', async (req, res) => {
   try {
-
-   const result = await events.find().exec();
+    const availableOnly:boolean = req.query.availableOnly;
+    let filter : object = availableOnly === true ? {isAvailable: availableOnly} : {};
+   const result = await events.find(filter).exec();
    res.send(result);
   } catch (error) {
     res.status(500).send(error);
@@ -42,26 +43,38 @@ app.get('/:id', async (req, res) => {
 app.post('/', async (req, res) => {
   try{
     const event = new EventType(req.body);
+    event.isAvailable = event.tickets.some((ticket) => ticket.quantity > 0);
     await event.validate();
     const result = await event.save();
     res.send(result);
-
   }
   catch (error){
     if (error.name === "ValidationError"){
       res.status(400).send(error.message);
     }
     else{
-      res.status(500).send(error);
+      res.status(500).send(error.message);
     }}
 
 });
 
 
-app.patch('/ticket/:id',(req, res) => {
+app.patch('/tickets/:id', async (req, res) => {
+  try {
+    console.log(req.body.name, req.body.quantity, req.params.id);
+    const result = await events.findOneAndUpdate(
+      { _id: req.params.id },
+      { $inc: { "tickets.$[elem].quantity": req.body.quantity } },
+      { arrayFilters:[{ "elem.name": req.body.name }] ,
+        returnDocument: "after"}
+  );
+  res.send(result);
+  } catch (error) {
+    res.status(500).send(error.message);
+  }
 });
 
-app.patch('/date/:id',(req, res) => {
+app.patch('/date/:id', (req, res) => {
 });
 
   
