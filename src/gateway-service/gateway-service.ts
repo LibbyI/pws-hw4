@@ -85,7 +85,8 @@ app.get('/events/:id', (req, res) => {
 });
 
 app.post('/events', (req, res) => {
-  res.redirect('http://localhost:3001/');
+  console.log(req.body);
+  res.redirect(307,'http://localhost:3001/');
 });
 
 
