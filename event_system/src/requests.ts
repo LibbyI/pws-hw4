@@ -10,8 +10,9 @@ const GATEWAY_URL = "http://localhost:3000";
 
 
 
-export const sendRequest = async (url: string, method: string, body: Object | null = null): Promise<AxiosResponse  | null>  => {
+export const sendRequest = async (url: string, method: string, body: Object | null = null): Promise<AxiosResponse  | null | Response>  => {
     try{
+    
         let response;
         switch(method){
             case 'GET':

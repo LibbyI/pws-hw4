@@ -121,7 +121,7 @@ export const loginRoute = async(req: express.Request, res: express.Response) => 
 
     if (!passwordMatch) {
       res.statusCode = 401;
-      res.end(
+      res.send(
         JSON.stringify({
           message: "Invalid username or password.",
         })
@@ -135,6 +135,7 @@ export const loginRoute = async(req: express.Request, res: express.Response) => 
     eventIds: user.eventIds,
     token: token,
     }
+
     res.status(200).send(
         JSON.stringify(userdetails)
     );
