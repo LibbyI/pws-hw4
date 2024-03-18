@@ -21,6 +21,24 @@ export const getUser = async(req_username: string):Promise<string> | null => {
     }
 }
 
+export const getUserById = async(req: express.Request, res: express.Response) => {
+    try{
+        const id = req.params.id;
+        console.log(id);
+        const user = await users.findOne({_id : id}).exec();
+        if (!user){
+            res.status(404).send({message: "user not found"});
+            return;
+        }
+        res.status(200).send(JSON.stringify(user));
+        return;
+    } catch(error){
+        res.status(400).send("error");
+        return;
+
+    }
+}
+
 export const permissionRoute = async(req: express.Request, res: express.Response) =>{
 
     if (!(req.body.username && req.body.permission)){
@@ -120,3 +138,5 @@ export const loginRoute = async(req: express.Request, res: express.Response) => 
     );
     
 }
+
+
