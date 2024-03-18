@@ -9,6 +9,13 @@ interface Ticket{
     quantity: number;
     price: number;
 }
+const ticketSchema = new mongoose.Schema<Ticket,mongoose.Model<Ticket>>(
+  {
+    name: { type: String, required: true , minlength: [1, 'ticket type cant be empty']},
+    quantity: { type: Number, required: true, min: [1, 'quantity must be greater than 0']},
+    price: { type: Number, required: true, min: [1, 'price must be greater than 0']}
+  }
+);
 
 export interface IEvent {
     _id: string;
@@ -39,31 +46,21 @@ const eventSchema = new mongoose.Schema<IEvent,mongoose.Model<IEvent>>(
       start_date: { type: Date, required: true },
       end_date: { type: Date, required: true, validate: {
         validator: function(value) {
-          return this.start_date <= value; 
+          value.a
         },
         message: 'End date must be after start date'
       }
       
       },
       location: { type: String, required: true },
-      tickets: { type: [{name: String,  quantity: Number, price: Number}], required: true, validate: {
-        validator: function(value) {
-          if (value.length < 1){return false;}
-          else{
-            for (const item of value){
-              if ("name" in item){ if (typeof item["name"] !== "string" || item["name"].trim() == ""){return false;} } else { return false; };
-              if ("quantity" in item){ if (typeof item["quantity"] !== "number" || item["quantity"] < 0){return false;} } else {return false;};
-              if ("price" in item){ if (typeof item["price"] !== "number" || item["price"] < 0){return false;} } else {return false;};              
-              if (Object.keys(item).length != 3){return false;};
-            };
-            return true;
-          }
-        },
-        message: 'tickect list is not valid'
-        }
+      tickets: { type: [{
+        name: { type: String, required: true , minlength: [1, 'ticket type cant be empty']},
+        quantity: { type: Number, required: true, min: [1, 'quantity must be greater than 0']},
+        price: { type: Number, required: true, min: [1, 'price must be greater than 0']}
+    }], required: true,
       },
       image: { type: String, required: false }, 
-      isAvailable: { type: Boolean, required: true }
+      isAvailable: { type: Boolean }
     }
     // { timestamps: true }
   ); // for adding a timestamp in each document.
