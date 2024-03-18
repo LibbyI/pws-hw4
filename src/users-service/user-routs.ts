@@ -24,7 +24,6 @@ export const getUser = async(req_username: string):Promise<string> | null => {
 export const getUserById = async(req: express.Request, res: express.Response) => {
     try{
         const id = req.params.id;
-        console.log(id);
         const user = await users.findOne({_id : id}).exec();
         if (!user){
             res.status(404).send({message: "user not found"});
