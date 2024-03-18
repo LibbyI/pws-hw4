@@ -12,6 +12,7 @@ import { scrabedIUser } from "../../src/models/user.js";
 import { EventPage } from './events/eventPage.tsx';
 
 
+ 
 function App() {
   let userState = localStorage.getItem("userState");
   if (userState == null)

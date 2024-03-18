@@ -12,6 +12,8 @@ app.use(express.json())
 
 const port = process.env.GATEWAY_PORT;
 const users_url = process.env.USERS_SERVICE_URL;
+const comments_url = process.env.COMMENTS_SERVICE_URL;
+
 
 
 
@@ -99,7 +101,16 @@ app.patch('/events/date/:eventId', updateEventDateValidator, (req, res) => {
   res.redirect(307,`http://localhost:3001/date/${req.params.eventId}`);
 });
 
+  /****************************Comments*********************************/
   
+  app.get('/comments/:id', (req, res) => {
+    const id = req.params.id;
+    res.redirect(`${comments_url}/${id}`);
+
+  });
+
+
   app.listen(port, () => {
     console.log(`[server]: Server is running at http://localhost:${port}`);
   });
+
