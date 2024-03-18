@@ -21,6 +21,7 @@ export interface IEvent {
     location: string;
     tickets: Ticket[];
     image?: string;
+    isAvailable?: boolean;
   }
 
 const eventSchema = new mongoose.Schema(
@@ -62,6 +63,7 @@ const eventSchema = new mongoose.Schema(
         }
       },
       image: { type: String, required: false }, 
+      isAvailable: { type: Boolean, required: true}
     }
     // { timestamps: true }
   ); // for adding a timestamp in each document.

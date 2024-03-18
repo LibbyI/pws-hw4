@@ -21,8 +21,9 @@ const events = EventType;
 
 app.get('/', async (req, res) => {
   try {
-
-   const result = await events.find().exec();
+    const availableOnly:boolean = req.query.availableOnly;
+    let filter : object = availableOnly === true ? {isAvailable: availableOnly} : {};
+   const result = await events.find(filter).exec();
    res.send(result);
   } catch (error) {
     res.status(500).send(error);
@@ -42,10 +43,10 @@ app.get('/:id', async (req, res) => {
 app.post('/', async (req, res) => {
   try{
     const event = new EventType(req.body);
+    event.isAvailable = event.tickets.some((ticket) => ticket.quantity > 0);
     await event.validate();
     const result = await event.save();
     res.send(result);
-
   }
   catch (error){
     if (error.name === "ValidationError"){
