@@ -2,6 +2,8 @@ import express, { Application } from "express";
 import * as dotenv from "dotenv";
 import cors from 'cors';
 import axios from 'axios';
+import { updateEventDateValidator } from "./requestsValidators.js";
+import { validationResult } from "express-validator";
 
 
 
@@ -67,6 +69,8 @@ app.put('/api/permissions', (req, res) => {
   res.redirect(`${users_url}/permissions`);
 });
 
+
+/****************************Events*********************************/
 app.get('/events', (req, res) => {
   res.redirect(`http://localhost:3001/?availableOnly=${req.query.availableOnly}`);
 });
@@ -75,19 +79,18 @@ app.post('/events', (req, res) => {
   res.redirect('http://localhost:3001/');
 });
 
-app.get('/', (req, res) => {
-  res.send('Express + TypeScript Server');
-});
-
-app.get('/', (req, res) => {
-    res.send('Express + TypeScript Server');
-});
 
 app.patch('/tickets/:eventId', (req, res) => {
-  console.log(req.params.eventId);
   res.redirect(`http://localhost:3001/tickets/${req.params.eventId}`);
 });
 
+app.patch('/events/date/:eventId', updateEventDateValidator, (req, res) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).send(errors.array()[0].msg);
+  }
+  res.redirect(307,`http://localhost:3001/date/${req.params.eventId}`);
+});
 
   
   app.listen(port, () => {
