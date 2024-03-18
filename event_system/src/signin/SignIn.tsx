@@ -37,10 +37,9 @@ const defaultTheme = createTheme();
 
 interface Props{
   setUser: (params: scrabedIUser) => void;
-  userState: scrabedIUser;
 };
 
-export const SignIn: React.FC<Props> = ({setUser, userState}) => {
+export const SignIn: React.FC<Props> = ({setUser}) => {
 
 // export default function SignIn(setUser: any) {
   
@@ -61,8 +60,8 @@ export const SignIn: React.FC<Props> = ({setUser, userState}) => {
           console.log('User loged in successfully:', response);
           const userScrab: scrabedIUser = response.data as scrabedIUser;
           setUser(userScrab);
-          alert("log in succsess!!");
-          navigate('/event');
+          // alert("log in succsess!!");
+          navigate('/catalog');
         } else{
           const errStatus = response?.status;
           const errmessage = response?.data.message

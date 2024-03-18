@@ -9,11 +9,12 @@ import { scrabedIUser } from "../../../src/models/user.js";
 
 
 interface Props{
-    userState: scrabedIUser;
     logout: () => void;
+    getUser: () => scrabedIUser | null;
+
   };
 
-export const EventPage: React.FC<Props> = ({userState, logout}) => {
+export const EventPage: React.FC<Props> = ({logout, getUser}) => {
 
 // export const EventPage = () =>{
     const navigate = useNavigate();
@@ -24,13 +25,10 @@ export const EventPage: React.FC<Props> = ({userState, logout}) => {
         logout();
         navigate('/signin')
     }
-    const username = userState.username;
-    console.log(userState);
 
-    console.log(JSON.stringify(exampleEvents[0]))
     return (
         <>
-        <ButtonAppBar goback={goBack} logout={logoutandgotologin} nextEvent= {"aaa"} user={userState}></ButtonAppBar>
+        <ButtonAppBar goback={goBack} logout={logoutandgotologin}  getUser={getUser}></ButtonAppBar>
         <EventsGrid {... {events : [...exampleEvents]}}></EventsGrid>
         </>
     )

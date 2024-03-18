@@ -14,6 +14,7 @@ export interface scrabedIUser {
   username: string | null;
   eventIds: String[] | null;
   token: string | null;
+  nextEvent: string | null;
 }
 
 
