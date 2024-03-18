@@ -1,4 +1,4 @@
-import IUserFront from "../../src/models/user.js";
+import scrabedIUser from "../../src/models/user.js";
 import axios, { Axios, AxiosResponse } from 'axios';
 import { GET_USER , LOGIN } from "../../src/const.js"
 import { Swipe } from "@mui/icons-material";
@@ -37,7 +37,7 @@ export const sendRequest = async (url: string, method: string, body: Object | nu
 };
 
 
-export const getUserById = async(userId: String):Promise<typeof IUserFront | null> => {
+export const getUserById = async(userId: String):Promise<typeof scrabedIUser | null> => {
     const getuser_split = GET_USER.split(' ');
     const url = `${GATEWAY_URL}${getuser_split[1]}${userId}`
     const method = getuser_split[0];
@@ -49,7 +49,7 @@ export const getUserById = async(userId: String):Promise<typeof IUserFront | nul
     }
 };
 
-export const login = async(username: String, password: String):Promise<typeof IUserFront | null> => {
+export const login = async(username: String, password: String):Promise<typeof scrabedIUser | null> => {
     const body = {
         "username": username,
         "password": password

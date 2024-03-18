@@ -8,13 +8,13 @@ import React from "react";
 import { HashRouter as Router, Route, Link, BrowserRouter, Routes } from 'react-router-dom';
 import ReactDOM from "react-dom/client";
 import { CatalogPage } from './catalog/catalogPage.tsx';
-import { IUserFront } from "../../src/models/user.js";
+import { scrabedIUser } from "../../src/models/user.js";
 
 
 
 function App() {
 
-  const [userState, setUserState] = useState<IUserFront>({username: null,
+  const [userState, setUserState] = useState<scrabedIUser>({username: null,
     eventIds: null,
     token: null})
 
@@ -23,7 +23,7 @@ function App() {
       eventIds: null,
       token: null});
   };
-  const setUserFunc = (userDetails: IUserFront ) => {
+  const setUserFunc = (userDetails: scrabedIUser ) => {
     setUserState(userDetails);
   };
 

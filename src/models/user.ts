@@ -2,13 +2,13 @@ import * as mongoose from "mongoose";
 
 export const permissionValidTypes = ["None", "A", "M", "W"];
 
-interface IUser {
+export interface IUser {
     username: string;
     password: string;
     permission: string;
 }
 
-export interface IUserFront {
+export interface scrabedIUser {
   username: string | null;
   eventIds: [String] | null;
   token: string | null;

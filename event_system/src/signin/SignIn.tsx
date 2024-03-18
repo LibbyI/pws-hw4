@@ -15,7 +15,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { login } from '../requests.ts';
-import IUserFront from "../../src/models/user.js";
+import scrabedIUser from "../../src/models/user.js";
 
 
 
@@ -36,7 +36,7 @@ function Copyright(props: any) {
 const defaultTheme = createTheme();
 
 interface Props{
-  setUser: (params: IUserFront) => void;
+  setUser: (params: scrabedIUser) => void;
 };
 
 export const SignIn: React.FC<Props> = ({setUser}) => {
@@ -55,7 +55,7 @@ export const SignIn: React.FC<Props> = ({setUser}) => {
       const password = data.get('password')?.toString();
 
       if(username && password){
-        const userDetails: IUserFront | null = await login(username, password);
+        const userDetails: scrabedIUser | null = await login(username, password);
         if (userDetails){
           console.log('User loged in successfully:', userDetails);
           setUser(userDetails);

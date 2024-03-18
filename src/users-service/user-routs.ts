@@ -5,7 +5,7 @@ import User from "../models/user.js";
 import userSchema from "../models/user.js";
 import jwt from "jsonwebtoken";
 import * as dotenv from "dotenv";
-import { IUserFront } from '../models/user.js';
+import { scrabedIUser } from '../models/user.js';
 
 dotenv.config();
 
@@ -131,7 +131,7 @@ export const loginRoute = async(req: express.Request, res: express.Response) => 
     const token = jwt.sign({ id: user.toObject()._id}, secretKey, {
         expiresIn: 86400, // expires in 24 hours
       });
-    const userdetails: IUserFront = {username: user.username,
+    const userdetails: scrabedIUser = {username: user.username,
     eventIds: user.eventIds,
     token: token,
     }
