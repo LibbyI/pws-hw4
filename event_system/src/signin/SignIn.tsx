@@ -55,17 +55,19 @@ export const SignIn: React.FC<Props> = ({setUser}) => {
       const password = data.get('password')?.toString();
 
       if(username && password){
-        const userDetails: scrabedIUser | null = await login(username, password);
-        if (userDetails){
-          console.log('User loged in successfully:', userDetails);
-          setUser(userDetails);
+        const response = await login(username, password);
+        if (response?.status == 200){
+          console.log('User loged in successfully:', response);
+          setUser(response);
           alert("log in succsess!!");
-          alert(userDetails.token);
-    
+          alert(response?.data.token);
           navigate('/catalog');
         } else{
+          const errStatus = response?.status;
+          const errmessage = response?.data.message
+
           console.log('username or password is wrong:');
-          alert("username or password is wrong");
+          alert(`${errStatus} ${errmessage}`);
         }
       }
       else{

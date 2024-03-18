@@ -14,40 +14,45 @@ const users_url = process.env.USERS_SERVICE_URL;
 
 
 // TODO: check if cors is allowed
-const corsOptions = {
-  origin: 'http://localhost:5173',
-};
+// const corsOptions = {
+//   origin: 'http://localhost:5173',
+// };
 
-app.use(cors({
-  origin: 'http://localhost:5173'
-}));
+// app.use(cors({
+//   origin: 'http://localhost:5173'
+// }));
+app.use(function (req, res, next) {
+
+  // Website you wish to allow to connect
+  res.setHeader('Access-Control-Allow-Origin', '*');
 
 
-app.post('/api/signup', cors(corsOptions) , async(req, res) => {
-  try{
-    const response = await axios.post(`${users_url}/signup`, req.body);
-    
-    // console.log(response);
-    res.status(response.status).send(response.data);
+  // Request methods you wish to allow
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
 
-  } catch(error){
-    // console.log(error.response);
-    res.status(500).send(error);
-  }
+  // Request headers you wish to allow
+  res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+
+  // Set to true if you need the website to include cookies in the requests sent
+  // to the API (e.g. in case you use sessions)
+  res.setHeader('Access-Control-Allow-Credentials', true);
+
+  // Pass to next layer of middleware
+  next();
 });
 
-app.post('/api/login', cors(corsOptions) , async(req, res) => {
-  try{
-    const response = await axios.post(`${users_url}/login`, req.body);
-    
-    res.status(response.status).send(response.data);
 
-  } catch(error){
-    res.status(500).send(error);
-  }
+
+app.post('/api/signup', async(req, res) => {
+  res.redirect(307, `${users_url}/signup`);
+
 });
 
-app.get('/api/user/:id', cors(corsOptions) , async(req, res) => {
+app.post('/api/login', async(req, res) => {
+  res.redirect(307, `${users_url}/login`);
+});
+
+app.get('/api/user/:id' , async(req, res) => {
   try{
     const id = req.params.id;
     const response = await axios.get(`${users_url}/${id}`);

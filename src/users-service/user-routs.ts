@@ -105,10 +105,12 @@ export const loginRoute = async(req: express.Request, res: express.Response) => 
     const userId = await getUser(username);
     if (!userId){
     res.status(404).send(JSON.stringify({message: "username dosent exsist",}));
+    return;
     }
     let user;
     try{
         user = await users.findOne({_id: userId}).exec();
+
     }catch(error){
         res.status(404).send(JSON.stringify({message: "username dosent exsist",}));
         return;
@@ -121,7 +123,7 @@ export const loginRoute = async(req: express.Request, res: express.Response) => 
 
     if (!passwordMatch) {
       res.statusCode = 401;
-      res.end(
+      res.send(
         JSON.stringify({
           message: "Invalid username or password.",
         })
@@ -135,6 +137,7 @@ export const loginRoute = async(req: express.Request, res: express.Response) => 
     eventIds: user.eventIds,
     token: token,
     }
+
     res.status(200).send(
         JSON.stringify(userdetails)
     );

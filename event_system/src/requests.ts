@@ -1,6 +1,6 @@
 import scrabedIUser from "../../src/models/user.js";
-import axios, { Axios, AxiosResponse } from 'axios';
-import { GET_USER , LOGIN } from "../../src/const.js"
+import axios, { Axios, AxiosError, AxiosResponse } from 'axios';
+import { GET_USER , LOGIN , SIGNUP } from "../../src/const.js"
 import { Swipe } from "@mui/icons-material";
 // import * as dotenv from "dotenv";
 // dotenv.config();
@@ -12,6 +12,7 @@ const GATEWAY_URL = "http://localhost:3000";
 
 export const sendRequest = async (url: string, method: string, body: Object | null = null): Promise<AxiosResponse  | null>  => {
     try{
+    
         let response;
         switch(method){
             case 'GET':
@@ -29,10 +30,14 @@ export const sendRequest = async (url: string, method: string, body: Object | nu
             default:
                 return null;
         }
+        console.log(response);
+
         return response;
 
-    } catch(error){
-        return null;
+    } catch(error: AxiosError | any){
+        console.log(error.response);
+        return error?.response;
+
     }
 };
 
@@ -49,7 +54,7 @@ export const getUserById = async(userId: String):Promise<typeof scrabedIUser | n
     }
 };
 
-export const login = async(username: String, password: String):Promise<typeof scrabedIUser | null> => {
+export const login = async(username: String, password: String):Promise<AxiosResponse | null> => {
     const body = {
         "username": username,
         "password": password
@@ -58,7 +63,24 @@ export const login = async(username: String, password: String):Promise<typeof sc
         const login_split = LOGIN.split(' ');
         const url = GATEWAY_URL+login_split[1];
         const response = await sendRequest(url, login_split[0], body);
-        return response?.data;
+        return response;
+        
+    }catch(error){
+        return null;
+    }
+};
+
+
+export const signup = async(username: String, password: String):Promise<AxiosResponse | null> => {
+    const body = {
+        "username": username,
+        "password": password
+      };
+    try{
+        const signup_split = SIGNUP.split(' ');
+        const url = GATEWAY_URL+signup_split[1];
+        const response = await sendRequest(url, signup_split[0], body);
+        return response;
     }catch(error){
         return null;
     }
