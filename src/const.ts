@@ -5,6 +5,7 @@ export const GET_USER = `GET /api/user/`;
 export const LOGIN = `POST /api/login`;
 export const SIGNUP = `POST /api/signup`;
 
+export const ERROR_401 = "ERROR_401";
 
 
 

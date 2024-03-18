@@ -37,18 +37,17 @@ export const sendRequest = async (url: string, method: string, body: Object | nu
     } catch(error: AxiosError | any){
         console.log(error.response);
         return error?.response;
-
     }
 };
 
 
-export const getUserById = async(userId: String):Promise<typeof scrabedIUser | null> => {
+export const getUserById = async(userId: String):Promise<AxiosResponse | null> => {
     const getuser_split = GET_USER.split(' ');
     const url = `${GATEWAY_URL}${getuser_split[1]}${userId}`
     const method = getuser_split[0];
     try{
         const response = await sendRequest(url, method);
-        return response?.data;
+        return response;
     }catch(error){
         return null;
     }

@@ -1,8 +1,7 @@
 import express, { Application } from "express";
 import * as dotenv from "dotenv";
-import cors from 'cors';
 import axios from 'axios';
-
+import { protectedRout, getUserPermission } from './auth.js'
 
 
 dotenv.config();
@@ -13,14 +12,7 @@ const port = process.env.GATEWAY_PORT;
 const users_url = process.env.USERS_SERVICE_URL;
 
 
-// TODO: check if cors is allowed
-// const corsOptions = {
-//   origin: 'http://localhost:5173',
-// };
 
-// app.use(cors({
-//   origin: 'http://localhost:5173'
-// }));
 app.use(function (req, res, next) {
 
   // Website you wish to allow to connect
@@ -42,6 +34,17 @@ app.use(function (req, res, next) {
 });
 
 
+ app.get('/api/test', async(req,res) => {
+  const user = await protectedRout(req, res);
+  if (!user){
+    return;
+  }
+  const userPermission = await getUserPermission(user.id);
+  res.status = 200;
+  
+  res.send(JSON.stringify({userPermission: userPermission,}));
+
+ }) 
 
 app.post('/api/signup', async(req, res) => {
   res.redirect(307, `${users_url}/signup`);
