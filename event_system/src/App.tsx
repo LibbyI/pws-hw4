@@ -9,6 +9,7 @@ import { HashRouter as Router, Route, Link, BrowserRouter, Routes } from 'react-
 import ReactDOM from "react-dom/client";
 import { CatalogPage } from './catalog/catalogPage.tsx';
 import { scrabedIUser } from "../../src/models/user.js";
+import { EventPage } from './events/eventPage.tsx';
 
 
 
@@ -23,16 +24,16 @@ function App() {
       eventIds: null,
       token: null});
   };
-  const setUserFunc = (userDetails: scrabedIUser ) => {
-    setUserState(userDetails);
-  };
+
 
   return (
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<SignUp />}></Route>
-        <Route path="/signin" element={<SignIn setUser={setUserFunc}/>}></Route>
+        <Route path="/signin" element={<SignIn setUser={setUserState} userState={userState}/>}></Route>
         <Route path="/catalog" element={<CatalogPage/>}></Route>
+        <Route path="/event" element={<EventPage userState={userState} logout={logout}/>}></Route>
+
       </Routes>
     </BrowserRouter>
   );

@@ -1,14 +1,36 @@
-import event, { IEvent } from "../../../src/models/event";
-import { EventCard } from "./eventCard"; 
+import event, { IEvent } from "../../../src/models/event.ts";
+import { EventCard } from "./eventCard.ts"; 
 
 import React from "react";
-import EventsGrid from "./eventsGrid";
+import EventsGrid from "../catalog/eventsGrid.tsx"
+import ButtonAppBar from '../header/header.tsx';
+import { useNavigate } from 'react-router-dom';
+import { scrabedIUser } from "../../../src/models/user.js";
 
 
-export const CatalogPage = () =>{
+interface Props{
+    userState: scrabedIUser;
+    logout: () => void;
+  };
+
+export const EventPage: React.FC<Props> = ({userState, logout}) => {
+
+// export const EventPage = () =>{
+    const navigate = useNavigate();
+    const goBack = () =>{
+        navigate(-1);
+    }
+    const logoutandgotologin = () =>{
+        logout();
+        navigate('/signin')
+    }
+    const username = userState.username;
+    console.log(userState);
+
     console.log(JSON.stringify(exampleEvents[0]))
     return (
         <>
+        <ButtonAppBar goback={goBack} logout={logoutandgotologin} nextEvent= {"aaa"} user={userState}></ButtonAppBar>
         <EventsGrid {... {events : [...exampleEvents]}}></EventsGrid>
         </>
     )
