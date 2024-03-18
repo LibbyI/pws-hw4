@@ -2,6 +2,12 @@ import * as mongoose from "mongoose";
 
 export const permissionValidTypes = ["None", "A", "M", "W"];
 
+interface IUser {
+    username: string;
+    password: string;
+    permission: string;
+}
+
 
 export const userSchema = new mongoose.Schema(
     {
@@ -30,6 +36,6 @@ export const userSchema = new mongoose.Schema(
   // Models are responsible for creating and reading documents from the underlying MongoDB database.
   // https://mongoosejs.com/docs/models.html
 
-  var User = mongoose.model('User' , userSchema, 'users');
+  var User = mongoose.model<IUser>('User' , userSchema, 'users');
 
   export default mongoose.model("User", userSchema);

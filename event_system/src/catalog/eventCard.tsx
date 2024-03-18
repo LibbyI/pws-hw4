@@ -41,7 +41,7 @@ interface ExpandMoreProps extends IconButtonProps {
 
     const alertPageRoute = './../alerts/'+event._id;
     return (
-        <Card sx={{ maxWidth: 345 }}>
+        <Card sx={{ maxWidth: 345 }} className='card' key={event._id}>
           <CardHeader
             title = {event.title}
             subheader= {event.category}            
