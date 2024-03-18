@@ -12,8 +12,10 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import axios from 'axios';
+import axios, { Axios } from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { signup } from '../requests.ts';
+import   AxiosResponse  from 'axios';
 
 
 
@@ -50,20 +52,24 @@ export default function SignUp() {
     });
 
     try {
-      const username = data.get('username');
-      const password = data.get('password');
-
-      const response = await axios.post('http://localhost:3000/api/signup', {
-        "username": username,
-        "password": password
-      });
-
-      console.log('User created successfully:', response.data);
-      navigate('/signin');
+      const username = data.get('username')?.toString();
+      const password = data.get('password')?.toString();
+      if(username && password){
+        const response = await signup(username, password);
+        if (response?.status == 201){
+          console.log('User created successfully:', response);
+          navigate('/signin');
+        }
+        else if(response?.status == 400){
+          const errMessege = response.data.message;
+          alert(errMessege); 
+        }
+      }
+      
     } catch (error) {
       
       console.error('Error creating user:', error);
-      alert('user name already exsit, try another name'); //TODO: show the right messege for each case
+      alert('error has accure , tru again'); //TODO: show the right messege for each case
     }
 
   };

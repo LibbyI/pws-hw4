@@ -105,10 +105,12 @@ export const loginRoute = async(req: express.Request, res: express.Response) => 
     const userId = await getUser(username);
     if (!userId){
     res.status(404).send(JSON.stringify({message: "username dosent exsist",}));
+    return;
     }
     let user;
     try{
         user = await users.findOne({_id: userId}).exec();
+
     }catch(error){
         res.status(404).send(JSON.stringify({message: "username dosent exsist",}));
         return;
