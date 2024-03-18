@@ -12,17 +12,36 @@ import { scrabedIUser } from "../../src/models/user.js";
 import { EventPage } from './events/eventPage.tsx';
 
 
-
 function App() {
-
-  const [userState, setUserState] = useState<scrabedIUser>({id: null, username: null,
-    eventIds: null,
-    token: null})
-
+  let userState = localStorage.getItem("userState");
+  if (userState == null)
+    {
+      const userState: scrabedIUser = {id: null, username: null,
+          eventIds: null,
+          token: null,
+          nextEvent: null};
+      localStorage.setItem("userState", JSON.stringify(userState));
+    }
+  const setUserState = (newuserstate: scrabedIUser) =>{
+    localStorage.setItem("userState", JSON.stringify(newuserstate));
+  }
+  const getUserState = (): scrabedIUser | null=>{
+    try{
+      let userStateString = localStorage.getItem("userState");
+      if (userStateString){
+        const userStateObject: scrabedIUser = JSON.parse(userStateString);
+        return userStateObject;
+      }
+    }catch(error){
+      return null;
+    }
+    return null;
+  }
   const logout = () => {
     setUserState({id: null, username: null,
       eventIds: null,
-      token: null});
+      token: null,
+      nextEvent: null});
   };
 
 
@@ -30,9 +49,9 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<SignUp />}></Route>
-        <Route path="/signin" element={<SignIn setUser={setUserState} userState={userState}/>}></Route>
-        <Route path="/catalog" element={<CatalogPage/>}></Route>
-        <Route path="/event" element={<EventPage userState={userState} logout={logout}/>}></Route>
+        <Route path="/signin" element={<SignIn setUser={setUserState}/>}></Route>
+        <Route path="/catalog" element={<CatalogPage logout={logout} getUser={getUserState}/>}></Route>
+        <Route path="/event" element={<EventPage logout={logout} getUser={getUserState}/>}></Route>
 
       </Routes>
     </BrowserRouter>

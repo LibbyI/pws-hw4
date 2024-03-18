@@ -12,21 +12,20 @@ import { scrabedIUser } from "../../../src/models/user.ts";
 interface Props{
     goback: () => void;
     logout: () => void;
-    nextEvent: string;
-    user: scrabedIUser;
+    getUser: () => scrabedIUser | null;
   };
 
-export const ButtonAppBar: React.FC<Props> = ({goback, logout, nextEvent, user}) => {
-
+export const ButtonAppBar: React.FC<Props> = ({goback, logout, getUser}) => {
+    const user = getUser();
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">
         <Toolbar>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            hello {user.username}
+            hello {user?.username}
           </Typography>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            Next Event is: {nextEvent}
+            Next Event is: {user?.nextEvent}
           </Typography>
           <div style={{ flexGrow: 1 }} /> 
 

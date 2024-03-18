@@ -6,11 +6,28 @@ import EventsGrid from "./eventsGrid";
 import { getEvents } from "../requests";
 import { json } from "stream/consumers";
 import { set } from "mongoose";
+import { scrabedIUser } from "../../../src/models/user.js";
+import { useNavigate } from 'react-router-dom';
+import ButtonAppBar from '../header/header.tsx';
 
 
+interface Props{
+    logout: () => void;
+    getUser: () => scrabedIUser | null;
+
+  };
 
 
-export const CatalogPage = () =>{
+export const CatalogPage: React.FC<Props> = ({ logout, getUser}) =>{
+const navigate = useNavigate();
+const goBack = () =>{
+    navigate(-1);
+}
+const logoutandgotologin = () =>{
+    logout();
+    navigate('/signin')
+}
+
     
 const [events,setEvents] = useState<IEvent[]>([]);
 const [loading, setLoading] = useState(true);
@@ -36,7 +53,10 @@ useEffect(() => {
     }
     console.log(events);
     return (
+        <>
+        <ButtonAppBar goback={goBack} logout={logoutandgotologin} getUser={getUser}></ButtonAppBar>
         <EventsGrid {... {events : [...events]}}></EventsGrid>
+        </>
     )
 }
 
