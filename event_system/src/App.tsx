@@ -8,14 +8,30 @@ import React from "react";
 import { HashRouter as Router, Route, Link, BrowserRouter, Routes } from 'react-router-dom';
 import ReactDOM from "react-dom/client";
 import { CatalogPage } from './catalog/catalogPage.tsx';
+import { scrabedIUser } from "../../src/models/user.js";
+
 
 
 function App() {
+
+  const [userState, setUserState] = useState<scrabedIUser>({id: null, username: null,
+    eventIds: null,
+    token: null})
+
+  const logout = () => {
+    setUserState({id: null, username: null,
+      eventIds: null,
+      token: null});
+  };
+  const setUserFunc = (userDetails: scrabedIUser ) => {
+    setUserState(userDetails);
+  };
+
   return (
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<SignUp />}></Route>
-        <Route path="/signin" element={<SignIn />}></Route>
+        <Route path="/signin" element={<SignIn setUser={setUserFunc}/>}></Route>
         <Route path="/catalog" element={<CatalogPage/>}></Route>
       </Routes>
     </BrowserRouter>

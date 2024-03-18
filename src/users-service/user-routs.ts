@@ -5,6 +5,7 @@ import User from "../models/user.js";
 import userSchema from "../models/user.js";
 import jwt from "jsonwebtoken";
 import * as dotenv from "dotenv";
+import { scrabedIUser } from '../models/user.js';
 
 dotenv.config();
 
@@ -24,7 +25,6 @@ export const getUser = async(req_username: string):Promise<string> | null => {
 export const getUserById = async(req: express.Request, res: express.Response) => {
     try{
         const id = req.params.id;
-        console.log(id);
         const user = await users.findOne({_id : id}).exec();
         if (!user){
             res.status(404).send({message: "user not found"});
@@ -131,10 +131,12 @@ export const loginRoute = async(req: express.Request, res: express.Response) => 
     const token = jwt.sign({ id: user.toObject()._id}, secretKey, {
         expiresIn: 86400, // expires in 24 hours
       });
+    const userdetails: scrabedIUser = {id: user.id, username: user.username,
+    eventIds: user.eventIds,
+    token: token,
+    }
     res.status(200).send(
-        JSON.stringify({
-            token: token,
-        })
+        JSON.stringify(userdetails)
     );
     
 }
