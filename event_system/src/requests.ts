@@ -84,3 +84,13 @@ export const signup = async(username: String, password: String):Promise<AxiosRes
         return null;
     }
 };
+
+export const getEvents = async(availableOnly: Boolean):Promise<AxiosResponse | null> => {
+    try{
+        const url = `${GATEWAY_URL}/events?availableOnly=${availableOnly}`;
+        const response = await sendRequest(url, 'GET');
+        return response;
+    }catch(error){
+        return null;
+    }
+};

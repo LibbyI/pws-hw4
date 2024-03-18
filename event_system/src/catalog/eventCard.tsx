@@ -9,11 +9,7 @@ import CardActions from '@mui/material/CardActions';
 import Collapse from '@mui/material/Collapse';
 import IconButton, { IconButtonProps } from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
-import { red } from '@mui/material/colors';
-import FavoriteIcon from '@mui/icons-material/Favorite';
-import ShareIcon from '@mui/icons-material/Share';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { Button } from '@mui/material';
 
 interface ExpandMoreProps extends IconButtonProps {
@@ -54,7 +50,7 @@ interface ExpandMoreProps extends IconButtonProps {
           />
           <CardContent>
             <Typography variant="body2" color="text.secondary">
-                {event.start_date.toLocaleDateString('en-US',{year: 'numeric', month: 'long', day: 'numeric'})} to {event.start_date.toLocaleDateString('en-US',{year: 'numeric', month: 'long', day: 'numeric'})}           
+                {new Date(event.start_date).toLocaleDateString('en-US',{year: 'numeric', month: 'long', day: 'numeric'})} until {new Date(event.start_date).toLocaleDateString('en-US',{year: 'numeric', month: 'long', day: 'numeric'})}           
             </Typography>
             <Typography variant="body2" color="text.secondary">
                 {event.location}
@@ -80,7 +76,6 @@ interface ExpandMoreProps extends IconButtonProps {
           </CardActions>
           <Collapse in={expanded} timeout="auto" unmountOnExit>
             <CardContent>
-              <Typography paragraph>Method:</Typography>
               <Typography paragraph>
                 {event.description}
               </Typography>
