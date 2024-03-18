@@ -39,8 +39,10 @@ const events = EventType;
 
 app.get('/', async (req, res) => {
   try {
-    const availableOnly:boolean = req.query.availableOnly;
-    let filter : object = availableOnly === true ? {isAvailable: availableOnly} : {};
+    const availableOnly = req.query.availableOnly;
+    let filter ={};
+    if(availableOnly==="true"){
+      filter = {tickets : {$elemMatch: {quantity : {$gte: 1}}}} }
    const result = await events.find(filter).exec();
    res.send(result);
   } catch (error) {
@@ -61,7 +63,6 @@ app.get('/:id', async (req, res) => {
 app.post('/', async (req, res) => {
   try{
     const event = new EventType(req.body);
-    event.isAvailable = event.tickets.some((ticket) => ticket.quantity > 0);
     await event.validate();
     const result = await event.save();
     res.send(result);
@@ -82,12 +83,10 @@ app.patch('/tickets/:id', async (req, res) => {
     const result = await events.findOneAndUpdate(
       { _id: req.params.id },
       { $inc: { "tickets.$[elem].quantity": req.body.quantity } },
-      { arrayFilters:[{$and:[ {"elem.name": req.body.name} , {"elem.quantity": {$gte: -req.body.quantity}}]}]});
+      { arrayFilters:[{$and:[ {"elem.name": req.body.name} ]}]});
       if (result.tickets.filter((t)=> t.name === req.body.name)[0].quantity < -req.body.quantity){
         res.status(400).send("not enough tickets");
       }
-      console.log(result);
-
   res.send(result);
   } catch (error) {
     console.log(error);
