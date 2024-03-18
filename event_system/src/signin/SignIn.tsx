@@ -35,7 +35,14 @@ function Copyright(props: any) {
 // TODO remove, this demo shouldn't need to reset the theme.
 const defaultTheme = createTheme();
 
-export default function SignIn() {
+interface Props{
+  setUser: (params: IUserFront) => void;
+};
+
+export const SignIn: React.FC<Props> = ({setUser}) => {
+
+// export default function SignIn(setUser: any) {
+  
   const navigate = useNavigate();
 
   const handleSubmit = async(event: React.FormEvent<HTMLFormElement>) => {
@@ -46,12 +53,12 @@ export default function SignIn() {
       
       const username = data.get('username')?.toString();
       const password = data.get('password')?.toString();
-      
+
       if(username && password){
         const userDetails: IUserFront | null = await login(username, password);
         if (userDetails){
           console.log('User loged in successfully:', userDetails);
-  
+          setUser(userDetails);
           alert("log in succsess!!");
           alert(userDetails.token);
     
@@ -144,3 +151,5 @@ export default function SignIn() {
     </ThemeProvider>
   );
 }
+
+export default SignIn;

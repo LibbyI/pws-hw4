@@ -9,9 +9,9 @@ interface IUser {
 }
 
 export interface IUserFront {
-  username: string;
-  eventIds: [String];
-  token: string;
+  username: string | null;
+  eventIds: [String] | null;
+  token: string | null;
 }
 
 
