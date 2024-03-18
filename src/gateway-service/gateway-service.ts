@@ -12,6 +12,8 @@ app.use(express.json())
 
 const port = process.env.GATEWAY_PORT;
 const users_url = process.env.USERS_SERVICE_URL;
+const comments_url = process.env.COMMENTS_SERVICE_URL;
+
 
 
 
@@ -58,14 +60,8 @@ app.post('/api/login', async(req, res) => {
 });
 
 app.get('/api/user/:id' , async(req, res) => {
-  try{
-    const id = req.params.id;
-    const response = await axios.get(`${users_url}/${id}`);
-    res.status(response.status).send(response.data);
-
-  } catch(error){
-    res.status(500).send(error);
-  }
+  const id = req.params.id;
+  res.redirect(`${users_url}/${id}`);
 });
 
 app.put('/api/permissions', (req, res) => {
@@ -100,7 +96,20 @@ app.patch('/events/date/:eventId', updateEventDateValidator, (req, res) => {
   res.redirect(307,`http://localhost:3001/date/${req.params.eventId}`);
 });
 
+  /****************************Comments*********************************/
   
+  app.get('/comments/:id', (req, res) => {
+    const id = req.params.id;
+    res.redirect(`${comments_url}/${id}`);
+
+  });
+
+  app.post('/addComments', (req, res) => {
+    res.redirect(`${comments_url}`);
+  });
+
+
   app.listen(port, () => {
     console.log(`[server]: Server is running at http://localhost:${port}`);
   });
+
