@@ -84,6 +84,12 @@ app.patch('/tickets/:id', async (req, res) => {
       { _id: req.params.id },
       { $inc: { "tickets.$[elem].quantity": req.body.quantity } },
       { arrayFilters:[{$and:[ {"elem.name": req.body.name} ]}]});
+      if (result.$isEmpty){
+        res.status(404).send("Event not found");
+      }
+      if (result.tickets.filter((t)=> t.name === req.body.name).length === 0){
+        res.status(404).send("Ticket not found");
+      }
       if (result.tickets.filter((t)=> t.name === req.body.name)[0].quantity < -req.body.quantity){
         res.status(400).send("not enough tickets");
       }

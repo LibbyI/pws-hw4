@@ -12,7 +12,9 @@
     "dev-gateway": "tsc-watch --onSuccess \"node ./dist/gateway-service/gateway-service.js\" --compiler typescript/bin/tsc",
     "dev-events": "tsc-watch --onSuccess \"node ./dist/events-service/events-service.js\" --compiler typescript/bin/tsc",
     "dev-users": "tsc-watch --onSuccess \"node ./dist/users-service/users-service.js\" --compiler typescript/bin/tsc",
-    "dev-comments": "tsc-watch --onSuccess \"node ./dist/comments-service/comments-service.js\" --compiler typescript/bin/tsc"
+    "dev-comments": "tsc-watch --onSuccess \"node ./dist/comments-service/comments-service.js\" --compiler typescript/bin/tsc",
+    "dev-orders": "tsc-watch --onSuccess \"node ./dist/orders-service/orders-service.js\" --compiler typescript/bin/tsc"
+
   
   },
   "keywords": [],

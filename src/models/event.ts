@@ -4,7 +4,7 @@ import * as mongoose from "mongoose";
 
 export const categoryValidTypes = ["CharityEvent","Concert","Conference","Convention","Exhibition",'Festival', "ProductLaunch", "SportsEvent"];
 
-interface Ticket{
+export interface Ticket{
     name: string;
     quantity: number;
     price: number;
