@@ -21,34 +21,40 @@ export const consumeMessages = async () => {
    await channel.consume(queue, (msg) => {
       (async () => {
           try {
-              console.log(`Consumer >>> received message: ${msg.content.toString()}`);
-              // const body = JSON.parse(msg.content.toString());
-              const body: orederExpiredDate = JSON.parse(msg.content.toString());
-              const now  = new Date();
-              console.log("consumed: ", body);
-              if (new Date(body.expiredDate) < now){
-                const response = await findanddelete(body);
-                //call function that remove tickects
-                if (response){
-                  console.log("end time out!!!");
-                  channel.ack(msg);
-                }
-                else{
-                  channel.nack(msg, true, true);
-                  console.log("removed from queue");
-                }
+            console.log(`Consumer >>> received message: ${msg.content.toString()}`);
+            // const body = JSON.parse(msg.content.toString());
+            const body: orederExpiredDate = JSON.parse(msg.content.toString());
+            const now  = new Date();
+            // console.log("consumed: ", body);
+            if (new Date(body.expiredDate) < now){
+              const response = await findanddelete(body);
+              //call function that remove tickects
+              if (response){
+                console.log("end time out!!!");
+                channel.ack(msg);
+                console.log("removed from queue");
+
               }
               else{
                 channel.nack(msg, true, true);
-                // console.log(now, body.expiredDate);
+                console.log("back in queue");
+
               }
+            }
+            else{
+              channel.nack(msg, true, true);
+              // console.log(now, body.expiredDate);
+            }
               
           } catch (error) {
               console.error('Error processing message:', error);
+              console.log("error: ", error);
           }
       })();
   });
   } catch (error) {
     console.error(error);
+    console.log("error:", error);
+
   }
 };

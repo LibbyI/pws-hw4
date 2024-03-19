@@ -3,6 +3,7 @@ import {updateEventTickets, orederExpiredDate} from "../const.js";
 import OrderType, { IOrder, orderStatus, paymentDetails } from "../models/orders.js";
 import orders from "../models/orders.js";
 import {publisherChannel} from "./orders-service.js"
+// export const publisherChannel = new PublisherChannel();
 
 export const sendMessageUpdateTickets = async (publisher: PublisherChannel, eventId: string, quantity: number, name: string) =>{
     const body: updateEventTickets = {
@@ -30,7 +31,7 @@ export async function findanddelete(msg: orederExpiredDate){
   const deletedOrder = await orders.findOneAndDelete({_id: msg.orderId, status: orderStatus.pending, expires_at: {$lte: new Date()}});
   // else: find it
   if (deletedOrder){
-    console.log("deleted order!!",deletedOrder);
+    console.log("deleted order!! ",deletedOrder._id);
     await sendMessageUpdateTickets(publisherChannel, deletedOrder.event_id, deletedOrder.ticket.quantity, deletedOrder.ticket.name);
     return true;
   }

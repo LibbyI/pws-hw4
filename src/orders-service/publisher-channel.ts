@@ -24,7 +24,7 @@ export class PublisherChannel {
       await this.createChannel();
     }
 
-    const exchange = 'order_exchange';
+    const exchange = 'delete_queue';
 
     // Declare an exchange with the specified name and type ('fanout').
     // If the exchange doesn't exist, it will be created.
@@ -34,12 +34,7 @@ export class PublisherChannel {
     // Publish the message to the exchange
     // The empty string as the second argument represents the routing key, which is not used by fanout exchanges
     // `Buffer.from(msg)` converts the message string into a buffer for transmission
-    // amqp.pro.Builder props = new amqp.BasicProperties.Builder();
-    // headers = new HashMap<String, Object>();
-    // headers.put("x-delay", 5000);
-    // const headers = {
-    //     expiration: 20000,
-    // };
+
     await this.channel.publish(exchange, '', Buffer.from(msg));
     console.log(
       `Publisher >>> | message "${msg}" published to exchange "${exchange}"`

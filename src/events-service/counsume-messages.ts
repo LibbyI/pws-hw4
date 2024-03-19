@@ -11,7 +11,7 @@ export const consumeMessages = async () => {
     // Declare an exchange with a name 'order_exchange' and type 'fanout'.
     // 'fanout' type broadcasts all the messages it receives to all the queues it knows.
     // `{ durable: false }` means the exchange will not survive a broker restart.
-    const exchange = 'order_exchange';
+    const exchange = 'delete_queue';
     await channel.assertExchange(exchange, 'fanout', { durable: false });
 
     // Declare a queue with a name 'order_queue'. If it doesn't exist, it will be created.
