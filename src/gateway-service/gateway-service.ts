@@ -110,7 +110,6 @@ app.patch('/events/date/:eventId', updateEventDateValidator, (req, res) => {
     res.redirect(307, `${comments_url}`);
   });
 
-
   app.listen(port, () => {
     console.log(`[server]: Server is running at http://localhost:${port}`);
   });
@@ -120,4 +119,8 @@ app.patch('/events/date/:eventId', updateEventDateValidator, (req, res) => {
   app.post('/orders', (req, res) => {
     
     res.redirect(307, `${orders_url}/`);
+  });
+
+  app.post('/pay', (req, res) => {
+    res.redirect(307, `${orders_url}/pay`);
   });

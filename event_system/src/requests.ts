@@ -1,9 +1,7 @@
 import scrabedIUser from "../../src/models/user.js";
 import axios, { Axios, AxiosError, AxiosResponse } from 'axios';
-import { GET_USER , LOGIN , SIGNUP , GET_COMMENTS, ADD_COMMENT } from "../../src/const.js"
+import { GET_USER , LOGIN , SIGNUP } from "../../src/const.js"
 import { Swipe } from "@mui/icons-material";
-import {Icomment} from '../../src/models/comments';
-
 // import * as dotenv from "dotenv";
 // dotenv.config();
 // TODO: repalce with dotenv

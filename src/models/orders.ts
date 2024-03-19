@@ -1,14 +1,23 @@
 import mongoose from "mongoose";
 import { Ticket } from "./event.js";
-import { ObjectId } from "mongoose";
 
-enum orderStatus {
+export interface paymentDetails{
+    cc: string;
+    holder: string;
+    cvv: string;
+    exp: string;
+    charge: number;
+}
+
+
+
+export enum orderStatus {
     pending = 'pending',
     inPayment = 'inPayment',
     completed = 'completed',
 }
 
-interface IOrder{
+export interface IOrder{
     _id : mongoose.Types.ObjectId;
     event_id: string;
     user_id: string;
