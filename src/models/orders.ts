@@ -1,6 +1,14 @@
 import mongoose from "mongoose";
 import { Ticket } from "./event.js";
-import { ObjectId } from "mongoose";
+
+export interface paymentDetails{
+    cc: string;
+    holder: string;
+    cvv: string;
+    exp: string;
+    charge: number;
+}
+
 
 
 export enum orderStatus {

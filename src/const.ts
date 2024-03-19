@@ -10,6 +10,7 @@ export const ADD_COMMENT = `POST /addComment/`;
 
 export const ERROR_401 = "ERROR_401";
 
+export const PAYMENT_URL = "https://www.cs-wsp.net/_functions/pay";
 
 
 export const options = {

@@ -38,7 +38,7 @@ app.use(function (req, res, next) {
 
 app.post('/', async (req, res) => {
   try {
-    const order = await addNewOrder(req);
+    const order = await addNewOrder(req.body);
      res.status(200).send(order);
     
   } catch (error) {

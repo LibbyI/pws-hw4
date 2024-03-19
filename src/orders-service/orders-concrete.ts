@@ -1,7 +1,8 @@
 import axios, { AxiosError } from "axios";
-import OrderType, { IOrder, orderStatus } from "../models/orders.js";
+import OrderType, { IOrder, orderStatus, paymentDetails } from "../models/orders.js";
 import orders from "../models/orders.js";
 import { HttpError } from "./order-error.js";
+import { PAYMENT_URL } from "../const.js";
 
 
 export async function addNewOrder(req) : Promise<IOrder> {
@@ -16,9 +17,10 @@ export async function handlePaymentRequest(req) {
         //lock order tickets
         req.body.order.status = orderStatus.inPayment;
         let order = await orders.findOneAndUpdate({_id: req.body.order._id}, {status: "inPayment"}).exec()??
-        await addNewOrder(req);
+        await addNewOrder(req.body.order);
 
-        await tryPayOnOrder(order, req.body.payment_details);
+        const paymentDetails : paymentDetails= {charge: order.ticket.price * order.ticket.quantity, ...req.body.paymentDetails};
+        const paymentId = await tryPayOnOrder( paymentDetails);
 
         await orders.updateOne({_id: order._id}, {status: "completed"}).exec();//TODO: maybe sould be async
 
@@ -28,7 +30,7 @@ export async function handlePaymentRequest(req) {
 
 function validateAndGetOrder(req){
     try{
-        const order = new OrderType(req.body);
+        const order = new OrderType(req);
         order.validateSync();
         return order;
     }
@@ -59,8 +61,12 @@ async function trySaveOrder(order) {
     }
 }
 
-function tryPayOnOrder(order:IOrder, payment_details: any) {
+async function tryPayOnOrder(payment_details: any) {
+    // try{
+    //     return await axios.post(PAYMENT_URL, payment_details);
+    // } 
+    // catch (error){
+    // }
     return;
-    //TODO: implement payment call
 }
 
