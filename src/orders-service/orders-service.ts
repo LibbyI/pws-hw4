@@ -4,6 +4,7 @@ import * as mongoose from "mongoose";
 import { options } from '../const.js';
 import { addNewOrder } from "./orders-concrete.js";
 import  OrderType  from "../models/orders.js";
+import { HttpError } from "./order-error.js";
 
 
 dotenv.config();
@@ -36,7 +37,19 @@ app.use(function (req, res, next) {
   });
 
 app.post('/', async (req, res) => {
-   await addNewOrder(req, res);
+  try {
+    const order = await addNewOrder(req, res);
+     res.status(200).send(order);
+    
+  } catch (error) {
+    if (error instanceof HttpError) {
+      res.status(error.status).send(error.message);
+    }
+    else{
+      res.status(500).send("failed to add new order")
+    }
+  }
+
 });
 app.listen(port, () => {
     console.log(`[server]: Server is running at http://localhost:${port}`);
