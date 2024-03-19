@@ -1,5 +1,6 @@
 import axios, { AxiosError } from "axios";
 import OrderType from "../models/orders.js";
+import orders from "../models/orders.js";
 
 
 export function addNewOrder(req,res) {
@@ -31,6 +32,7 @@ function validateAndGetOrder(req,res){
 
 async function tryGetTicketsFromEvent(order, res){
     try{
+        
         await axios.patch(`${process.env.GATEWAY_URL}/tickets/${order.event_id}`, {name: order.ticket.name, quantity: -order.ticket.quantity});
     } catch (error: AxiosError | any){
         if (error instanceof AxiosError) {
@@ -54,3 +56,8 @@ function trySaveOrder(order, res) {
     }
 }
 
+// async function findanddelete(order, res){
+//     orders.findOneAndDelete({_id: id, status: orderSt});
+
+    
+// }

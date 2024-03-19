@@ -4,7 +4,11 @@ import * as mongoose from "mongoose";
 import { options } from '../const.js';
 import { addNewOrder } from "./orders-concrete.js";
 import  OrderType  from "../models/orders.js";
-
+import { PublisherChannel } from './publisher-channel.js';
+const publisherChannel = new PublisherChannel();
+import { sendMessageUpdateTickets , sentTimeOutMessage } from "./order-routs.js";
+import { consumeMessages } from './counsume-messages.js';
+consumeMessages();
 
 dotenv.config();
 const app = express();
@@ -34,6 +38,12 @@ app.use(function (req, res, next) {
     // Pass to next layer of middleware
     next();
   });
+
+app.post('/test', async (req, res) => {
+  await sendMessageUpdateTickets(publisherChannel,"libby",2, "firstclass");
+  await sentTimeOutMessage(publisherChannel, "123", new Date((new Date()).getTime() + 30 * 1000));
+  res.status(200).send();
+});
 
 app.post('/', async (req, res) => {
     addNewOrder(req, res);
