@@ -19,12 +19,26 @@ export async function handlePaymentRequest(req) {
         let order = await orders.findOneAndUpdate({_id: req.body.order._id}, {status: "inPayment"}).exec()??
         await addNewOrder(req.body.order);
 
-        const paymentDetails : paymentDetails= {charge: order.ticket.price * order.ticket.quantity, ...req.body.paymentDetails};
-        const paymentId = await tryPayOnOrder( paymentDetails);
+        //try pay
+        const paymentDetails : paymentDetails = {charge: order.ticket.price * order.ticket.quantity, ...req.body.payment_details};
+        let paymentId;
+        try {
+            paymentId = (await axios.post(PAYMENT_URL, paymentDetails)).data;
+        } catch (error) {
+            //when payment fails, update back to pending and update expire if first try
+            //TODO: add update expire if first try
+            await orders.updateOne({_id: order._id}, {status: "pending"}).exec(); 
+            if (error instanceof AxiosError) {
+                throw new HttpError(error.response.status, error.response.data);
+            } 
+            console.log(error);
+            throw new HttpError(500, "payment failed");  
+
+        }
 
         await orders.updateOne({_id: order._id}, {status: "completed"}).exec();//TODO: maybe sould be async
 
-        return order;
+        return paymentId;
     
 }
 
@@ -60,13 +74,3 @@ async function trySaveOrder(order) {
         throw new HttpError(500, "failed to save order");
     }
 }
-
-async function tryPayOnOrder(payment_details: any) {
-    // try{
-    //     return await axios.post(PAYMENT_URL, payment_details);
-    // } 
-    // catch (error){
-    // }
-    return;
-}
-
