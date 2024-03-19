@@ -1,7 +1,6 @@
 import * as mongoose from "mongoose";
 
 export interface Icomment {
-    _id: string;
     eventId: string;
     author: string;
     date: Date;

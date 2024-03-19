@@ -9,8 +9,10 @@ const comments = CommentType;
 
 
 export const addComent = async(req, res) => {
+    
     try{
         const comment = new CommentType(req.body);
+
         await comment.validate();
         const result = await comment.save();
         res.send(result);  

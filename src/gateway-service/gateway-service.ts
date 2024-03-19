@@ -105,8 +105,8 @@ app.patch('/events/date/:eventId', updateEventDateValidator, (req, res) => {
 
   });
 
-  app.post('/addComments', (req, res) => {
-    res.redirect(`${comments_url}`);
+  app.post('/addComment', (req, res) => {
+    res.redirect(307, `${comments_url}`);
   });
 
 

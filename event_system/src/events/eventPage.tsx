@@ -33,7 +33,7 @@ export const EventPage: React.FC<Props> = ({logout, getUser}) => {
     return (
         <>
         <ButtonAppBar goback={goBack} logout={logoutandgotologin}  getUser={getUser}></ButtonAppBar>
-        <AlignItemsList eventId={eventId}></AlignItemsList>
+        <AlignItemsList eventId={eventId} getUser={getUser}></AlignItemsList>
         </>
     )
 }

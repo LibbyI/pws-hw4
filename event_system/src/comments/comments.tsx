@@ -10,27 +10,60 @@ import {Icomment} from '../../../src/models/comments';
 import {Comment} from './comment';
 import {getEventComments} from "../requests";
 import { useEffect, useState } from 'react';
-
+import { TextField, Button } from '@mui/material';
+import {sendEventComment} from "../requests";
+import { scrabedIUser } from "../../../src/models/user.js";
 
 interface Props{
     eventId: String;
+    getUser: () => scrabedIUser | null;
+
   };
 
-export const AlignItemsList: React.FC<Props>= ({eventId}) => {
+export const AlignItemsList: React.FC<Props>= ({eventId, getUser}) => {
+
     const [commentsArray, setCommentsArray] = useState<any[]>([]);
-    useEffect(() => {
-        const fetchComments = async () => {
-          try {
+    const fetchComments = async () => {
+        try {
             const response = await getEventComments(eventId);
             const comments = response?.data ;
             setCommentsArray(comments);
-          } catch (error) {
+        } catch (error) {
             console.error('Error fetching comments:', error);
-          }
-        };
+        }
+    };
     
+    
+
+    const handleAddComment = async  (event: React.FormEvent<HTMLFormElement>) => {
+
+        event.preventDefault();
+        const user = getUser();
+        let username;
+        if (user && user.username){
+            username = user?.username;
+        }else{
+            username = "Anonymous";
+        }
+        const data = new FormData(event.currentTarget);
+        const content = data.get('newComment')?.toString();
+        if (content){
+            try{
+                const newComment: Icomment = {eventId: eventId.toString(), author: username.toString(), content: content, date: new Date() };
+                const response = await sendEventComment(newComment);
+                console.log(response);
+                fetchComments();
+
+            }catch(error){
+                console.error('Error post comment', error);
+            }
+        }
+    };
+    useEffect(() => {
         fetchComments();
       }, [eventId]);
+
+
 
     return (
         <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
@@ -41,6 +74,22 @@ export const AlignItemsList: React.FC<Props>= ({eventId}) => {
             {index !== commentsArray.length - 1 && <Divider variant="inset" component="li" />} {/* Add Divider between items, except for the last one */}
             </React.Fragment>
         ))}  
+        <Divider variant="inset" component="li" />
+        <form onSubmit={handleAddComment}>
+          <TextField
+            id="new-comment"
+            name='newComment'
+            label="Add a comment"
+            variant="outlined"
+            fullWidth
+            // Here you can add state to manage the new comment text
+            // For example, value={newCommentText} onChange={handleCommentTextChange}
+          />
+          <Button type="submit" variant="contained" color="primary">
+            Add Comment
+          </Button>
+        </form>
+
         </List>
     );
 }
