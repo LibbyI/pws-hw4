@@ -2,7 +2,7 @@ import express from "express";
 import * as dotenv from "dotenv";
 import * as mongoose from "mongoose";
 import { options } from '../const.js';
-import { addNewOrder } from "./orders-concrete.js";
+import { addNewOrder, handlePaymentRequest } from "./orders-concrete.js";
 import  OrderType  from "../models/orders.js";
 import { HttpError } from "./order-error.js";
 
@@ -38,7 +38,7 @@ app.use(function (req, res, next) {
 
 app.post('/', async (req, res) => {
   try {
-    const order = await addNewOrder(req, res);
+    const order = await addNewOrder(req);
      res.status(200).send(order);
     
   } catch (error) {
@@ -51,6 +51,21 @@ app.post('/', async (req, res) => {
   }
 
 });
+
+app.post('/pay', async (req, res) => {
+  try {
+    const order = await handlePaymentRequest(req);
+     res.status(200).send(order);
+  }
+  catch (error) {
+    if (error instanceof HttpError) {
+      res.status(error.status).send(error.message);
+    }
+    else{
+      res.status(500).send("failed to handle payment request")
+    }
+  }});
+
 app.listen(port, () => {
     console.log(`[server]: Server is running at http://localhost:${port}`);
   });

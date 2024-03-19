@@ -4,7 +4,7 @@ import orders from "../models/orders.js";
 import { HttpError } from "./order-error.js";
 
 
-export async function addNewOrder(req,res): Promise<IOrder | null> {
+export async function addNewOrder(req) : Promise<IOrder> {
         const order = validateAndGetOrder(req);
         await tryGetTicketsFromEvent(order);
         await trySaveOrder(order);
@@ -12,16 +12,17 @@ export async function addNewOrder(req,res): Promise<IOrder | null> {
         return order;
     }
 
-export async function handlePaymentRequest(req,res) {
-    try {
-        //get and update order status to in payment
+export async function handlePaymentRequest(req) {
+        //lock order tickets
         req.body.order.status = orderStatus.inPayment;
         let order = await orders.findOneAndUpdate({_id: req.body.order._id}, {status: "inPayment"}).exec()??
-        addNewOrder(req,res);
-    } catch (error) {
-        console.log(error);
-        return null;
-    }
+        await addNewOrder(req);
+
+        await tryPayOnOrder(order, req.body.payment_details);
+
+        await orders.updateOne({_id: order._id}, {status: "completed"}).exec();//TODO: maybe sould be async
+
+        return order;
     
 }
 
@@ -56,5 +57,10 @@ async function trySaveOrder(order) {
         //TODO: add here async function to return tickets to event
         throw new HttpError(500, "failed to save order");
     }
+}
+
+function tryPayOnOrder(order:IOrder, payment_details: any) {
+    return;
+    //TODO: implement payment call
 }
 

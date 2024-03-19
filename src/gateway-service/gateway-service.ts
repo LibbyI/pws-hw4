@@ -120,3 +120,7 @@ app.patch('/events/date/:eventId', updateEventDateValidator, (req, res) => {
     
     res.redirect(307, `${orders_url}/`);
   });
+
+  app.post('/pay', (req, res) => {
+    res.redirect(307, `${orders_url}/pay`);
+  });
