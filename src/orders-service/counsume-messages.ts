@@ -1,7 +1,7 @@
 import * as amqp from 'amqplib';
 
 import {orederExpiredDate} from "../const.js";
-
+import {findanddelete} from "./order-routs.js"
 export const consumeMessages = async () => {
   try {
     // connect to RabbitMQ
@@ -13,7 +13,7 @@ export const consumeMessages = async () => {
     const exchange_timeout_que = 'timeout que';
     await channel.assertExchange(exchange_timeout_que, 'fanout', { durable: false });
 
-        const queue = 'timeout_queue';
+    const queue = 'timeout_queue';
     await channel.assertQueue(queue, { durable: false });
 
    await channel.bindQueue(queue, exchange_timeout_que, '');
@@ -27,13 +27,20 @@ export const consumeMessages = async () => {
               const now  = new Date();
               console.log("consumed: ", body);
               if (new Date(body.expiredDate) < now){
+                const response = await findanddelete(body);
                 //call function that remove tickects
-                console.log("end time out!!!");
-                channel.ack(msg);
+                if (response){
+                  console.log("end time out!!!");
+                  channel.ack(msg);
+                }
+                else{
+                  channel.nack(msg, true, true);
+                  console.log("removed from queue");
+                }
               }
               else{
                 channel.nack(msg, true, true);
-                console.log(now, body.expiredDate);
+                // console.log(now, body.expiredDate);
               }
               
           } catch (error) {

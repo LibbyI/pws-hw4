@@ -6,7 +6,7 @@ import { addNewOrder, handlePaymentRequest } from "./orders-concrete.js";
 import  OrderType  from "../models/orders.js";
 import { HttpError } from "./order-error.js";
 import { PublisherChannel } from './publisher-channel.js';
-const publisherChannel = new PublisherChannel();
+export const publisherChannel = new PublisherChannel();
 import { sendMessageUpdateTickets , sentTimeOutMessage } from "./order-routs.js";
 import { consumeMessages } from './counsume-messages.js';
 consumeMessages();
@@ -40,16 +40,18 @@ app.use(function (req, res, next) {
     next();
   });
 
-app.post('/test', async (req, res) => {
-  await sendMessageUpdateTickets(publisherChannel,"libby",2, "firstclass");
-  await sentTimeOutMessage(publisherChannel, "123", new Date((new Date()).getTime() + 30 * 1000));
-  res.status(200).send();
-});
+// app.post('/test', async (req, res) => {
+//   await sendMessageUpdateTickets(publisherChannel,"libby",2, "firstclass");
+//   await sentTimeOutMessage(publisherChannel, "123", new Date((new Date()).getTime() + 5 * 1000));
+
+//   res.status(200).send();
+// });
 
 app.post('/', async (req, res) => {
   try {
     const order = await addNewOrder(req.body);
-     res.status(200).send(order);
+    await sentTimeOutMessage(publisherChannel, order._id.toString(), new Date(order.expires_at));
+    res.status(200).send(order);
     
   } catch (error) {
     if (error instanceof HttpError) {

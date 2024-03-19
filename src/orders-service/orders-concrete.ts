@@ -3,6 +3,7 @@ import OrderType, { IOrder, orderStatus, paymentDetails } from "../models/orders
 import orders from "../models/orders.js";
 import { HttpError } from "./order-error.js";
 import { PAYMENT_URL } from "../const.js";
+import {orederExpiredDate} from "../const.js";
 
 
 export async function addNewOrder(req) : Promise<IOrder> {
@@ -76,8 +77,27 @@ async function trySaveOrder(order) {
     }
 }
 
-// async function findanddelete(order, res){
-//     orders.findOneAndDelete({_id: id, status: orderSt});
+// async function findanddelete(msg: orederExpiredDate){
+//     //if expaierd and pending => delete it and remove from queue
+//     const deletedOrder = await orders.findOneAndDelete({_id: msg.orderId, status: orderStatus.pending});
+//     // else: find it
+//     if (deletedOrder){
+//         return deletedOrder;
+//     }
 
-    
+//     const oreder = await orders.findOne({_id: msg.orderId});
+//     if (!oreder){
+//         return null;
+//     }
+//     switch (oreder.status){
+//         // if completed? remove from queue
+//         case orderStatus.completed:
+//             break;
+//         // else, if in paiment , back to queue (update expired date)
+//         case orderStatus.inPayment:
+//             break;
+//         //else if pending: back to queue update date:
+//         case orderStatus.pending:
+//             break;
+//     }
 // }
