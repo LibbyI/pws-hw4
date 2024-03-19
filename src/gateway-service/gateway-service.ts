@@ -110,7 +110,6 @@ app.patch('/events/date/:eventId', updateEventDateValidator, (req, res) => {
     res.redirect(307, `${comments_url}`);
   });
 
-
   app.listen(port, () => {
     console.log(`[server]: Server is running at http://localhost:${port}`);
   });

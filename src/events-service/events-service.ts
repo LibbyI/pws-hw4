@@ -83,15 +83,19 @@ app.patch('/tickets/:id', async (req, res) => {
     const result = await events.findOneAndUpdate(
       { _id: req.params.id },
       { $inc: { "tickets.$[elem].quantity": req.body.quantity } },
-      { arrayFilters:[{$and:[ {"elem.name": req.body.name} ]}]});
-      if (result.$isEmpty){
+      { arrayFilters:[{$and:[ {"elem.name": req.body.name}, {"elem.quantity":{$gte: -req.body.quantity}} ]}]}).exec();
+
+      if (result === null){
         res.status(404).send("Event not found");
+        return;
       }
-      if (result.tickets.filter((t)=> t.name === req.body.name).length === 0){
+      else if (result.tickets.filter((t)=> t.name === req.body.name).length === 0){
         res.status(404).send("Ticket not found");
+        return;
       }
-      if (result.tickets.filter((t)=> t.name === req.body.name)[0].quantity < -req.body.quantity){
+      if (result.tickets.some((t) => {return t.name === req.body.name && t.quantity < -req.body.quantity})){
         res.status(400).send("not enough tickets");
+        return;
       }
   res.send(result);
   } catch (error) {

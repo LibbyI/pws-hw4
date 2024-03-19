@@ -2,11 +2,11 @@ import axios, { AxiosError } from "axios";
 import OrderType from "../models/orders.js";
 
 
-export function addNewOrder(req,res) {
+export async function addNewOrder(req,res) {
     try {
         const order = validateAndGetOrder(req,res);
-        tryGetTicketsFromEvent(order, res);
-        trySaveOrder(order, res);
+        await tryGetTicketsFromEvent(order, res);
+        await trySaveOrder(order, res);
     } catch (error) {
         console.log(error);
         return;
@@ -16,7 +16,7 @@ export function addNewOrder(req,res) {
 function validateAndGetOrder(req,res){
     try{
         const order = new OrderType(req.body);
-        order.validate();
+        order.validateSync();
         return order;
     }
     catch (error){
@@ -44,13 +44,14 @@ async function tryGetTicketsFromEvent(order, res){
        
     }
 }
-function trySaveOrder(order, res) {
+async function trySaveOrder(order, res) {
     try{
-        order.save();
+        await order.save();
         res.send(order);
     } catch (error){
         //TODO: add here async function to return tickets to event
         res.status(500).send("failed to save order");
+        throw new Error("failed to save order");
     }
 }
 

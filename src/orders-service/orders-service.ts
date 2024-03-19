@@ -36,7 +36,7 @@ app.use(function (req, res, next) {
   });
 
 app.post('/', async (req, res) => {
-    addNewOrder(req, res);
+   await addNewOrder(req, res);
 });
 app.listen(port, () => {
     console.log(`[server]: Server is running at http://localhost:${port}`);
