@@ -1,8 +1,4 @@
-import event, { IEvent } from "../../../src/models/event.ts";
-import { EventCard } from "./eventCard.ts"; 
-
 import React from "react";
-import EventsGrid from "../catalog/eventsGrid.tsx"
 import ButtonAppBar from '../header/header.tsx';
 import AlignItemsList from '../comments/comments.tsx';
 
@@ -33,7 +29,6 @@ export const EventPage: React.FC<Props> = ({logout, getUser}) => {
     return (
         <>
         <ButtonAppBar goback={goBack} logout={logoutandgotologin}  getUser={getUser}></ButtonAppBar>
-        <AlignItemsList eventId={eventId} getUser={getUser}></AlignItemsList>
         </>
     )
 }
