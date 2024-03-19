@@ -24,6 +24,7 @@ export async function handlePaymentRequest(req) {
         let paymentId;
         try {
             paymentId = (await axios.post(PAYMENT_URL, paymentDetails)).data;
+            //TODO: check if card validation needed
         } catch (error) {
             //when payment fails, update back to pending and update expire if first try
             //TODO: add update expire if first try
