@@ -9,7 +9,7 @@ import { HashRouter as Router, Route, Link, BrowserRouter, Routes } from 'react-
 import ReactDOM from "react-dom/client";
 import { CatalogPage } from './catalog/catalogPage.tsx';
 import { scrabedIUser } from "../../src/models/user.js";
-import { EventPage } from './events/eventPage.tsx';
+import { EventPage } from './event-page/event-page.tsx';
 
 
  

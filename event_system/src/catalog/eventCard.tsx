@@ -10,7 +10,7 @@ import Collapse from '@mui/material/Collapse';
 import IconButton, { IconButtonProps } from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { Button } from '@mui/material';
+import { Button, CardActionArea } from '@mui/material';
 
 interface ExpandMoreProps extends IconButtonProps {
     expand: boolean;
@@ -38,6 +38,7 @@ interface ExpandMoreProps extends IconButtonProps {
     const alertPageRoute = './../event/'+ event._id;
     return (
         <Card sx={{ maxWidth: 345 }} className='card' key={event._id}>
+          <CardActionArea href={alertPageRoute}>
           <CardHeader
             title = {event.title}
             subheader= {event.category}            
@@ -50,7 +51,7 @@ interface ExpandMoreProps extends IconButtonProps {
           />
           <CardContent>
             <Typography variant="body2" color="text.secondary">
-                {new Date(event.start_date).toLocaleDateString('en-US',{year: 'numeric', month: 'long', day: 'numeric'})} until {new Date(event.start_date).toLocaleDateString('en-US',{year: 'numeric', month: 'long', day: 'numeric'})}           
+                {new Date(event.start_date).toLocaleDateString('en-US',{year: 'numeric', month: 'long', day: 'numeric'})}           
             </Typography>
             <Typography variant="body2" color="text.secondary">
                 {event.location}
@@ -59,12 +60,8 @@ interface ExpandMoreProps extends IconButtonProps {
                 {event.organizer}
             </Typography>            
           </CardContent>
+          </CardActionArea>
           <CardActions disableSpacing>
-            <IconButton aria-label="add to favorites">
-              <Button variant="contained" size="large" href={alertPageRoute}>
-                Buy Now!
-              </Button>
-            </IconButton>
             <ExpandMore
               expand={expanded}
               onClick={handleExpandClick}
