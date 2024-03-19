@@ -27,10 +27,10 @@ export const addComent = async(req, res) => {
 export const getComments = async(req, res) => {
     try {
         const id = req.params.id;
-        console.log(id);
         let filter : object = {eventId: id};
         const result = await comments.find(filter).exec();
         res.send(result);
+        return;
       } catch (error) {
         res.status(500).send(error);
       }

@@ -8,6 +8,7 @@ import AlignItemsList from '../comments/comments.tsx';
 
 import { useNavigate } from 'react-router-dom';
 import { scrabedIUser } from "../../../src/models/user.js";
+import { useParams } from 'react-router-dom';
 
 
 interface Props{
@@ -17,7 +18,8 @@ interface Props{
   };
 
 export const EventPage: React.FC<Props> = ({logout, getUser}) => {
-
+    const { id } = useParams();
+    const eventId = id ? id : "";
 // export const EventPage = () =>{
     const navigate = useNavigate();
     const goBack = () =>{
@@ -31,7 +33,7 @@ export const EventPage: React.FC<Props> = ({logout, getUser}) => {
     return (
         <>
         <ButtonAppBar goback={goBack} logout={logoutandgotologin}  getUser={getUser}></ButtonAppBar>
-        <AlignItemsList></AlignItemsList>
+        <AlignItemsList eventId={eventId}></AlignItemsList>
         </>
     )
 }

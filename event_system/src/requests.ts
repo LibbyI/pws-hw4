@@ -1,6 +1,6 @@
 import scrabedIUser from "../../src/models/user.js";
 import axios, { Axios, AxiosError, AxiosResponse } from 'axios';
-import { GET_USER , LOGIN , SIGNUP } from "../../src/const.js"
+import { GET_USER , LOGIN , SIGNUP , GET_COMMENTS } from "../../src/const.js"
 import { Swipe } from "@mui/icons-material";
 // import * as dotenv from "dotenv";
 // dotenv.config();
@@ -40,6 +40,17 @@ export const sendRequest = async (url: string, method: string, body: Object | nu
     }
 };
 
+export const getEventComments = async(eventId: String):Promise<AxiosResponse | null> => {
+    try{
+        const comments_split = GET_COMMENTS.split(' ');
+        const url = GATEWAY_URL+comments_split[1]+eventId;
+        const response = await sendRequest(url, comments_split[0]);
+        return response;
+        
+    }catch(error){
+        return null;
+    }
+};
 
 export const getUserById = async(userId: String):Promise<AxiosResponse | null> => {
     const getuser_split = GET_USER.split(' ');
