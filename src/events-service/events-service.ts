@@ -3,6 +3,8 @@ import * as dotenv from "dotenv";
 import EventType from "../models/event.js";
 import * as mongoose from "mongoose";
 import { body, query } from "express-validator";
+import { consumeMessages } from '../events-service/counsume-messages.js';
+consumeMessages();
 
 dotenv.config();
 const app = express();
@@ -52,7 +54,7 @@ app.get('/', async (req, res) => {
 
 app.get('/:id', async (req, res) => {
   try {
-
+    
     const result = await events.findById(req.params.id).exec();
     res.send(result);
    } catch (error) {

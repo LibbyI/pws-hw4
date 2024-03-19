@@ -96,15 +96,15 @@ export const AlignItemsList: React.FC<Props>= ({eventId, getUser}) => {
 
  
 
-// const examplearry: Icomment[] = [{ _id: "123",
-//     eventId: "456",
-//     author: "libby",
-//     date: new Date("2023-01-07T00:00:00.000Z"),
-//     content: "fgsfgsgsfgzfsg"}, { _id: "123",
-//     eventId: "456",
-//     author: "nao",
-//     date: new Date("2023-01-07T00:00:00.000Z"),
-//     content: "great!!"}] 
+const examplearry: Icomment[] = [{
+    eventId: "456",
+    author: "libby",
+    date: new Date("2023-01-07T00:00:00.000Z"),
+    content: "fgsfgsgsfgzfsg"}, {
+    eventId: "456",
+    author: "nao",
+    date: new Date("2023-01-07T00:00:00.000Z"),
+    content: "great!!"}] 
 
 
 export default AlignItemsList;

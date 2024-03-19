@@ -18,3 +18,14 @@ export const options = {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   };
+
+export interface updateEventTickets {
+  eventId: string;
+  quantity: Number;
+  name: string;
+}
+
+export interface orederExpiredDate {
+  orderId: string;
+  expiredDate: Date;
+}

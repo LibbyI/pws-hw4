@@ -58,6 +58,7 @@ function validateAndGetOrder(req){
 
 async function tryGetTicketsFromEvent(order){
     try{
+        
         await axios.patch(`${process.env.GATEWAY_URL}/tickets/${order.event_id}`, {name: order.ticket.name, quantity: -order.ticket.quantity});
     } catch (error: AxiosError | any){
         if (error instanceof AxiosError) {
@@ -75,3 +76,9 @@ async function trySaveOrder(order) {
         throw new HttpError(500, "failed to save order");
     }
 }
+
+// async function findanddelete(order, res){
+//     orders.findOneAndDelete({_id: id, status: orderSt});
+
+    
+// }

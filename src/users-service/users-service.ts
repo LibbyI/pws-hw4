@@ -7,6 +7,7 @@ import { signupRoute, permissionRoute, loginRoute, getUserById, getPremission} f
 
 dotenv.config();
 
+
 const dbURI = `mongodb+srv://libby6831:${process.env.DB_PASS}@cluster0.pyjnubc.mongodb.net/?retryWrites=true&w=majority`;
 await mongoose.connect(dbURI, options);
 const users = User;
