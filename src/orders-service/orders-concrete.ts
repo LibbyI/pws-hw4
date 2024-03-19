@@ -7,6 +7,8 @@ export async function addNewOrder(req,res) {
         const order = validateAndGetOrder(req,res);
         await tryGetTicketsFromEvent(order, res);
         await trySaveOrder(order, res);
+        //TODO: send message to delete order when expired.
+        return;
     } catch (error) {
         console.log(error);
         return;
