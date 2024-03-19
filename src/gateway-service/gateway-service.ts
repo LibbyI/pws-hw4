@@ -89,6 +89,7 @@ app.patch('/tickets/:eventId', (req, res) => {
 });
 
 app.patch('/events/date/:eventId', updateEventDateValidator, (req, res) => {
+  // TODO: permissions
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(400).send(errors.array()[0].msg);
