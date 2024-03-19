@@ -35,7 +35,7 @@ interface ExpandMoreProps extends IconButtonProps {
       setExpanded(!expanded);
     };
 
-    const alertPageRoute = './../alerts/'+event._id;
+    const alertPageRoute = './../event/'+ event._id;
     return (
         <Card sx={{ maxWidth: 345 }} className='card' key={event._id}>
           <CardHeader

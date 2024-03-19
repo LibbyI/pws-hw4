@@ -1,5 +1,9 @@
-import axios, { AxiosError, AxiosResponse } from 'axios';
-import { GET_USER , LOGIN , SIGNUP } from "../../src/const.js"
+import scrabedIUser from "../../src/models/user.js";
+import axios, { Axios, AxiosError, AxiosResponse } from 'axios';
+import { GET_USER , LOGIN , SIGNUP , GET_COMMENTS, ADD_COMMENT } from "../../src/const.js"
+import { Swipe } from "@mui/icons-material";
+import {Icomment} from '../../src/models/comments';
+
 // import * as dotenv from "dotenv";
 // dotenv.config();
 // TODO: repalce with dotenv
@@ -28,7 +32,7 @@ export const sendRequest = async (url: string, method: string, body: Object | nu
             default:
                 return null;
         }
-        console.log(response);
+        // console.log(response);
 
         return response;
 
@@ -38,6 +42,30 @@ export const sendRequest = async (url: string, method: string, body: Object | nu
     }
 };
 
+export const getEventComments = async(eventId: String):Promise<AxiosResponse | null> => {
+    try{
+        const comments_split = GET_COMMENTS.split(' ');
+        const url = GATEWAY_URL+comments_split[1]+eventId;
+        const response = await sendRequest(url, comments_split[0]);
+        return response;
+        
+    }catch(error){
+        return null;
+    }
+};
+
+export const sendEventComment = async(comment: Icomment):Promise<AxiosResponse | null> => {
+    try{
+        const body = comment;
+        const comment_split = ADD_COMMENT.split(' ');
+        const url = GATEWAY_URL+comment_split[1];
+        const response = await sendRequest(url, comment_split[0], body);
+        return response;
+        
+    }catch(error){
+        return null;
+    }
+};
 
 export const getUserById = async(userId: String):Promise<AxiosResponse | null> => {
     const getuser_split = GET_USER.split(' ');

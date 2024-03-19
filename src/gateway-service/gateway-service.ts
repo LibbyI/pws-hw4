@@ -90,6 +90,7 @@ app.patch('/tickets/:eventId', (req, res) => {
 });
 
 app.patch('/events/date/:eventId', updateEventDateValidator, (req, res) => {
+  // TODO: permissions
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(400).send(errors.array()[0].msg);
@@ -105,8 +106,8 @@ app.patch('/events/date/:eventId', updateEventDateValidator, (req, res) => {
 
   });
 
-  app.post('/addComments', (req, res) => {
-    res.redirect(`${comments_url}`);
+  app.post('/addComment', (req, res) => {
+    res.redirect(307, `${comments_url}`);
   });
 
 

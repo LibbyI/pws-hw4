@@ -52,7 +52,7 @@ function App() {
         <Route path="/" element={<SignUp />}></Route>
         <Route path="/signin" element={<SignIn setUser={setUserState}/>}></Route>
         <Route path="/catalog" element={<CatalogPage logout={logout} getUser={getUserState}/>}></Route>
-        <Route path="/event" element={<EventPage logout={logout} getUser={getUserState}/>}></Route>
+        <Route path="/event/:id" element={<EventPage logout={logout} getUser={getUserState}/>}></Route>
 
       </Routes>
     </BrowserRouter>
