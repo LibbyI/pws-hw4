@@ -8,6 +8,7 @@ import * as dotenv from "dotenv";
 import { HttpError } from "./order-error.js";
 import { PAYMENT_URL } from "../const.js";
 import {orederExpiredDate} from "../const.js";
+import { stat } from "fs";
 dotenv.config();
 
 const dbURI = `mongodb+srv://libby6831:${process.env.DB_PASS}@cluster0.pyjnubc.mongodb.net/?retryWrites=true&w=majority`;
@@ -19,6 +20,7 @@ export async function addNewOrder(req) : Promise<IOrder> {
         const session = await db.startSession();
         session.startTransaction();
         const tickets_amout =  - order.ticket.quantity;
+
         try{
             const result = await events.findOneAndUpdate(
                 { _id: order.event_id },
@@ -26,7 +28,13 @@ export async function addNewOrder(req) : Promise<IOrder> {
                 { arrayFilters:[{$and:[ {"elem.name": order.ticket.name}, {"elem.quantity":{$gte: -tickets_amout}} ]}]}).exec();
             // await tryGetTicketsFromEvent(order);
             if (result.tickets.some((t) => {return t.name === order.ticket.name && t.quantity < -tickets_amout})){
-                throw Error;
+                throw new HttpError(400, "not enough tickets");
+            }
+            if (result === null){
+                throw new HttpError(404, "Event not found");
+            }
+            if (result.tickets.filter((t)=> t.name === order.ticket.name).length === 0){
+                throw new HttpError(404, "Ticket not found");
             }
             await order.save();
             await session.commitTransaction()
@@ -52,7 +60,7 @@ export async function deleteExpiredOrder(orderId: string) : Promise<IOrder | nul
             { _id: orderId },
             { arrayFilters:[{$and:[ {"elem.status": orderStatus.pending}, {"elem.expires_at":{$lte: new Date()}} ]}]}).exec();
         if (!result_order){
-            throw Error;
+            throw new HttpError(404, "oredr not found");;
         }    
         const result_event = await events.findOneAndUpdate(
             { _id: result_order.event_id },
@@ -60,7 +68,7 @@ export async function deleteExpiredOrder(orderId: string) : Promise<IOrder | nul
             { arrayFilters:[{$and:[ {"elem.name": result_order.ticket.name}, {"elem.quantity":{$gte: -result_order.ticket.quantity}} ]}]}).exec();
 
         if (result_event.tickets.some((t) => {return t.name === result_order.ticket.name && t.quantity < -result_order.ticket.quantity})){
-            throw Error;
+            throw new HttpError(400, "invalid tickets amount");;
         }
         await session.commitTransaction()
     }catch(error ){
@@ -137,28 +145,3 @@ async function trySaveOrder(order) {
         throw new HttpError(500, "failed to save order");
     }
 }
-
-// async function findanddelete(msg: orederExpiredDate){
-//     //if expaierd and pending => delete it and remove from queue
-//     const deletedOrder = await orders.findOneAndDelete({_id: msg.orderId, status: orderStatus.pending});
-//     // else: find it
-//     if (deletedOrder){
-//         return deletedOrder;
-//     }
-
-//     const oreder = await orders.findOne({_id: msg.orderId});
-//     if (!oreder){
-//         return null;
-//     }
-//     switch (oreder.status){
-//         // if completed? remove from queue
-//         case orderStatus.completed:
-//             break;
-//         // else, if in paiment , back to queue (update expired date)
-//         case orderStatus.inPayment:
-//             break;
-//         //else if pending: back to queue update date:
-//         case orderStatus.pending:
-//             break;
-//     }
-// }

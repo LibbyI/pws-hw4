@@ -50,7 +50,7 @@ app.post('/', async (req, res) => {
       res.status(error.status).send(error.message);
     }
     else{
-      res.status(500).send("failed to add new order")
+      res.status(500).send(error.message);
     }
   }
 
