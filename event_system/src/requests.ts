@@ -3,6 +3,7 @@ import axios, { Axios, AxiosError, AxiosResponse } from 'axios';
 import { GET_USER , LOGIN , SIGNUP , GET_COMMENTS, ADD_COMMENT} from "../../src/const.js"
 import { Swipe } from "@mui/icons-material";
 import {Icomment} from "../../src/models/comments.js"
+import { IOrder } from "../../src/models/orders.js";
 // import * as dotenv from "dotenv";
 // dotenv.config();
 // TODO: repalce with dotenv
@@ -118,3 +119,9 @@ export const getEventById = async(eventId: String):Promise<AxiosResponse> => {
         const response = await sendRequest(url, 'GET');
         return response;
 };
+
+export const placeNewOrder = async(order: IOrder):Promise<AxiosResponse> => {
+        const url = `${GATEWAY_URL}/orders`;
+        const response = await sendRequest(url, 'POST', order);
+        return response;
+}

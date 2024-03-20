@@ -5,7 +5,7 @@ import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 import { Ticket } from '../../../src/models/event';
 import { QuantityInput } from './quantity-input';
-import { Button } from '@mui/material';
+import { BuyNowButton } from './buy-now-button';
 //import { BuyNowButton } from './buy-now-button';
 
 export interface TicketCardProps{
@@ -17,7 +17,7 @@ export interface TicketCardProps{
 
 
 export const TicketCard: React.FC<TicketCardProps> = ({ticket, eventId, userId}) => {
-  const [selectedTicketQuantity, setSelectedTicketQuantity] = React.useState(0);
+  const [selectedTicketQuantity, setSelectedTicketQuantity] = React.useState(Math.min(1, ticket.quantity));
 
 
   return (
@@ -30,11 +30,12 @@ export const TicketCard: React.FC<TicketCardProps> = ({ticket, eventId, userId})
           price: {ticket.price}$
         </Typography>
         <Typography variant="body2">
-            {(ticket.price===0) ? "no ticket left" : `${ticket.quantity} tickets left !`}
+            {(ticket.quantity===0) ? "No Tickets left" : `${ticket.quantity} tickets left !`}
         </Typography>
       </CardContent>
       <CardActions  >
         <QuantityInput value={selectedTicketQuantity} setValue={setSelectedTicketQuantity} max={ticket.quantity} min={0} />
+        <BuyNowButton ticket={{...ticket, quantity: selectedTicketQuantity}} event_id={eventId} user_id={userId} />
       </CardActions>
     </Card>
   );

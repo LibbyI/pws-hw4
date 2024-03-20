@@ -17,20 +17,19 @@ interface Props{
 export const QuantityInput: React.FC<Props> = ({value, setValue, max = 0 , min = 0})=>{
 
   return (
-    <>
-    <NumberInput 
-      size='lg' 
+    <NumberInput display={'flex'} style={{padding: 3}}
+
       onChange={(_,v: number) => setValue(v)}
       value={value}
       max={max}
       min={min}
+      
     >
     <NumberInputField />
-    <NumberInputStepper>
+    <NumberInputStepper >
       <NumberIncrementStepper  />
-      <NumberDecrementStepper />
+      <NumberDecrementStepper  />
     </NumberInputStepper>
     </NumberInput>
-    </>
   )
 }
