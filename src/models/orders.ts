@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import { Ticket } from "./event.js";
+import { TIMEOUT } from "../const.js";
 
 export interface paymentDetails{
     cc: string;
@@ -36,7 +37,7 @@ const orderSchema = new mongoose.Schema<IOrder,mongoose.Model<IOrder>>(
             price: { type: Number, required: true, min: [0, 'ticket price must be greater than 0']}
         }, required: true },
         status: { type: String, required: true, enum: Object.values(orderStatus), default: orderStatus.pending},
-        expires_at: { type: Date, required: true, default : new Date(Date.now() + 120000) }
+        expires_at: { type: Date, required: true, default : new Date(Date.now() + TIMEOUT) }
     });
 
 export default mongoose.model<IOrder>("OrderType", orderSchema, 'orders');

@@ -3,8 +3,6 @@ import * as dotenv from "dotenv";
 import EventType from "../models/event.js";
 import * as mongoose from "mongoose";
 import { body, query } from "express-validator";
-import { consumeMessages } from '../events-service/counsume-messages.js';
-consumeMessages();
 
 dotenv.config();
 const app = express();
@@ -80,31 +78,31 @@ app.post('/', async (req, res) => {
 });
 
 
-app.patch('/tickets/:id', async (req, res) => {
-  try {
-    const result = await events.findOneAndUpdate(
-      { _id: req.params.id },
-      { $inc: { "tickets.$[elem].quantity": req.body.quantity } },
-      { arrayFilters:[{$and:[ {"elem.name": req.body.name}, {"elem.quantity":{$gte: -req.body.quantity}} ]}]}).exec();
+// app.patch('/tickets/:id', async (req, res) => {
+//   try {
+//     const result = await events.findOneAndUpdate(
+//       { _id: req.params.id },
+//       { $inc: { "tickets.$[elem].quantity": req.body.quantity } },
+//       { arrayFilters:[{$and:[ {"elem.name": req.body.name}, {"elem.quantity":{$gte: -req.body.quantity}} ]}]}).exec();
 
-      if (result === null){
-        res.status(404).send("Event not found");
-        return;
-      }
-      else if (result.tickets.filter((t)=> t.name === req.body.name).length === 0){
-        res.status(404).send("Ticket not found");
-        return;
-      }
-      if (result.tickets.some((t) => {return t.name === req.body.name && t.quantity < -req.body.quantity})){
-        res.status(400).send("not enough tickets");
-        return;
-      }
-  res.send(result);
-  } catch (error) {
-    console.log(error);
-    res.status(500).send(error.message);
-  }
-});
+//       if (result === null){
+//         res.status(404).send("Event not found");
+//         return;
+//       }
+//       else if (result.tickets.filter((t)=> t.name === req.body.name).length === 0){
+//         res.status(404).send("Ticket not found");
+//         return;
+//       }
+//       if (result.tickets.some((t) => {return t.name === req.body.name && t.quantity < -req.body.quantity})){
+//         res.status(400).send("not enough tickets");
+//         return;
+//       }
+//   res.send(result);
+//   } catch (error) {
+//     console.log(error);
+//     res.status(500).send(error.message);
+//   }
+// });
 
 app.patch('/date/:id', async (req, res) => {
   try {

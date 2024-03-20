@@ -1,17 +1,86 @@
 import axios, { AxiosError } from "axios";
 import OrderType, { IOrder, orderStatus, paymentDetails } from "../models/orders.js";
 import orders from "../models/orders.js";
+import events from "../models/event.js";
+import * as mongoose from "mongoose";
+import * as dotenv from "dotenv";
+
 import { HttpError } from "./order-error.js";
 import { PAYMENT_URL } from "../const.js";
+import {orederExpiredDate} from "../const.js";
+import { stat } from "fs";
+dotenv.config();
+
+const dbURI = `mongodb+srv://libby6831:${process.env.DB_PASS}@cluster0.pyjnubc.mongodb.net/?retryWrites=true&w=majority`;
 
 
 export async function addNewOrder(req) : Promise<IOrder> {
         const order = validateAndGetOrder(req);
-        await tryGetTicketsFromEvent(order);
-        await trySaveOrder(order);
+        const db = await mongoose.createConnection(dbURI).asPromise();
+        const session = await db.startSession();
+        session.startTransaction();
+        const tickets_amout =  - order.ticket.quantity;
+
+        try{
+            const result = await events.findOneAndUpdate(
+                { _id: order.event_id },
+                { $inc: { "tickets.$[elem].quantity": tickets_amout } },
+                { arrayFilters:[{$and:[ {"elem.name": order.ticket.name}, {"elem.quantity":{$gte: -tickets_amout}} ]}]}).exec();
+            // await tryGetTicketsFromEvent(order);
+            if (result.tickets.some((t) => {return t.name === order.ticket.name && t.quantity < -tickets_amout})){
+                throw new HttpError(400, "not enough tickets");
+            }
+            if (result === null){
+                throw new HttpError(404, "Event not found");
+            }
+            if (result.tickets.filter((t)=> t.name === order.ticket.name).length === 0){
+                throw new HttpError(404, "Ticket not found");
+            }
+            await order.save();
+            await session.commitTransaction()
+        }catch(error ){
+            await session.abortTransaction();
+            throw error;
+            return;
+        } finally{
+            session.endSession();
+        }
         //TODO: send message to delete order when expired.
         return order;
     }
+
+
+export async function deleteExpiredOrder(orderId: string) : Promise<IOrder | null> {
+    const db = await mongoose.createConnection(dbURI).asPromise();
+    const session = await db.startSession();
+    session.startTransaction();
+    let deleted_oreder = null;
+    try{
+        const result_order = await orders.findOneAndDelete(
+            { _id: orderId },
+            { arrayFilters:[{$and:[ {"elem.status": orderStatus.pending}, {"elem.expires_at":{$lte: new Date()}} ]}]}).exec();
+        if (!result_order){
+            throw new HttpError(404, "oredr not found");;
+        }    
+        const result_event = await events.findOneAndUpdate(
+            { _id: result_order.event_id },
+            { $inc: { "tickets.$[elem].quantity": result_order.ticket.quantity } },
+            { arrayFilters:[{$and:[ {"elem.name": result_order.ticket.name}, {"elem.quantity":{$gte: -result_order.ticket.quantity}} ]}]}).exec();
+
+        if (result_event.tickets.some((t) => {return t.name === result_order.ticket.name && t.quantity < -result_order.ticket.quantity})){
+            throw new HttpError(400, "invalid tickets amount");;
+        }
+        await session.commitTransaction()
+    }catch(error ){
+        await session.abortTransaction();
+        throw error;
+        return;
+    } finally{
+        session.endSession();
+    }
+    //TODO: send message to delete order when expired.
+    return deleted_oreder;
+}
 
 export async function handlePaymentRequest(req) {
         //lock order tickets
@@ -76,9 +145,3 @@ async function trySaveOrder(order) {
         throw new HttpError(500, "failed to save order");
     }
 }
-
-// async function findanddelete(order, res){
-//     orders.findOneAndDelete({_id: id, status: orderSt});
-
-    
-// }
