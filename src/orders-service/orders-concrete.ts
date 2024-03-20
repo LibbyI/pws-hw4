@@ -95,7 +95,6 @@ export const cleanExpiredOrders = async () => {
         } catch (error) {
             console.error('Error deleting expired orders:', error);
         }
-        // await deleteExpiredOrder(expiredOrder[0]._id.toString());
         return;
 
     }catch(error){

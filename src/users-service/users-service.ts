@@ -4,6 +4,8 @@ import * as mongoose from "mongoose";
 import { options } from '../const.js';
 import User from "../models/user.js";
 import { signupRoute, permissionRoute, loginRoute, getUserById, getPremission} from "./user-routs.js";
+import { consumeMessages } from './consumer-messages.js';
+consumeMessages();
 
 dotenv.config();
 

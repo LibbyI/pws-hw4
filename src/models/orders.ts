@@ -27,6 +27,11 @@ export interface IOrder{
     expires_at: Date; 
 }
 
+export interface IuserOrder{
+    _id : mongoose.Types.ObjectId;
+    event_id: string;
+}
+
 const orderSchema = new mongoose.Schema<IOrder,mongoose.Model<IOrder>>(
     {
         event_id: { type: String, required: true  },

@@ -3,6 +3,8 @@ import * as dotenv from "dotenv";
 import EventType from "../models/event.js";
 import * as mongoose from "mongoose";
 import { body, query } from "express-validator";
+import { PublisherChannel } from './publisher-channel.js';
+export const publisherChannel = new PublisherChannel();
 
 dotenv.config();
 const app = express();
@@ -108,6 +110,7 @@ app.patch('/date/:id', async (req, res) => {
   try {
     console.log(req.body.start_date);
     const result = await events.findByIdAndUpdate(req.params.id, {start_date: new Date(req.body.start_date), end_date: new Date(req.body.end_date)});
+    publisherChannel.updateEventDate(JSON.stringify({event_id: result._id}));
     res.send(result);
   } catch (error) {
     res.status(500).send(error.message);
