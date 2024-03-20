@@ -11,8 +11,7 @@ const GATEWAY_URL = "http://localhost:3000";
 
 
 
-export const sendRequest = async (url: string, method: string, body: Object | null = null): Promise<AxiosResponse  | null>  => {
-    try{
+export const sendRequest = async (url: string, method: string, body: Object | null = null): Promise<AxiosResponse>  => {
     
         let response;
         switch(method){
@@ -29,16 +28,13 @@ export const sendRequest = async (url: string, method: string, body: Object | nu
                  response = await axios.patch(url, body);
                  break;
             default:
-                return null;
+                throw new Error('Invalid method');
         }
         // console.log(response);
 
         return response;
 
-    } catch(error: AxiosError | any){
-        console.log(error.response);
-        return error?.response;
-    }
+    
 };
 
 export const getEventComments = async(eventId: String):Promise<AxiosResponse | null> => {
@@ -110,12 +106,15 @@ export const signup = async(username: String, password: String):Promise<AxiosRes
     }
 };
 
-export const getEvents = async(availableOnly: Boolean):Promise<AxiosResponse | null> => {
-    try{
+export const getEvents = async(availableOnly: Boolean):Promise<AxiosResponse> => {
         const url = `${GATEWAY_URL}/events?availableOnly=${availableOnly}`;
         const response = await sendRequest(url, 'GET');
         return response;
-    }catch(error){
-        return null;
-    }
+
+};
+
+export const getEventById = async(eventId: String):Promise<AxiosResponse> => {
+        const url = `${GATEWAY_URL}/events/${eventId}`;
+        const response = await sendRequest(url, 'GET');
+        return response;
 };
