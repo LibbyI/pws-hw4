@@ -6,7 +6,7 @@ export const LOGIN = `POST /api/login`;
 export const SIGNUP = `POST /api/signup`;
 export const GET_COMMENTS = `GET /comments/`;
 export const ADD_COMMENT = `POST /addComment/`;
-// export const TIMEOUT = 30000;
+// export const TIMEOUT = 10000;
 export const TIMEOUT = 120000;
 
 

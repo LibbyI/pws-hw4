@@ -55,8 +55,8 @@ export async function deleteExpiredOrder(orderId: string) : Promise<IOrder | nul
     let deleted_oreder = null;
     try{
         const result_order = await orders.findOneAndDelete(
-            { _id: orderId },
-            { arrayFilters:[{$and:[ {"elem.status": orderStatus.pending}, {"elem.expires_at":{$lte: new Date()}} ]}]}).exec();
+            { _id: orderId ,expires_at: {$lte: new Date()}, status: orderStatus.pending}).exec();
+            // { arrayFilters:[{$and:[ {"status": orderStatus.pending}, {"expires_at":{$lte: new Date()}} ]}]}).exec();
         if (!result_order){
             throw new HttpError(404, "oredr not found");;
         }    
@@ -85,7 +85,7 @@ export async function deleteExpiredOrder(orderId: string) : Promise<IOrder | nul
 export const cleanExpiredOrders = async () => {
     console.log("---start cleaning----");
     try{
-        let expiredOrder = await orders.find({expires_at: {$lte: new Date()}}, {status: "pending"}).exec();
+        let expiredOrder = await orders.find({expires_at: {$lte: new Date()} , status: orderStatus.pending}).exec();
         console.log("found: ",  expiredOrder.length, " expired orders that need to be deleted");
         const orderIds = expiredOrder.map(order => order._id.toString());
         const deletePromises = orderIds.map(orderId => deleteExpiredOrder(orderId));
