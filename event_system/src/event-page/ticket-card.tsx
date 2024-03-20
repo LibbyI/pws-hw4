@@ -9,12 +9,13 @@ import { Button } from '@mui/material';
 
 
 
+
 export default function TicketCard(ticket: Ticket) {
   const [selectedTicketQuantity, setSelectedTicketQuantity] = React.useState(0);
 
 
   return (
-    <Card sx={{ minWidth: 275 }}>
+    <Card sx={{background: 'grey'}}>
       <CardContent>
         <Typography variant="h5" component="div">
             {ticket.name}

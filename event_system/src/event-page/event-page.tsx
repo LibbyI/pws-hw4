@@ -10,6 +10,8 @@ import TicketCard from "./ticket-card.tsx";
 import { getEventById } from "../requests.ts";
 import { EventCard } from "../catalog/eventCard.tsx";
 import EventDetails from "./event-details.tsx";
+import { Box, Container, CssBaseline } from "@mui/material";
+import {TicketsGrid} from "./tickets-grid.tsx";
 
 
 interface Props{
@@ -63,10 +65,10 @@ const goBack = () =>{
     }//TODO: add error page
 
     return (
-        <>
+        <Container maxWidth= {false}>
         <ButtonAppBar goback={goBack} logout={logoutandgotologin}  getUser={getUser}></ButtonAppBar>
         <EventDetails {...event}></EventDetails>
-        <TicketCard {...event.tickets[0]}></TicketCard>
+        <TicketsGrid tickets = {event.tickets}></TicketsGrid>
         <AlignItemsList eventId={eventId} getUser={getUser}></AlignItemsList>
-        </>
+        </Container>
     )};

@@ -20,7 +20,6 @@ export const QuantityInput: React.FC<Props> = ({value, setValue, max = 0 , min =
     <>
     <NumberInput 
       size='lg' 
-      maxW={200}
       onChange={(_,v: number) => setValue(v)}
       value={value}
       max={max}
