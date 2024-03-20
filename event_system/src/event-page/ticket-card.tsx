@@ -6,11 +6,17 @@ import Typography from '@mui/material/Typography';
 import { Ticket } from '../../../src/models/event';
 import { QuantityInput } from './quantity-input';
 import { Button } from '@mui/material';
+//import { BuyNowButton } from './buy-now-button';
+
+export interface TicketCardProps{
+    ticket: Ticket;
+    eventId: string;
+    userId: string;
+}
 
 
 
-
-export default function TicketCard(ticket: Ticket) {
+export const TicketCard: React.FC<TicketCardProps> = ({ticket, eventId, userId}) => {
   const [selectedTicketQuantity, setSelectedTicketQuantity] = React.useState(0);
 
 
@@ -29,14 +35,9 @@ export default function TicketCard(ticket: Ticket) {
       </CardContent>
       <CardActions  >
         <QuantityInput value={selectedTicketQuantity} setValue={setSelectedTicketQuantity} max={ticket.quantity} min={0} />
-        <Button variant="contained" size="large"  onClick= {()=> goToCheckOut({ name : ticket.name, quantity: selectedTicketQuantity, price: ticket.price})}>
-                Buy Now!
-        </Button>
       </CardActions>
     </Card>
   );
 }
 
-function goToCheckOut(ticket: Ticket): void {
-  
-}
+

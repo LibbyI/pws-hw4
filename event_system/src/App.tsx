@@ -51,9 +51,9 @@ function App() {
       <Routes>
         <Route path="/" element={<SignUp />}></Route>
         <Route path="/signin" element={<SignIn setUser={setUserState}/>}></Route>
-        <Route path="/catalog" element={<CatalogPage logout={logout} getUser={getUserState}/>}></Route>
-        <Route path="/event/:eventId" element={<EventPage logout={logout} getUser={getUserState}/>}></Route>
-
+        <Route path="/:userId/catalog" element={<CatalogPage logout={logout} getUser={getUserState}/>}></Route>
+        <Route path="/:userId/event/:eventId" element={<EventPage logout={logout} getUser={getUserState}/>}></Route>
+        <Route path="/:userId/checkout/:orderId" element={<h1>TODO: checkout </h1>}></Route>
       </Routes>
     </BrowserRouter>
   );

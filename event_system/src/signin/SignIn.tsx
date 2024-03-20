@@ -15,7 +15,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { login } from '../requests.ts';
-import scrabedIUser from "../../src/models/user.js";
+import { scrabedIUser } from '../../../src/models/user.ts';
 
 
 
@@ -61,7 +61,7 @@ export const SignIn: React.FC<Props> = ({setUser}) => {
           const userScrab: scrabedIUser = response.data as scrabedIUser;
           setUser(userScrab);
           // alert("log in succsess!!");
-          navigate('/catalog');
+          navigate(`/${response.data.id}/catalog`);
         } else{
           const errStatus = response?.status;
           const errmessage = response?.data.message

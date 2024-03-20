@@ -19,12 +19,12 @@ export enum orderStatus {
 }
 
 export interface IOrder{
-    _id : mongoose.Types.ObjectId;
+    _id ?: mongoose.Types.ObjectId;
     event_id: string;
     user_id: string;
     ticket: Ticket;
-    status: orderStatus;
-    expires_at: Date; 
+    status?: orderStatus;
+    expires_at?: Date; 
 }
 
 const orderSchema = new mongoose.Schema<IOrder,mongoose.Model<IOrder>>(

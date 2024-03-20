@@ -6,9 +6,8 @@ import { useNavigate } from 'react-router-dom';
 import { scrabedIUser } from "../../../src/models/user.js";
 import { useParams } from 'react-router-dom';
 import event, { IEvent, Ticket } from "../../../src/models/event.ts";
-import TicketCard from "./ticket-card.tsx";
+import { TicketCardProps } from "./ticket-card.tsx";
 import { getEventById } from "../requests.ts";
-import { EventCard } from "../catalog/eventCard.tsx";
 import EventDetails from "./event-details.tsx";
 import { Box, Container, CssBaseline } from "@mui/material";
 import {TicketsGrid} from "./tickets-grid.tsx";
@@ -29,9 +28,9 @@ const [loading, setLoading] = useState(true);
 const [error, setError] = useState(null);
 
 //********************Hooks**************************/
-const { eventId } = useParams();
-if(!eventId){
-    return <h1>Invalid EventId</h1>
+const { userId, eventId } = useParams();
+if(!eventId || !userId){
+    return <h1>Invalid URL</h1>
 }//TODO: handle error
 
 const navigate = useNavigate();
@@ -54,6 +53,7 @@ const goBack = () =>{
     navigate(-1);
 }
 
+
 //********************Render**************************/
 
     if (loading){
@@ -68,7 +68,7 @@ const goBack = () =>{
         <Container maxWidth= {false}>
         <ButtonAppBar goback={goBack} logout={logoutandgotologin}  getUser={getUser}></ButtonAppBar>
         <EventDetails {...event}></EventDetails>
-        <TicketsGrid tickets = {event.tickets}></TicketsGrid>
+        <TicketsGrid tickets={event.tickets.map((t:Ticket):TicketCardProps => {return {ticket:t, eventId:eventId, userId:userId }})}></TicketsGrid>
         <AlignItemsList eventId={eventId} getUser={getUser}></AlignItemsList>
         </Container>
     )};
