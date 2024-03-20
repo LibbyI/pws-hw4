@@ -1,5 +1,4 @@
 import * as mongoose from "mongoose";
-
 export const permissionValidTypes = ["None", "A", "M", "W"];
 
 export interface IUser {
@@ -7,6 +6,7 @@ export interface IUser {
     password: string;
     permission: string;
     eventIds: String[];
+    nearestEvent: Object;
 }
 
 export interface scrabedIUser {
@@ -14,7 +14,7 @@ export interface scrabedIUser {
   username: string | null;
   eventIds: String[] | null;
   token: string | null;
-  nextEvent: string | null;
+  nextEvent: Object | null;
 }
 
 export const userSchema = new mongoose.Schema(
@@ -23,7 +23,7 @@ export const userSchema = new mongoose.Schema(
       password: { type: String, required: true },
       permission: {type: String, required: true, enum: permissionValidTypes},  //TODO:change type
       eventIds: {type: [String], required: false, default: []},  //TODO:change type
-       
+      nearestEvent: {type: Object, require:false, default: null}, 
     },
     { timestamps: true }
   ); // for adding a timestamp in each document.

@@ -28,9 +28,9 @@ export interface IOrder{
 }
 
 export interface IuserOrder{
-    _id : mongoose.Types.ObjectId;
-    event_id: string;
-}
+    userId : mongoose.Types.ObjectId;
+    eventId: string;
+  }
 
 const orderSchema = new mongoose.Schema<IOrder,mongoose.Model<IOrder>>(
     {

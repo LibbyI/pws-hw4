@@ -6,7 +6,9 @@ import userSchema from "../models/user.js";
 import jwt from "jsonwebtoken";
 import * as dotenv from "dotenv";
 import { scrabedIUser , IUser } from '../models/user.js';
-
+import { boolean } from "joi";
+import { IuserOrder } from "../models/orders.js";
+import axios from "axios";
 dotenv.config();
 
 const secretKey = process.env.SECRET_KEY;
@@ -21,6 +23,66 @@ export const getUserId = async(req_username: string):Promise<string> | null => {
         return null;
     }
 }
+
+export const addEvent = async (msg: IuserOrder): Promise<boolean> => {
+  try{
+    console.log(msg.userId,msg.eventId)
+    const user = await users.findByIdAndUpdate({_id: msg.userId},{ $push: { eventIds: msg.eventId } },
+      { new: true });
+    if (!await isNewEventNearest(msg)){
+      return false;
+    }
+  }catch(error){
+    return false;
+  }
+  return true;
+
+}
+
+export const isNewEventNearest = async (msg: IuserOrder) =>{
+  try{
+    const newEvent = await axios.get(process.env.GATEWAY_URL+"/events/"+msg.eventId);
+    const user = await users.findById({_id: msg.userId}).exec();
+    if ((user.eventIds).length == 1){
+      await user.updateOne({"nearestEvent": newEvent.data});
+      return;
+    }
+    if (!user.nearestEvent){
+      // check for all events: for now->
+      await user.updateOne({"nearestEvent": newEvent.data});
+      return;
+
+    }
+    if(new Date(user.nearestEvent.start_date) > newEvent.data.start_date){
+      await user.updateOne({"nearestEvent": newEvent.data});
+      return;
+    }
+  }catch(error){
+    console.error(error);
+    return false;
+  }
+}
+
+// export const isUpdatedEventNearest = async (eventId: string) =>{
+//   try{
+//     const updatedEvent = await axios.get(process.env.GATEWAY_URL+"/events/:"+msg.eventId);
+//     const user = await users.findById({_id: msg.userId}).exec();
+//     if(updatedEvent.data._id == user.nearestEvent._id){
+//       const eventReqs = user.eventIds.map(event_id => axios.get(process.env.GATEWAY_URL+"/events/:"+msg.event_id));
+//       const events = await Promise.all(eventReqs);
+//       //check all
+//       // await user.update({"nearestEvent": newEvent.data});
+//       return;
+//     }
+//     if ((user.eventIds).length == 1){
+//       await user.update({"nearestEvent": updatedEvent.data});
+//       return;
+//     }
+
+//   }catch(error){
+//     console.error(error);
+//   }
+// }
 
 export const getUserById = async(req: express.Request, res: express.Response): Promise<scrabedIUser | null> => {
   try{

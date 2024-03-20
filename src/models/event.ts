@@ -22,6 +22,8 @@ export interface IEvent {
     image?: string;
   }
 
+
+
 const eventSchema = new mongoose.Schema<IEvent,mongoose.Model<IEvent>>(
     {
       title: { type: String, required: true, validate: {
