@@ -17,7 +17,6 @@ export interface scrabedIUser {
   nextEvent: Object | null;
 }
 
-
 export const userSchema = new mongoose.Schema(
     {
       username: { type: String, unique:true, required: true }, //TODO: add validation to uniqe name befor saving!!

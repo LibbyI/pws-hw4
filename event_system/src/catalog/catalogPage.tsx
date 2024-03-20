@@ -7,7 +7,7 @@ import { getEvents } from "../requests";
 import { json } from "stream/consumers";
 import { set } from "mongoose";
 import { scrabedIUser } from "../../../src/models/user.js";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import ButtonAppBar from '../header/header.tsx';
 
 
@@ -23,9 +23,16 @@ const navigate = useNavigate();
 const goBack = () =>{
     navigate(-1);
 }
+
+const { userId } = useParams();
+if(!userId){
+    return <h1>Invalid UserId</h1>
+}//TODO: handle error
+
+
 const logoutandgotologin = () =>{
     logout();
-    navigate('/signin')
+    navigate(`${userId}/signin`)
 }
 
     

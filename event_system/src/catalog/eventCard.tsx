@@ -11,6 +11,7 @@ import IconButton, { IconButtonProps } from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { Button, CardActionArea } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 
 interface ExpandMoreProps extends IconButtonProps {
     expand: boolean;
@@ -30,15 +31,15 @@ interface ExpandMoreProps extends IconButtonProps {
   
 
   export function EventCard(event: IEvent) {
+    const navigate = useNavigate();
     const [expanded, setExpanded] = React.useState(false);
     const handleExpandClick = () => {
       setExpanded(!expanded);
     };
 
-    const alertPageRoute = './../event/'+ event._id;
     return (
-        <Card sx={{ maxWidth: 345 }} className='card' key={event._id}>
-          <CardActionArea href={alertPageRoute}>
+        <Card sx={{ maxWidth: 345 ,display: 'flex'}} className='card' key={event._id}>
+          <CardActionArea onClick={() => navigate(`../event/${event._id}`, { relative: "path" })}>
           <CardHeader
             title = {event.title}
             subheader= {event.category}            
@@ -49,7 +50,7 @@ interface ExpandMoreProps extends IconButtonProps {
             image={event.image}
             alt={event._id}
           />
-          <CardContent>
+          <CardContent sx={{ flex: '1 0 auto' }}>
             <Typography variant="body2" color="text.secondary">
                 {new Date(event.start_date).toLocaleDateString('en-US',{year: 'numeric', month: 'long', day: 'numeric'})}           
             </Typography>
