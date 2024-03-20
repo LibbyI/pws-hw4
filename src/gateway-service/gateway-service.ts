@@ -124,3 +124,7 @@ app.patch('/events/date/:eventId', updateEventDateValidator, (req, res) => {
   app.post('/pay', (req, res) => {
     res.redirect(307, `${orders_url}/pay`);
   });
+
+  app.get('/orders/:id', (req, res) => {
+    res.redirect(`${orders_url}/${req.params.id}`);
+  });
