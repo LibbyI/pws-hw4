@@ -52,7 +52,7 @@ app.post('/', async (req, res) => {
     const order = await addNewOrder(req.body);
     res.status(200).send(order);
     // TODO:REMOVE FROME HERE-> TO PAYMENT!!
-    // await publisherChannel.sendUserNewEvnt(JSON.stringify({userId: order.user_id, eventId: order.event_id}));
+    await publisherChannel.sendUserNewEvnt(JSON.stringify({userId: order.user_id, eventId: order.event_id}));
 
     
   } catch (error) {

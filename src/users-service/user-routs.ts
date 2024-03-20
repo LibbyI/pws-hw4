@@ -9,6 +9,7 @@ import { scrabedIUser , IUser } from '../models/user.js';
 import { boolean } from "joi";
 import { IuserOrder } from "../models/orders.js";
 import axios from "axios";
+import { IEvent } from "../models/event.js"
 dotenv.config();
 
 const secretKey = process.env.SECRET_KEY;
@@ -29,7 +30,8 @@ export const addEvent = async (msg: IuserOrder): Promise<boolean> => {
     console.log(msg.userId,msg.eventId)
     const user = await users.findByIdAndUpdate({_id: msg.userId},{ $push: { eventIds: msg.eventId } },
       { new: true });
-    if (!await isNewEventNearest(msg)){
+    const checkNearest = await isNewEventNearest(msg)
+    if (!checkNearest) {
       return false;
     }
   }catch(error){
@@ -45,44 +47,70 @@ export const isNewEventNearest = async (msg: IuserOrder) =>{
     const user = await users.findById({_id: msg.userId}).exec();
     if ((user.eventIds).length == 1){
       await user.updateOne({"nearestEvent": newEvent.data});
-      return;
+      return true;
+    }
+    if ((user.eventIds).length == 0){
+      return true;
     }
     if (!user.nearestEvent){
       // check for all events: for now->
-      await user.updateOne({"nearestEvent": newEvent.data});
-      return;
+      const eventReqs = user.eventIds.map(event_id => axios.get(process.env.GATEWAY_URL+"/events/"+event_id));
+      const eventResps = await Promise.all(eventReqs);
+      const eventList = eventResps.map(response => {return response.data;});
+      const nearest = getNearest(eventList);
+      user.updateOne({"nearestEvent": nearest});
+      // await user.updateOne({"nearestEvent": newEvent.data});
+      return true;
 
     }
-    if(new Date(user.nearestEvent.start_date) > newEvent.data.start_date){
+    if(new Date(user.nearestEvent.start_date) > new Date(newEvent.data.start_date)){
       await user.updateOne({"nearestEvent": newEvent.data});
-      return;
+      return true;
     }
+    return true;
   }catch(error){
     console.error(error);
     return false;
   }
 }
 
-// export const isUpdatedEventNearest = async (eventId: string) =>{
-//   try{
-//     const updatedEvent = await axios.get(process.env.GATEWAY_URL+"/events/:"+msg.eventId);
-//     const user = await users.findById({_id: msg.userId}).exec();
-//     if(updatedEvent.data._id == user.nearestEvent._id){
-//       const eventReqs = user.eventIds.map(event_id => axios.get(process.env.GATEWAY_URL+"/events/:"+msg.event_id));
-//       const events = await Promise.all(eventReqs);
-//       //check all
-//       // await user.update({"nearestEvent": newEvent.data});
-//       return;
-//     }
-//     if ((user.eventIds).length == 1){
-//       await user.update({"nearestEvent": updatedEvent.data});
-//       return;
-//     }
+export const isUpdatedEventNearest = async (eventId: string) =>{
 
-//   }catch(error){
-//     console.error(error);
-//   }
-// }
+  try{
+    const newEvent = await axios.get(process.env.GATEWAY_URL+"/events/"+eventId);
+    const possibleEffectedUsers = await users.find({ eventIds: { $in: [eventId] } }).exec();
+    const usersIds = possibleEffectedUsers.map(user => user._id.toString());
+    console.log(usersIds);
+    for(const userObj of  possibleEffectedUsers){
+      if (!userObj.nearestEvent || userObj.nearestEvent._id == newEvent.data._id){
+        // check all
+        const uniqueEventIds = [...new Set(userObj.eventIds)];
+        const eventReqs = uniqueEventIds.map(event_id => axios.get(process.env.GATEWAY_URL+"/events/"+event_id));
+        const eventResps = await Promise.all(eventReqs);
+        const eventList = eventResps.map(response => {return response.data;});
+        const nearest = getNearest(eventList);
+        userObj.updateOne({"nearestEvent": nearest});
+      }
+    }
+    return true;
+  }catch(error){
+    console.error(error);
+    return false;
+
+  }
+}
+
+export const getNearest = (eventList: IEvent[]) =>{
+  const earliestDateObject = eventList.reduce((earliest, current) => {
+    // Convert date strings to Date objects for comparison
+    const earliestDate = new Date(earliest.start_date);
+    const currentDate = new Date(current.start_date);
+
+    // Return the object with the earlier date
+    return earliestDate < currentDate ? earliest : current;
+  }, eventList[0]);
+  return earliestDateObject;
+}
 
 export const getUserById = async(req: express.Request, res: express.Response): Promise<scrabedIUser | null> => {
   try{
