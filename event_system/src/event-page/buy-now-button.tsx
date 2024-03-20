@@ -15,7 +15,7 @@ export const BuyNowButton: React.FC<IOrder> = (order) => {
 
   const handleClick = async () => {
     setLoading(true);
-    placeNewOrder(order).then((response)=> routeToChecoutPage(response)).catch(() => /*TODO: popwindowWith error*/ navigate(0));
+    placeNewOrder(order).then((response)=> navigate(`../../checkout/${response.data._id}`, { relative: "path" })).catch(() => /*TODO: popwindowWith error*/ navigate(0));
   };
   return (
     <LoadingButton
@@ -27,9 +27,4 @@ export const BuyNowButton: React.FC<IOrder> = (order) => {
     <span>Buy Now!</span>
   </LoadingButton>
   );
-}
-
-function routeToChecoutPage(response: AxiosResponse<any, any>): any {
-    console.log(response);
-    throw new Error("Function not implemented.");
 }
