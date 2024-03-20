@@ -19,12 +19,12 @@ export class PublisherChannel {
   }
 
   // Method to send an event/message to a specified exchange
-  async sendUserNewEvnt(msg: string) {
+  async updateEventDate(msg: string) {
     if (!this.channel) {
       await this.createChannel();
     }
 
-    const exchange = 'add_event_exchange';
+    const exchange = 'update_date_event_exchange';
 
     // Declare an exchange with the specified name and type ('fanout').
     // If the exchange doesn't exist, it will be created.

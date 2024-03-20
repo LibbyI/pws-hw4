@@ -6,8 +6,9 @@ import { addNewOrder, handlePaymentRequest, deleteExpiredOrder, cleanExpiredOrde
 import  OrderType  from "../models/orders.js";
 import { HttpError } from "./order-error.js";
 import { PublisherChannel } from './publisher-channel.js';
-// export const publisherChannel = new PublisherChannel();
+import {INTERVAL_CLEAN_TRIGGER} from "../const.js";
 
+export const publisherChannel = new PublisherChannel();
 
 dotenv.config();
 const app = express();
@@ -22,7 +23,9 @@ await mongoose.connect(dbURI, options);
 setInterval(() => {
   console.log("interval func");
   cleanExpiredOrders();
-}, 5000);
+}, INTERVAL_CLEAN_TRIGGER);
+
+
 // Add headers
 app.use(function (req, res, next) {
     // Website you wish to allow to connect
@@ -48,6 +51,9 @@ app.post('/', async (req, res) => {
   try {
     const order = await addNewOrder(req.body);
     res.status(200).send(order);
+    // TODO:REMOVE FROME HERE-> TO PAYMENT!!
+    // await publisherChannel.sendUserNewEvnt(JSON.stringify({userId: order.user_id, eventId: order.event_id}));
+
     
   } catch (error) {
     if (error instanceof HttpError) {
@@ -80,7 +86,9 @@ app.get('/delete/:id', async (req, res) => {
 app.post('/pay', async (req, res) => {
   try {
     const order = await handlePaymentRequest(req);
-     res.status(200).send(order);
+    res.status(200).send(order);
+    await publisherChannel.sendUserNewEvnt(JSON.stringify({userId: order.user_id, eventId: order.event_id}));
+
   }
   catch (error) {
     if (error instanceof HttpError) {

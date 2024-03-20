@@ -8,6 +8,8 @@ export const GET_COMMENTS = `GET /comments/`;
 export const ADD_COMMENT = `POST /addComment/`;
 // export const TIMEOUT = 10000;
 export const TIMEOUT = 120000;
+// export const INTERVAL_CLEAN_TRIGGER = 5000;
+export const INTERVAL_CLEAN_TRIGGER = 120000;
 
 
 export const ERROR_401 = "ERROR_401";
