@@ -26,7 +26,6 @@ export async function addNewOrder(req) : Promise<IOrder> {
                 { _id: order.event_id },
                 { $inc: { "tickets.$[elem].quantity": tickets_amout } },
                 { arrayFilters:[{$and:[ {"elem.name": order.ticket.name}, {"elem.quantity":{$gte: -tickets_amout}} ]}]}).exec();
-            // await tryGetTicketsFromEvent(order);
             if (result.tickets.some((t) => {return t.name === order.ticket.name && t.quantity < -tickets_amout})){
                 throw new HttpError(400, "not enough tickets");
             }
@@ -45,7 +44,6 @@ export async function addNewOrder(req) : Promise<IOrder> {
         } finally{
             session.endSession();
         }
-        //TODO: send message to delete order when expired.
         return order;
     }
 
@@ -70,6 +68,9 @@ export async function deleteExpiredOrder(orderId: string) : Promise<IOrder | nul
         if (result_event.tickets.some((t) => {return t.name === result_order.ticket.name && t.quantity < -result_order.ticket.quantity})){
             throw new HttpError(400, "invalid tickets amount");;
         }
+        if (result_event.tickets.filter((t)=> t.name === result_order.ticket.name).length === 0){
+            throw new HttpError(404, "Ticket not found");
+        }
         await session.commitTransaction()
     }catch(error ){
         await session.abortTransaction();
@@ -78,8 +79,28 @@ export async function deleteExpiredOrder(orderId: string) : Promise<IOrder | nul
     } finally{
         session.endSession();
     }
-    //TODO: send message to delete order when expired.
     return deleted_oreder;
+}
+
+export const cleanExpiredOrders = async () => {
+    console.log("---start cleaning----");
+    try{
+        let expiredOrder = await orders.find({expires_at: {$lte: new Date()}}, {status: "pending"}).exec();
+        console.log("found: ",  expiredOrder.length, " expired orders that need to be deleted");
+        const orderIds = expiredOrder.map(order => order._id.toString());
+        const deletePromises = orderIds.map(orderId => deleteExpiredOrder(orderId));
+        try {
+            await Promise.all(deletePromises);
+            console.log('All expired orders deleted successfully');
+        } catch (error) {
+            console.error('Error deleting expired orders:', error);
+        }
+        // await deleteExpiredOrder(expiredOrder[0]._id.toString());
+        return;
+
+    }catch(error){
+        return;
+    }
 }
 
 export async function handlePaymentRequest(req) {

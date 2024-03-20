@@ -2,7 +2,7 @@ import express from "express";
 import * as dotenv from "dotenv";
 import * as mongoose from "mongoose";
 import { options } from '../const.js';
-import { addNewOrder, handlePaymentRequest, deleteExpiredOrder } from "./orders-concrete.js";
+import { addNewOrder, handlePaymentRequest, deleteExpiredOrder, cleanExpiredOrders } from "./orders-concrete.js";
 import  OrderType  from "../models/orders.js";
 import { HttpError } from "./order-error.js";
 import { PublisherChannel } from './publisher-channel.js';
@@ -19,6 +19,10 @@ const dbURI = `mongodb+srv://libby6831:${process.env.DB_PASS}@cluster0.pyjnubc.m
 
 await mongoose.connect(dbURI, options);
 
+setInterval(() => {
+  console.log("interval func");
+  cleanExpiredOrders();
+}, 5000);
 // Add headers
 app.use(function (req, res, next) {
     // Website you wish to allow to connect
