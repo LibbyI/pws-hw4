@@ -105,31 +105,41 @@ export const cleanExpiredOrders = async () => {
 export async function handlePaymentRequest(req) {
         //lock order tickets
         req.body.order.status = orderStatus.inPayment;
-        let order = await orders.findOneAndUpdate({_id: req.body.order._id}, {status: "inPayment"}).exec()??
+        let order = await orders.findOne({_id: req.body.order._id}).exec()??
         await addNewOrder(req.body.order);
+        if (order.status == orderStatus.completed){
+            throw new HttpError(400, "order allready comleted"); 
+            return;
+        }
 
         //try pay
-        const paymentDetails : paymentDetails = {charge: order.ticket.price * order.ticket.quantity, ...req.body.payment_details};
+        const db = await mongoose.createConnection(dbURI).asPromise();
+        const session = await db.startSession();
+        session.startTransaction();
         let paymentId;
-        try {
+        try{
+            let order = await orders.findOneAndUpdate({_id: req.body.order._id, status: "pending"}, {status: "inPayment"}).exec()??
+            await addNewOrder(req.body.order);            
+            
+            const paymentDetails : paymentDetails = {charge: order.ticket.price * order.ticket.quantity, ...req.body.payment_details};
             paymentId = (await axios.post(PAYMENT_URL, paymentDetails)).data;
-            //TODO: check if card validation needed
-        } catch (error) {
-            //when payment fails, update back to pending and update expire if first try
-            //TODO: add update expire if first try
-            await orders.updateOne({_id: order._id}, {status: "pending"}).exec(); 
+           
+            await orders.updateOne({_id: req.body.order._id}, {status: "completed"}).exec();//TODO: maybe sould be async
+
+            await session.commitTransaction()
+        }catch(error ){
+            await session.abortTransaction();
             if (error instanceof AxiosError) {
                 throw new HttpError(error.response.status, error.response.data);
             } 
-            console.log(error);
-            throw new HttpError(500, "payment failed");  
-
+            // console.log(error);
+            throw new HttpError(500, "payment failed"); 
+            // throw error;
+            return;
+        } finally{
+            session.endSession();
         }
-
-        await orders.updateOne({_id: order._id}, {status: "completed"}).exec();//TODO: maybe sould be async
-
         return paymentId;
-    
 }
 
 function validateAndGetOrder(req){
