@@ -14,9 +14,11 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { login } from '../requests.ts';
+import { login, getUserPermission } from '../requests.ts';
 import { scrabedIUser } from '../../../src/models/user.ts';
+// import * as dotenv from "dotenv";
 
+// dotenv.config();
 
 
 function Copyright(props: any) {
@@ -59,10 +61,15 @@ export const SignIn: React.FC<Props> = ({setUser}) => {
         if (response?.status == 200){
           console.log('User loged in successfully:', response);
           const userScrab: scrabedIUser = response.data as scrabedIUser;
+          const backoffice = await getUserPermission(response.data.id);
+          console.log(userScrab);
           setUser(userScrab);
           // alert("log in succsess!!");
-          navigate(`/${response.data.id}/catalog`);
-          // window.location.href = 'http://localhost:3007/';
+          if (backoffice){
+            window.location.href = 'http://localhost:3007/';
+          }else{
+            navigate(`/${response.data.id}/catalog`);
+          }
 
         } else{
           const errStatus = response?.status;

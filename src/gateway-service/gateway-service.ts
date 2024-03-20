@@ -51,6 +51,23 @@ app.use(function (req, res, next) {
 
  }) 
 
+ app.get('/isBackoffice/:id', async(req,res) => {
+  try{
+    const id = req.params.id;
+    const userPermission = await getUserPermission(id);
+    res.status = 200;
+    if (userPermission != "None"){
+      res.send(JSON.stringify({backoffice: true,}));
+      return;
+    }
+    res.send(JSON.stringify({backoffice: false,}));
+    
+  }catch(error){
+    res.status(400).send(JSON.stringify({message: "bad requst",}));
+
+  }
+ }) 
+
 app.post('/api/signup', async(req, res) => {
   res.redirect(307, `${users_url}/signup`);
 

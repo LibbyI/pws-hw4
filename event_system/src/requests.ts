@@ -131,3 +131,9 @@ export const getOrderById = async(orderId: String):Promise<AxiosResponse> => {
         const response = await sendRequest(url, 'GET');
         return response;
 }
+
+export const getUserPermission = async(userId: String):Promise<boolean> => {
+    const url = `${GATEWAY_URL}/isBackoffice/${userId}`;
+    const response = await sendRequest(url, 'GET');
+    return response.data.backoffice;
+}
