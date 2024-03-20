@@ -28,8 +28,3 @@ export const BuyNowButton: React.FC<IOrder> = (order) => {
   </LoadingButton>
   );
 }
-
-function routeToChecoutPage(response: AxiosResponse<any, any>): any {
-    console.log(response);
-    throw new Error("Function not implemented.");
-}
