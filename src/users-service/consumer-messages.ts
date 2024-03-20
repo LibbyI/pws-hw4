@@ -1,6 +1,6 @@
 import * as amqp from 'amqplib';
 import * as dotenv from "dotenv";
-import {addEvent} from "./user-routs.js"
+import {addEvent, isUpdatedEventNearest} from "./user-routs.js"
 dotenv.config();
 const cloudamqpurl = process.env.COUDAMQP
 export const consumeMessages = async () => {
@@ -59,7 +59,15 @@ export const consumeMessages = async () => {
     await channel2.consume(queue_update_date, (msg) => {
         console.log(`Consumer >>> received message in ${queue_update_date} queue: ${msg.content.toString()}`);
         (async () => {
-            channel2.ack(msg);
+            const sucsses = await isUpdatedEventNearest(msg.content.toString());
+            if(sucsses){
+                channel2.ack(msg);
+                console.log("sussfull update dates for event:", msg.content.toString())
+            }
+            else{
+                channel2.nack(msg,true,false);
+                console.log("eror in update dates for event:", msg.content.toString())
+            }
         })();
     });
   } catch (error) {
