@@ -10,7 +10,7 @@ import {Icomment} from '../../../src/models/comments';
 import {Comment} from './comment';
 import {getEventComments} from "../requests";
 import { useEffect, useState } from 'react';
-import { TextField, Button } from '@mui/material';
+import { TextField, Button, Container } from '@mui/material';
 import {sendEventComment} from "../requests";
 import { scrabedIUser } from "../../../src/models/user.js";
 
@@ -66,7 +66,7 @@ export const AlignItemsList: React.FC<Props>= ({eventId, getUser}) => {
 
 
     return (
-        <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
+        <List sx={{ width: '100%',  bgcolor: 'background.paper' }}>
             
             {commentsArray.map((commentObj, index) => (
             <React.Fragment key={index}>

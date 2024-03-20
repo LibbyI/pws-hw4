@@ -1,14 +1,18 @@
 import * as React from 'react';
-import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
-import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import { Ticket } from '../../../src/models/event';
+import { QuantityInput } from './quantity-input';
+import { Button } from '@mui/material';
+
 
 
 export default function TicketCard(ticket: Ticket) {
+  const [selectedTicketQuantity, setSelectedTicketQuantity] = React.useState(0);
+
+
   return (
     <Card sx={{ minWidth: 275 }}>
       <CardContent>
@@ -19,12 +23,19 @@ export default function TicketCard(ticket: Ticket) {
           price: {ticket.price}$
         </Typography>
         <Typography variant="body2">
-            {(ticket.price===0) ? "no ticket left" : `${ticket.quantity} left!`}
+            {(ticket.price===0) ? "no ticket left" : `${ticket.quantity} tickets left !`}
         </Typography>
       </CardContent>
-      <CardActions>
-        <Button size="small">Learn More</Button>
+      <CardActions  >
+        <QuantityInput value={selectedTicketQuantity} setValue={setSelectedTicketQuantity} max={ticket.quantity} min={0} />
+        <Button variant="contained" size="large"  onClick= {()=> goToCheckOut({ name : ticket.name, quantity: selectedTicketQuantity, price: ticket.price})}>
+                Buy Now!
+        </Button>
       </CardActions>
     </Card>
   );
+}
+
+function goToCheckOut(ticket: Ticket): void {
+  
 }
