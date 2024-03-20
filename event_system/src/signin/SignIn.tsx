@@ -62,6 +62,8 @@ export const SignIn: React.FC<Props> = ({setUser}) => {
           setUser(userScrab);
           // alert("log in succsess!!");
           navigate(`/${response.data.id}/catalog`);
+          // window.location.href = 'http://localhost:3007/';
+
         } else{
           const errStatus = response?.status;
           const errmessage = response?.data.message
