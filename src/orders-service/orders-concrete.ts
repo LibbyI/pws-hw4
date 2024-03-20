@@ -3,6 +3,7 @@ import OrderType, { IOrder, orderStatus, paymentDetails } from "../models/orders
 import orders from "../models/orders.js";
 import events from "../models/event.js";
 import * as mongoose from "mongoose";
+import { ClientSession } from "mongoose";
 import * as dotenv from "dotenv";
 
 import { HttpError } from "./order-error.js";
@@ -114,9 +115,10 @@ export async function handlePaymentRequest(req) {
 
         //try pay
         const db = await mongoose.createConnection(dbURI).asPromise();
-        const session = await db.startSession();
-        session.startTransaction();
+        const session: ClientSession = await db.startSession();
         let paymentId;
+
+        session.startTransaction();
         try{
             let order = await orders.findOneAndUpdate({_id: req.body.order._id, status: "pending"}, {status: "inPayment"}).exec()??
             await addNewOrder(req.body.order);            
@@ -128,15 +130,17 @@ export async function handlePaymentRequest(req) {
             await publisherChannel.sendUserNewEvnt(JSON.stringify({userId: req.body.order.user_id, eventId: req.body.order.event_id}));
 
             await session.commitTransaction()
-        }catch(error ){
+        }catch(error){
             await session.abortTransaction();
             if (error instanceof AxiosError) {
                 throw new HttpError(error.response.status, error.response.data);
             } 
+            else{
+                throw new HttpError(500, "payment failed"); 
+
+            }
             // console.log(error);
-            throw new HttpError(500, "payment failed"); 
             // throw error;
-            return;
         } finally{
             session.endSession();
         }
