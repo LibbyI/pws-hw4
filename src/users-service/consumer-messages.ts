@@ -1,5 +1,6 @@
 import * as amqp from 'amqplib';
 import * as dotenv from "dotenv";
+import {addEvent} from "./user-routs.js"
 dotenv.config();
 const cloudamqpurl = process.env.COUDAMQP
 export const consumeMessages = async () => {
@@ -37,13 +38,29 @@ export const consumeMessages = async () => {
     // `channel.ack(msg)` acknowledges the message, indicating it has been processed and can be removed from the queue.
     await channel.consume(queue, (msg) => {
         console.log(`Consumer >>> received message in ${queue} queue: ${msg.content.toString()}`);
-        channel.ack(msg);
+        (async () => {
+            try{
+                const succsse = await addEvent(JSON.parse(msg.content.toString()));
+                if(succsse){
+                    channel.ack(msg);
+                    console.log("event id update on user");
+                }
+                else{
+                console.log("error update user");
+                channel.nack(msg, true, false);
+                }
+            }catch(error){
+                console.log(error,msg.content.toString() , "remove from queue");
+                channel.nack(msg, true, false);
+            }
+        })();
     });
 
     await channel2.consume(queue_update_date, (msg) => {
         console.log(`Consumer >>> received message in ${queue_update_date} queue: ${msg.content.toString()}`);
-        channel2.ack(msg);
-
+        (async () => {
+            channel2.ack(msg);
+        })();
     });
   } catch (error) {
     console.error(error);
