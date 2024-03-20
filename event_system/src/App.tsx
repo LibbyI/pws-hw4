@@ -10,6 +10,7 @@ import ReactDOM from "react-dom/client";
 import { CatalogPage } from './catalog/catalogPage.tsx';
 import { scrabedIUser } from "../../src/models/user.js";
 import { EventPage } from './event-page/event-page.tsx';
+import { CheckoutPage } from './checkout-page/checkout-page.tsx'
 
 
  
@@ -53,7 +54,7 @@ function App() {
         <Route path="/signin" element={<SignIn setUser={setUserState}/>}></Route>
         <Route path="/:userId/catalog" element={<CatalogPage logout={logout} getUser={getUserState}/>}></Route>
         <Route path="/:userId/event/:eventId" element={<EventPage logout={logout} getUser={getUserState}/>}></Route>
-        <Route path="/:userId/checkout/:orderId" element={<h1>TODO: checkout </h1>}></Route>
+        <Route path="/:userId/checkout/:orderId" element={<CheckoutPage/>}></Route>
       </Routes>
     </BrowserRouter>
   );
