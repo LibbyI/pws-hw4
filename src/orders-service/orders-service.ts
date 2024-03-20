@@ -86,9 +86,8 @@ app.get('/delete/:id', async (req, res) => {
 app.post('/pay', async (req, res) => {
   try {
     const order = await handlePaymentRequest(req);
-    console.log(req.body.order.user_id);
     res.status(200).send(order);
-    await publisherChannel.sendUserNewEvnt(JSON.stringify({userId: req.body.order.user_id, eventId: req.body.order.event_id}));
+    // await publisherChannel.sendUserNewEvnt(JSON.stringify({userId: req.body.order.user_id, eventId: req.body.order.event_id}));
 
   }
   catch (error) {

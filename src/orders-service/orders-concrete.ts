@@ -10,7 +10,7 @@ import { PAYMENT_URL } from "../const.js";
 import {orederExpiredDate} from "../const.js";
 import { stat } from "fs";
 dotenv.config();
-
+import {publisherChannel} from "./orders-service.js"
 const dbURI = `mongodb+srv://libby6831:${process.env.DB_PASS}@cluster0.pyjnubc.mongodb.net/?retryWrites=true&w=majority`;
 
 
@@ -125,6 +125,7 @@ export async function handlePaymentRequest(req) {
             paymentId = (await axios.post(PAYMENT_URL, paymentDetails)).data;
            
             await orders.updateOne({_id: req.body.order._id}, {status: "completed"}).exec();//TODO: maybe sould be async
+            await publisherChannel.sendUserNewEvnt(JSON.stringify({userId: req.body.order.user_id, eventId: req.body.order.event_id}));
 
             await session.commitTransaction()
         }catch(error ){
