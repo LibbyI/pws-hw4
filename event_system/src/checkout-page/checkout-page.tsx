@@ -5,7 +5,7 @@ import { getEventById, getOrderById } from "../common/requests";
 import { IEvent } from "../../../src/models/event";
 import { OrderSummary } from "./order-summary";
 import { PaymentForm } from "./payment-form";
-import { Container } from "@mui/material";
+import { Container, Card, CardActionArea } from "@mui/material";
 
 export const CheckoutPage: React.FC = () => {
 
@@ -37,18 +37,26 @@ useEffect(() => {
 
 //********************Render**************************/
 
+
+
 if (loading){
     return <h1>Loading...</h1>
 }//TODO: add loader
 
 if (error|| order === undefined || event === undefined){
-    return <h1>Error: {error}</h1>
+    return (
+        <Card>
+            <CardActionArea onClick={() => navigate(-1)}>
+                <h1>Your order is expired, click to try place new order {error}</h1>
+            </CardActionArea>
+        </Card>
+    )
 }//TODO: add error page
 
 return(
     <Container>
         <OrderSummary ticket={order.ticket} eventName={event.title}/>
-        <PaymentForm/>
+        <PaymentForm order= {order}/>
     </Container>
 
 )

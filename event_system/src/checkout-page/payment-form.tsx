@@ -3,8 +3,15 @@ import React, {useState} from 'react';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import { AsyncButton } from '../common/async-button';
+import { useNavigate } from 'react-router-dom';
+import { payOnOrder } from '../common/requests';
+import { IOrder, paymentDetails } from '../../../src/models/orders';
 
-export const PaymentForm: React.FC = () => {
+export interface PaymentFormProps   {
+    order: IOrder;
+}
+
+export const PaymentForm: React.FC<PaymentFormProps> = ({order}) => {
     const [name, setName] = useState('');
     const [cardNumber, setCardNumber] = useState('');
     const [expiry, setExpiry] = useState('');
@@ -13,6 +20,8 @@ export const PaymentForm: React.FC = () => {
     const [cvvError, setCvvError] = useState(false);
     const [cardNumberError, setCardNumberError] = useState(false);
 
+    const navigate = useNavigate();
+
     
     function validateFields() {
         //TODO: validate fields
@@ -20,7 +29,20 @@ export const PaymentForm: React.FC = () => {
     }
     async function handlePay(): Promise<void> {
         if (validateFields()){
-            
+            const paymentDetails: paymentDetails = {
+                holder: name,
+                cc: cardNumber,
+                exp: expiry,
+                cvv: cvv,
+                charge: order.ticket.price * order.ticket.quantity
+            }
+            try {
+                await payOnOrder(order, paymentDetails);
+                
+            } catch (error) {
+                navigate(0);
+                //TODO: popwindowWith error
+            }            
         }
         else{
             return;
