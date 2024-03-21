@@ -13,20 +13,8 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { Button, CardActionArea } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 
-export interface ExpandMoreProps extends IconButtonProps {
-    expand: boolean;
-  }
   
-  const ExpandMore = styled((props: ExpandMoreProps) => {
-    const { expand, ...other } = props;
-    return <IconButton {...other} />;
-  })(({ theme, expand }) => ({
-    transform: !expand ? 'rotate(0deg)' : 'rotate(180deg)',
-    marginLeft: 'auto',
-    transition: theme.transitions.create('transform', {
-      duration: theme.transitions.duration.shortest,
-    }),
-  }));
+
   
   
 
@@ -52,25 +40,14 @@ export interface ExpandMoreProps extends IconButtonProps {
           />
           <CardContent sx={{ flex: '1 0 auto' }}>
             <Typography variant="body2" color="text.secondary">
-                {new Date(event.start_date).toLocaleDateString('en-US',{year: 'numeric', month: 'long', day: 'numeric'})}           
+                {`From ${Math.min(...Array.from(event.tickets,(t) => t.price))} $`}           
             </Typography>
             <Typography variant="body2" color="text.secondary">
-                {event.location}
-            </Typography>
-            <Typography variant="body2" color="text.secondary">
-                {event.organizer}
-            </Typography>            
+                {`${event.tickets.reduce((acc, t) => acc + t.quantity, 0)} tickets left`}
+            </Typography>          
           </CardContent>
           </CardActionArea>
           <CardActions disableSpacing>
-            <ExpandMore
-              expand={expanded}
-              onClick={handleExpandClick}
-              aria-expanded={expanded}
-              aria-label="show more"
-            >
-              <ExpandMoreIcon />
-            </ExpandMore>
           </CardActions>
           <Collapse in={expanded} timeout="auto" unmountOnExit>
             <CardContent>

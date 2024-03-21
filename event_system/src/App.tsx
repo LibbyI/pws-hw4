@@ -22,7 +22,7 @@ function App() {
           eventIds: null,
           token: null,
           nextEvent: null,
-          permission: permissionValidTypes[0]};
+          permission: "None"};
       localStorage.setItem("userState", JSON.stringify(userState));
     }
   const setUserState = (newuserstate: scrabedIUser) =>{
@@ -45,7 +45,7 @@ function App() {
       eventIds: null,
       token: null,
       nextEvent: null,
-      permission: permissionValidTypes[0]});
+      permission: "None"});
       await logoutreq();
   };
 
