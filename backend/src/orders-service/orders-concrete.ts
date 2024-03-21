@@ -126,8 +126,10 @@ export async function handlePaymentRequest(req) {
          
             const paymentDetails : paymentDetails = {charge: order.ticket.price * order.ticket.quantity, ...req.body.payment_details};
             paymentId = (await axios.post(PAYMENT_URL, paymentDetails)).data;
-            console.log(order._id);
-            await orders.updateOne({_id: order._id}, {status: "completed"}).exec();//TODO: maybe sould be async            
+            // console.log(paymentId.paymentToken, typeof paymentId.paymentToken);
+
+            // console.log(order._id);
+            await orders.updateOne({_id: order._id}, {status: "completed", paiment_token: paymentId.paymentToken}).exec();//TODO: maybe sould be async            
             await publisherChannel.sendUserNewEvnt(JSON.stringify({userId: req.body.order.user_id, eventId: req.body.order.event_id}));
 
             await session.commitTransaction();
