@@ -3,7 +3,7 @@ import * as dotenv from "dotenv";
 import * as mongoose from "mongoose";
 import { options } from '../const.js';
 import CommentType from "../models/comments.js";
-import { addComent, getComments} from "./comment-routs.js";
+import { addComent, getComments, getCommentsCount} from "./comment-routs.js";
 
 dotenv.config();
 
@@ -43,6 +43,10 @@ app.post('/', async(req, res) => {
   
 app.get('/:id', async(req, res) => {
     await getComments(req, res);
+});
+
+app.get('/count/:id', async(req, res) => {
+  await getCommentsCount(req, res);
 });
 
 app.listen(port, () => {
