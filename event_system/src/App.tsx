@@ -8,7 +8,7 @@ import React from "react";
 import { HashRouter as Router, Route, Link, BrowserRouter, Routes } from 'react-router-dom';
 import ReactDOM from "react-dom/client";
 import { CatalogPage } from './catalog/catalogPage.tsx';
-import { scrabedIUser } from "../../src/models/user.js";
+import { permissionValidTypes, scrabedIUser } from "../../src/models/user.js";
 import { EventPage } from './event-page/event-page.tsx';
 import { CheckoutPage } from './checkout-page/checkout-page.tsx'
 import{ logoutreq } from "./common/requests.ts"
@@ -21,7 +21,8 @@ function App() {
       const userState: scrabedIUser = {id: null, username: null,
           eventIds: null,
           token: null,
-          nextEvent: null};
+          nextEvent: null,
+          permission: permissionValidTypes[0]};
       localStorage.setItem("userState", JSON.stringify(userState));
     }
   const setUserState = (newuserstate: scrabedIUser) =>{
@@ -43,7 +44,8 @@ function App() {
     setUserState({id: null, username: null,
       eventIds: null,
       token: null,
-      nextEvent: null});
+      nextEvent: null,
+      permission: permissionValidTypes[0]});
       await logoutreq();
   };
 
@@ -53,9 +55,9 @@ function App() {
       <Routes>
         <Route path="/" element={<SignUp />}></Route>
         <Route path="/signin" element={<SignIn setUser={setUserState}/>}></Route>
-        <Route path="/:userId/catalog" element={<CatalogPage logout={logout} getUser={getUserState}/>}></Route>
-        <Route path="/:userId/event/:eventId" element={<EventPage logout={logout} getUser={getUserState}/>}></Route>
-        <Route path="/:userId/checkout/:orderId" element={<CheckoutPage/>}></Route>
+        <Route path="/:userId/:permissionType/catalog" element={<CatalogPage logout={logout} getUser={getUserState}/>}></Route>
+        <Route path="/:userId/:permissionType/event/:eventId" element={<EventPage logout={logout} getUser={getUserState}/>}></Route>
+        <Route path="/:userId/:permissionType/checkout/:orderId" element={<CheckoutPage/>}></Route>
       </Routes>
     </BrowserRouter>
   );

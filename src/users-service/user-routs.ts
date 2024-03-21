@@ -126,6 +126,7 @@ export const getUserById = async(req: express.Request, res: express.Response): P
       eventIds: user.eventIds,
       token: null,
       nextEvent: user.nearestEvent,
+      permission: user.permission
     }
     res.status(200).send(JSON.stringify(scrabediuser));
     return scrabediuser;   
@@ -261,6 +262,7 @@ export const loginRoute = async(req: express.Request, res: express.Response) => 
     eventIds: user.eventIds,
     token: token,
     nextEvent: null,
+    permission: user.permission
     }
 
     res.status(200).send(

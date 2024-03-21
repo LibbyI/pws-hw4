@@ -1,6 +1,5 @@
 import * as mongoose from "mongoose";
 export const permissionValidTypes = ["None", "A", "M", "W"];
-
 export interface IUser {
     username: string;
     password: string;
@@ -15,6 +14,7 @@ export interface scrabedIUser {
   eventIds: String[] | null;
   token: string | null;
   nextEvent: Object | null;
+  permission: string;
 }
 
 export const userSchema = new mongoose.Schema(
