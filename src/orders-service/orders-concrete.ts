@@ -105,14 +105,14 @@ export const cleanExpiredOrders = async () => {
 
 export async function handlePaymentRequest(req) {
         //lock order tickets
-        req.body.order.status = orderStatus.inPayment;
+        // req.body.order.status = orderStatus.inPayment;
         let order = await orders.findOne({_id: req.body.order._id}).exec()??
         await addNewOrder(req.body.order);
         if (order.status == orderStatus.completed){
             throw new HttpError(400, "order allready comleted"); 
             return;
         }
-
+        const orderId =  order._id
         //try pay
         const db = await mongoose.createConnection(dbURI).asPromise();
         const session: ClientSession = await db.startSession();
@@ -121,16 +121,16 @@ export async function handlePaymentRequest(req) {
         session.startTransaction();
         try{
             // TODO-change req.body.order._id to order._id 
-            let order = await orders.findOneAndUpdate({_id: req.body.order._id, status: "pending"}, {status: "inPayment"}).exec()??
-            await addNewOrder(req.body.order);            
-            
+            let order = await orders.findOneAndUpdate({_id: orderId, status: "pending"}, {status: "inPayment"}).exec()??
+            await addNewOrder(req.body.order);  
+         
             const paymentDetails : paymentDetails = {charge: order.ticket.price * order.ticket.quantity, ...req.body.payment_details};
             paymentId = (await axios.post(PAYMENT_URL, paymentDetails)).data;
-           
-            await orders.updateOne({_id: req.body.order._id}, {status: "completed"}).exec();//TODO: maybe sould be async
+            console.log(order._id);
+            await orders.updateOne({_id: order._id}, {status: "completed"}).exec();//TODO: maybe sould be async            
             await publisherChannel.sendUserNewEvnt(JSON.stringify({userId: req.body.order.user_id, eventId: req.body.order.event_id}));
 
-            await session.commitTransaction()
+            await session.commitTransaction();
         }catch(error){
             await session.abortTransaction();
             if (error instanceof AxiosError) {

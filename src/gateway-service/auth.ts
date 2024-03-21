@@ -36,14 +36,13 @@ const verifyJWT = (token: string) => {
 export const protectedRout = (req: express.Request, res: express.Response) => {
   // let authHeader = req.headers["authorization"] as string;
   let tokenCookieValue = req.cookies['token'];
-  console.log(tokenCookieValue.split(' ')[1])
 
   // authorization header needs to look like that: Bearer <JWT>.
   // So, we just take to <JWT>.
   // TODO: You need to validate it.
   let authHeaderSplited = tokenCookieValue && tokenCookieValue.split(" ");
   const token = authHeaderSplited && authHeaderSplited[1];
-
+  // console.log(token);
 
 
   if (!token) {
@@ -78,5 +77,23 @@ export const getUserPermission = async(id: string) =>{
 
   }catch(error){
     return null;
+  }
+}
+
+export const authenticateAndAuthorize = async(req, res, requiredPermission: string[]) => {
+  try{
+    const user = await protectedRout(req, res);
+    if (!user){
+      return;
+    }
+    const userPermission = await getUserPermission(user.id);
+    if (!Object.values(requiredPermission).includes(userPermission)){
+      res.status(403).send(JSON.stringify({message: "user dont have permission for this action"}));
+      return;
+    }
+  return user;
+
+  }catch(error){
+    res.status(500).send(error);
   }
 }
