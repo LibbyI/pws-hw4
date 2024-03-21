@@ -6,7 +6,7 @@ import ListItemText from '@mui/material/ListItemText';
 import ListItemAvatar from '@mui/material/ListItemAvatar';
 import Avatar from '@mui/material/Avatar';
 import Typography from '@mui/material/Typography';
-import {Icomment} from '../../../src/models/comments';
+import {Icomment} from '../../../backend/src/models/comments';
 
 
 

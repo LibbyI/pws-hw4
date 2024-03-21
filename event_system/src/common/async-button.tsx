@@ -1,5 +1,5 @@
 import React from "react";
-import { IOrder } from "../../../src/models/orders";
+import { IOrder } from "../../../backend/src/models/orders";
 import { useNavigate } from "react-router-dom";
 import LoadingButton from '@mui/lab/LoadingButton';
 

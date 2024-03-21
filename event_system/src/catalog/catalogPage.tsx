@@ -1,4 +1,4 @@
-import event, { IEvent } from "../../../src/models/event";
+import event, { IEvent } from "../../../backend/src/models/event";
 import { EventCard } from "./eventCard"; 
 
 import React, { useEffect, useState } from "react";
@@ -6,7 +6,7 @@ import EventsGrid from "./eventsGrid";
 import { getEvents } from "../common/requests.ts";
 import { json } from "stream/consumers";
 import { set } from "mongoose";
-import { permissionValidTypes, scrabedIUser } from "../../../src/models/user.js";
+import { permissionValidTypes, scrabedIUser } from "../../../backend/src/models/user.js";
 import { useNavigate, useParams } from 'react-router-dom';
 import ButtonAppBar from '../header/header.tsx';
 import { isBackoffice } from "../common/utils.ts";

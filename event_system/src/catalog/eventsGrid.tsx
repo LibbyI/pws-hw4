@@ -5,7 +5,7 @@ import Box from '@mui/material/Box';
 import Grid from '@mui/material/Unstable_Grid2';
 
 
-import {IEvent} from '../../../src/models/event';
+import {IEvent} from '../../../backend/src/models/event';
 import { EventCard } from './eventCard';
 
 

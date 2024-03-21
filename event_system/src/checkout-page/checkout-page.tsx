@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
-import { IOrder, orderStatus } from "../../../src/models/orders";
+import { IOrder, orderStatus } from "../../../backend/src/models/orders";
 import { useNavigate, useParams } from "react-router-dom";
 import { getEventById, getOrderById } from "../common/requests";
-import { IEvent } from "../../../src/models/event";
+import { IEvent } from "../../../backend/src/models/event";
 import { OrderSummary } from "./order-summary";
 import { PaymentForm } from "./payment-form";
 import { Container, Card, CardActionArea } from "@mui/material";

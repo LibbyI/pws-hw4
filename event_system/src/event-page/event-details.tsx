@@ -4,7 +4,7 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
-import { IEvent } from '../../../src/models/event';
+import { IEvent } from '../../../backend/src/models/event';
 import { Divider } from '@mui/material';
 
 export default function EventDetails(event: IEvent) {

@@ -12,9 +12,9 @@
             "skipFiles": [
                 "<node_internals>/**"
             ],
-            "program": "${workspaceFolder}\\src\\orders-service\\orders-service.ts",
+            "program": "${workspaceFolder}\\backend\\src\\gateway-service\\gateway-service.ts",
             "outFiles": [
-                "${workspaceFolder}/**/*.js"
+                "${workspaceFolder}/backend/**/*.js"
             ]
         }
     ]

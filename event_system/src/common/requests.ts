@@ -1,9 +1,9 @@
-import scrabedIUser from "../../../src/models/user.js";
+import scrabedIUser from "../../../backend/src/models/user.js";
 import axios, { Axios, AxiosError, AxiosResponse } from 'axios';
-import { GET_USER , LOGIN ,LOGOUT, SIGNUP , GET_COMMENTS, ADD_COMMENT} from "../../../src/const.js"
+import { GET_USER , LOGIN ,LOGOUT, SIGNUP , GET_COMMENTS, ADD_COMMENT} from "../../../backend/src/const.js"
 import { Swipe } from "@mui/icons-material";
-import {Icomment} from "../../../src/models/comments.js"
-import { IOrder,paymentDetails } from "../../../src/models/orders.js";
+import {Icomment} from "../../../backend/src/models/comments.js"
+import { IOrder,paymentDetails } from "../../../backend/src/models/orders.js";
 // import * as dotenv from "dotenv";
 // dotenv.config();
 // TODO: repalce with dotenv
@@ -47,7 +47,9 @@ export const getEventComments = async(eventId: String):Promise<AxiosResponse | n
     try{
         const comments_split = GET_COMMENTS.split(' ');
         const url = GATEWAY_URL+comments_split[1]+eventId;
+        console.log(url);
         const response = await sendRequest(url, comments_split[0]);
+        console.log(response);
         return response;
         
     }catch(error){
@@ -69,7 +71,8 @@ export const sendEventComment = async(comment: Icomment):Promise<AxiosResponse |
     try{
         const body = comment;
         const comment_split = ADD_COMMENT.split(' ');
-        const url = GATEWAY_URL;
+        const url = GATEWAY_URL+comment_split[1];
+        console.log(url,comment_split[0] , body);
         const response = await sendRequest(url, comment_split[0], body);
         return response;
         

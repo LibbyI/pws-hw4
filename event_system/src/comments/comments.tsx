@@ -6,13 +6,14 @@ import ListItemText from '@mui/material/ListItemText';
 import ListItemAvatar from '@mui/material/ListItemAvatar';
 import Avatar from '@mui/material/Avatar';
 import Typography from '@mui/material/Typography';
-import {Icomment} from '../../../src/models/comments';
+import {Icomment} from '../../../backend/src/models/comments';
+
 import {Comment} from './comment';
 import {getEventComments} from "../common/requests.js";
 import { useEffect, useState } from 'react';
 import { TextField, Button, Container } from '@mui/material';
 import {sendEventComment} from "../common/requests.js";
-import { scrabedIUser } from "../../../src/models/user.js";
+import { scrabedIUser } from "../../../backend/src/models/user.js";
 import { useParams } from 'react-router-dom';
 // import {getUserById} from "../common/requests.js"
 interface Props{

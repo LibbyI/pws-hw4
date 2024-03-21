@@ -3,10 +3,10 @@ import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
-import { Ticket } from '../../../src/models/event';
+import { Ticket } from '../../../backend/src/models/event';
 import { QuantityInput } from './quantity-input';
 import { BuyNowButton } from './buy-now-button';
-import { permissionValidTypes } from '../../../src/models/user';
+import { permissionValidTypes } from '../../../backend/src/models/user';
 import { isBackoffice } from '../common/utils';
 //import { BuyNowButton } from './buy-now-button';
 
