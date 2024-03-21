@@ -11,7 +11,7 @@ import { CatalogPage } from './catalog/catalogPage.tsx';
 import { scrabedIUser } from "../../src/models/user.js";
 import { EventPage } from './event-page/event-page.tsx';
 import { CheckoutPage } from './checkout-page/checkout-page.tsx'
-
+import{ logoutreq } from "./common/requests.ts"
 
  
 function App() {
@@ -39,11 +39,12 @@ function App() {
     }
     return null;
   }
-  const logout = () => {
+  const logout = async () => {
     setUserState({id: null, username: null,
       eventIds: null,
       token: null,
       nextEvent: null});
+      await logoutreq();
   };
 
 

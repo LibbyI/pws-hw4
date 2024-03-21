@@ -108,6 +108,15 @@ app.post('/api/login', async(req, res) => {
   }
 });
 
+app.post('/api/logout', async(req, res) => {
+  try{
+      res.clearCookie('token');
+      res.status(200).send(); 
+    } catch(error){
+      res.status(500).send(error);
+    }
+});
+
 app.get('/api/user/:id' , async(req, res) => {
   try{
     const id = req.params.id;

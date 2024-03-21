@@ -1,6 +1,6 @@
 import scrabedIUser from "../../../src/models/user.js";
 import axios, { Axios, AxiosError, AxiosResponse } from 'axios';
-import { GET_USER , LOGIN , SIGNUP , GET_COMMENTS, ADD_COMMENT} from "../../../src/const.js"
+import { GET_USER , LOGIN ,LOGOUT, SIGNUP , GET_COMMENTS, ADD_COMMENT} from "../../../src/const.js"
 import { Swipe } from "@mui/icons-material";
 import {Icomment} from "../../../src/models/comments.js"
 import { IOrder,paymentDetails } from "../../../src/models/orders.js";
@@ -95,6 +95,19 @@ export const login = async(username: String, password: String):Promise<AxiosResp
         const login_split = LOGIN.split(' ');
         const url = GATEWAY_URL+login_split[1];
         const response = await sendRequest(url, login_split[0], body);
+        return response;
+        
+    }catch(error){
+        return null;
+    }
+};
+
+export const logoutreq = async():Promise<AxiosResponse | null> => {
+    const body = {};
+    try{
+        const logout_split = LOGOUT.split(' ');
+        const url = GATEWAY_URL+logout_split[1];
+        const response = await sendRequest(url, logout_split[0], body);
         return response;
         
     }catch(error){
