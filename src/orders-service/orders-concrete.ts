@@ -120,6 +120,7 @@ export async function handlePaymentRequest(req) {
 
         session.startTransaction();
         try{
+            // TODO-change req.body.order._id to order._id 
             let order = await orders.findOneAndUpdate({_id: req.body.order._id, status: "pending"}, {status: "inPayment"}).exec()??
             await addNewOrder(req.body.order);            
             

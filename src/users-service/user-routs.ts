@@ -125,7 +125,7 @@ export const getUserById = async(req: express.Request, res: express.Response): P
       username: user.username,
       eventIds: user.eventIds,
       token: null,
-      nextEvent: null
+      nextEvent: user.nearestEvent,
     }
     res.status(200).send(JSON.stringify(scrabediuser));
     return scrabediuser;   

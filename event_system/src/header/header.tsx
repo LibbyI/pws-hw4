@@ -7,7 +7,9 @@ import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
 import { scrabedIUser } from "../../../src/models/user.ts";
-
+import {getUserById} from "../requests.ts";
+import { useParams } from 'react-router-dom';
+import { useState , useEffect } from 'react'
 
 interface Props{
     goback: () => void;
@@ -15,8 +17,33 @@ interface Props{
     getUser: () => scrabedIUser | null;
   };
 
+
+
 export const ButtonAppBar: React.FC<Props> = ({goback, logout, getUser}) => {
-    const user = getUser();
+    // const user = getUser();
+  const { userId } = useParams();
+  const [user, setUser] = useState<any>(null); // Define user state
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        if(userId){
+          const userResp = await getUserById(userId);
+          setUser(userResp?.data);
+        }
+        else{
+          throw Error;
+        }
+      } catch (error) {
+        console.log("Error fetching user:", error);
+      }
+    };
+
+    if (userId) {
+      fetchUser();
+    }
+  }, [userId]);
+
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">

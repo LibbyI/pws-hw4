@@ -13,29 +13,40 @@ const GATEWAY_URL = "http://localhost:3000";
 
 
 export const sendRequest = async (url: string, method: string, body: Object | null = null): Promise<AxiosResponse>  => {
-    
+    try{
         let response;
         switch(method){
             case 'GET':
-                response = await axios.get(url);
+                response = await axios.get(url, {
+                    withCredentials: true
+                  });
                 break;
             case 'POST':
-                 response = await axios.post(url, body);
+                 response = await axios.post(url, body, {
+                    withCredentials: true
+                  });
                  break;
             case 'PUT':
-                 response = await axios.put(url, body);
+                 response = await axios.put(url, body,{
+                    withCredentials: true
+                  });
                  break;
             case 'PATCH':
-                 response = await axios.patch(url, body);
+                 response = await axios.patch(url, body,{
+                    withCredentials: true
+                  });
                  break;
             default:
                 throw new Error('Invalid method');
         }
         // console.log(response);
 
-        return response;
-
-    
+        return response;  
+    }catch(error){
+        console.error(url, method);
+        console.error(error);
+        
+    }
 };
 
 export const getEventComments = async(eventId: String):Promise<AxiosResponse | null> => {
@@ -135,5 +146,6 @@ export const getOrderById = async(orderId: String):Promise<AxiosResponse> => {
 export const getUserPermission = async(userId: String):Promise<boolean> => {
     const url = `${GATEWAY_URL}/isBackoffice/${userId}`;
     const response = await sendRequest(url, 'GET');
+    console.log(response);
     return response.data.backoffice;
 }

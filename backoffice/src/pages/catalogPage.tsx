@@ -1,14 +1,14 @@
-import event, { IEvent } from "../../../src/models/event";
-import { EventCard } from "./eventCard"; 
+import event, { IEvent } from "../../../src/models/event.ts";
+import { EventCard } from "../../../event_system/src/catalog/eventCard.tsx"; 
 
 import React, { useEffect, useState } from "react";
-import EventsGrid from "./eventsGrid";
-import { getEvents } from "../requests";
+import EventsGrid from "../../../event_system/src/catalog/eventsGrid.tsx";
+import { getEvents } from "../../../event_system/src/requests.ts";
 import { json } from "stream/consumers";
 import { set } from "mongoose";
 import { scrabedIUser } from "../../../src/models/user.js";
 import { useNavigate, useParams } from 'react-router-dom';
-import ButtonAppBar from '../header/header.tsx';
+import ButtonAppBar from '../../../event_system/src/header/header.tsx'
 
 
 interface Props{
@@ -30,22 +30,17 @@ if(!userId){
 }//TODO: handle error
 
 
-const logoutandgotologin = () =>{
-    logout();
-    navigate(`/signin`)
-}
-
-    
 const [events,setEvents] = useState<IEvent[]>([]);
 const [loading, setLoading] = useState(true);
 const [error, setError] = useState(null);
 
 useEffect(() => {
-    getEvents(true).then((response) => {
+    getEvents(false).then((response) => {
         if (response?.status === 200){
             setEvents(response.data as IEvent[]);
         }
         else{
+            console.error("error fetching events");
             setError(error);
         }
     }).then(() => {setLoading(false);});
@@ -61,7 +56,7 @@ useEffect(() => {
     console.log(events);
     return (
         <>
-        <ButtonAppBar goback={goBack} logout={logoutandgotologin} getUser={getUser}></ButtonAppBar>
+        <ButtonAppBar goback={goBack} logout={logout} getUser={getUser}></ButtonAppBar>
         <EventsGrid {... {events : [...events]}}></EventsGrid>
         </>
     )

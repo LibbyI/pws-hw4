@@ -60,17 +60,20 @@ export const SignIn: React.FC<Props> = ({setUser}) => {
         const response = await login(username, password);
         if (response?.status == 200){
           console.log('User loged in successfully:', response);
-          const userScrab: scrabedIUser = response.data as scrabedIUser;
-          const backoffice = await getUserPermission(response.data.id);
-          console.log(userScrab);
-          setUser(userScrab);
-          // alert("log in succsess!!");
-          if (backoffice){
-            window.location.href = 'http://localhost:3007/';
-          }else{
-            navigate(`/${response.data.id}/catalog`);
+          // const userScrab: scrabedIUser = response.data as scrabedIUser;
+          try{
+            const backoffice = await getUserPermission(response.data.id);
+            console.log("backoffice", backoffice);
+            if (backoffice){
+              alert(`http://localhost:3007/${response.data.id}/catalog`);
+              window.location.href = `http://localhost:3007/${response.data.id}/catalog`;
+            }else{
+              navigate(`/${response.data.id}/catalog`);
+            }
+          }catch(error){
+            alert("error in sign in, try again");
           }
-
+        
         } else{
           const errStatus = response?.status;
           const errmessage = response?.data.message

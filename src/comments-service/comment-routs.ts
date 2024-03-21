@@ -31,7 +31,7 @@ export const getComments = async(req, res) => {
         const id = req.params.id;
         let filter : object = {eventId: id};
         const result = await comments.find(filter).exec();
-        res.send(result);
+        res.status(200).send(result);
         return;
       } catch (error) {
         res.status(500).send(error);
