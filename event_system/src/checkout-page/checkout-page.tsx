@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
-import { IOrder } from "../../../src/models/orders";
+import { IOrder, orderStatus } from "../../../src/models/orders";
 import { useNavigate, useParams } from "react-router-dom";
 import { getEventById, getOrderById } from "../common/requests";
 import { IEvent } from "../../../src/models/event";
 import { OrderSummary } from "./order-summary";
 import { PaymentForm } from "./payment-form";
 import { Container, Card, CardActionArea } from "@mui/material";
+import { SuccessPage } from "./succsess-page";
 
 export const CheckoutPage: React.FC = () => {
 
@@ -43,7 +44,7 @@ if (loading){
     return <h1>Loading...</h1>
 }//TODO: add loader
 
-if (error|| order === undefined || event === undefined){
+if (error || order === undefined || event === undefined) {
     return (
         <Card>
             <CardActionArea onClick={() => navigate(-1)}>
@@ -52,6 +53,10 @@ if (error|| order === undefined || event === undefined){
         </Card>
     )
 }//TODO: add error page
+
+if (order.status === orderStatus.completed) {
+    return <SuccessPage orderSummary={{ ticket: order.ticket, eventName: event.title }} orderId={orderId} />
+}
 
 return(
     <Container>

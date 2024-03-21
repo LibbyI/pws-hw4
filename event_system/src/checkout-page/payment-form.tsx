@@ -36,13 +36,9 @@ export const PaymentForm: React.FC<PaymentFormProps> = ({order}) => {
                 cvv: cvv,
                 charge: order.ticket.price * order.ticket.quantity
             }
-            try {
                 await payOnOrder(order, paymentDetails);
-                
-            } catch (error) {
                 navigate(0);
-                //TODO: popwindowWith error
-            }            
+                           
         }
         else{
             return;

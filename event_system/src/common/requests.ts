@@ -138,12 +138,17 @@ export const getUserPermission = async(userId: String):Promise<boolean> => {
     return response.data.backoffice;
 }
 
-export const payOnOrder = async(order: IOrder, paymentDetails: paymentDetails):Promise<AxiosResponse> => {
-    const url = `${GATEWAY_URL}/pay`;
-    const body = {
-        order: order,
-        paymentDetails: paymentDetails
-    };
-    const response = await sendRequest(url, 'POST', body);
-    return response;
+export const payOnOrder = async(order: IOrder, paymentDetails: paymentDetails):Promise<AxiosResponse | null > => {
+    try {
+        const url = `${GATEWAY_URL}/pay`;
+        const body = {
+            order: order,
+            paymentDetails: paymentDetails
+        };
+        const response = await sendRequest(url, 'POST', body);
+        return response;
+    } catch (error) {
+      return null;  
+    }
+
 }
