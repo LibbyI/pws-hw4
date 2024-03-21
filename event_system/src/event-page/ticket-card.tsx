@@ -34,7 +34,7 @@ export const TicketCard: React.FC<TicketCardProps> = ({ticket, eventId, userId, 
           price: {ticket.price}$
         </Typography>
         <Typography variant="body2">
-            {(ticket.quantity===0) ? "No Tickets left" : `${ticket.quantity} tickets left !`}
+            {(ticket.quantity===0) ? "No Tickets left" : `${ticket.quantity}${isBackoffice(permissionType)? ` / ${ticket.original_quantity}` : "" } tickets left !`}
         </Typography>
       </CardContent>
       {isBackoffice(permissionType) ? (<></>) :<CardActions  >
