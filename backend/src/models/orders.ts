@@ -27,6 +27,7 @@ export interface IOrder{
     ticket: Ticket;
     status?: orderStatus;
     expires_at?: Date; 
+    paiment_token?: string;
 }
 
 export interface IuserOrder{
@@ -44,7 +45,8 @@ const orderSchema = new mongoose.Schema<IOrder,mongoose.Model<IOrder>>(
             price: { type: Number, required: true, min: [0, 'ticket price must be greater than 0']}
         }, required: true },
         status: { type: String, required: true, enum: Object.values(orderStatus), default: orderStatus.pending},
-        expires_at: { type: Date, required: true, default : new Date(Date.now() + TIMEOUT) }
+        expires_at: { type: Date, required: true, default : new Date(Date.now() + TIMEOUT) },
+        paiment_token: {type: String, required: false, default: " "}
     });
 
 export default mongoose.model<IOrder>("OrderType", orderSchema, 'orders');

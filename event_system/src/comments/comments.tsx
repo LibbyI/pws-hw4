@@ -43,9 +43,7 @@ export const AlignItemsList: React.FC<Props>= ({eventId, getUser}) => {
     
 
     const handleAddComment = async  (event: React.FormEvent<HTMLFormElement>) => {
-        // TODO: GET USER NAME!!!
         event.preventDefault();
-        // const user = getUser();
         let username = getCookies("username");
         if (username){
             username = username;
