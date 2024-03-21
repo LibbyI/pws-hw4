@@ -14,7 +14,7 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import axios, { Axios } from 'axios';
 import { useNavigate } from 'react-router-dom';
-import { signup } from '../requests.ts';
+import { signup } from '../common/requests.ts';
 import   AxiosResponse  from 'axios';
 
 

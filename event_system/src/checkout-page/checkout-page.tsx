@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
 import { IOrder } from "../../../src/models/orders";
 import { useNavigate, useParams } from "react-router-dom";
-import { getEventById, getOrderById } from "../requests";
+import { getEventById, getOrderById } from "../common/requests";
 import { IEvent } from "../../../src/models/event";
 import { OrderSummary } from "./order-summary";
+import { PaymentForm } from "./payment-form";
+import { Container } from "@mui/material";
 
 export const CheckoutPage: React.FC = () => {
 
@@ -44,6 +46,10 @@ if (error|| order === undefined || event === undefined){
 }//TODO: add error page
 
 return(
-    <OrderSummary ticket={order.ticket} eventName={event.title}/>
+    <Container>
+        <OrderSummary ticket={order.ticket} eventName={event.title}/>
+        <PaymentForm/>
+    </Container>
+
 )
 }

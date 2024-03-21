@@ -3,7 +3,7 @@ import { EventCard } from "./eventCard";
 
 import React, { useEffect, useState } from "react";
 import EventsGrid from "./eventsGrid";
-import { getEvents } from "../requests";
+import { getEvents } from "../common/requests.ts";
 import { json } from "stream/consumers";
 import { set } from "mongoose";
 import { scrabedIUser } from "../../../src/models/user.js";
