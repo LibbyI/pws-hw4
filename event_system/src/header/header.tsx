@@ -42,7 +42,7 @@ export const ButtonAppBar: React.FC<Props> = ({goback, logout, getUser}) => {
     if (userId) {
       fetchUser();
     }
-  }, [userId]);
+  }, []);
 
   return (
     <Box sx={{ flexGrow: 1, pt:0, pb: 5 }}>
@@ -52,7 +52,7 @@ export const ButtonAppBar: React.FC<Props> = ({goback, logout, getUser}) => {
             hello {user?.username}
           </Typography>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            Next Event is: {user?.nextEvent}
+            Next Event is: {user?.nextEvent.title}
           </Typography>
           <div style={{ flexGrow: 1 }} /> 
 
