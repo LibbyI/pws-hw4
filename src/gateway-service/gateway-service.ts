@@ -56,6 +56,10 @@ app.use(function (req, res, next) {
 
  app.get('/isBackoffice/:id', async(req,res) => {
   try{
+    const user = await protectedRout(req, res);
+    if (!user){
+      return;
+    }
     const id = req.params.id;
     const userPermission = await getUserPermission(id);
     res.status = 200;
@@ -112,6 +116,10 @@ app.post('/api/login', async(req, res) => {
 
 app.post('/api/logout', async(req, res) => {
   try{
+    // const user = await protectedRout(req, res);
+    // if (!user){
+    //   return;
+    // }
       res.clearCookie('token');
       res.status(200).send(); 
     } catch(error){
@@ -121,6 +129,10 @@ app.post('/api/logout', async(req, res) => {
 
 app.get('/api/user/:id' , async(req, res) => {
   try{
+    const user = await protectedRout(req, res);
+    if (!user){
+      return;
+    }
     const id = req.params.id;
     const response = await axios.get(`${users_url}/${id}`);
     res.status(response.status).send(response.data);
@@ -131,6 +143,10 @@ app.get('/api/user/:id' , async(req, res) => {
 
 app.put('/api/permissions', async (req, res) => {
   try{
+    const user = await protectedRout(req, res);
+    if (!user){
+      return;
+    }
     const response = await axios.put(`${users_url}/permissions`);
     res.status(response.status).send(response.data);
   }catch(error){
@@ -142,7 +158,6 @@ app.put('/api/permissions', async (req, res) => {
 /****************************Events*********************************/
 app.get('/events', async (req, res) => {
   try{
-    // const cookieValue = req.cookies['token'];
     const user = await protectedRout(req, res);
     if (!user){
       return;
@@ -155,9 +170,11 @@ app.get('/events', async (req, res) => {
 });
 
 app.get('/events/:id', async (req, res) => {
-  // res.redirect(`http://localhost:3001/${req.params.id}`);
   try{
-    // const cookieValue = req.cookies['token'];
+    const user = await protectedRout(req, res);
+    if (!user){
+      return;
+    }
     const response = await axios.get(`http://localhost:3001/${req.params.id}`);
     res.status(response.status).send(response.data);
   }catch(error){
@@ -166,9 +183,11 @@ app.get('/events/:id', async (req, res) => {
 });
 
 app.post('/events', async (req, res) => {
-  // res.redirect(307,'http://localhost:3001/');
   try{
-    // const cookieValue = req.cookies['token'];
+    const user = await protectedRout(req, res);
+    if (!user){
+      return;
+    }
     const response = await axios.post('http://localhost:3001/', req.body);
     res.status(response.status).send(response.data);
   }catch(error){
@@ -178,9 +197,11 @@ app.post('/events', async (req, res) => {
 
 
 app.patch('/tickets/:eventId', async (req, res) => {
-  // res.redirect(`http://localhost:3001/tickets/${req.params.eventId}`);
   try{
-    // const cookieValue = req.cookies['token'];
+    const user = await protectedRout(req, res);
+    if (!user){
+      return;
+    }
     const response = await axios.patch(`http://localhost:3001/tickets/${req.params.eventId}`, req.body);
     res.status(response.status).send(response.data);
   }catch(error){
@@ -190,18 +211,28 @@ app.patch('/tickets/:eventId', async (req, res) => {
 
 app.patch('/events/date/:eventId', updateEventDateValidator, async(req, res) => {
   // TODO: permissions
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    return res.status(400).send(errors.array()[0].msg);
-  }
-  // res.redirect(307,`http://localhost:3001/date/${req.params.eventId}`);
   try{
-    // const cookieValue = req.cookies['token'];
-    const response = await axios.patch(`http://localhost:3001/date/${req.params.eventId}`, req.body);
-    res.status(response.status).send(response.data);
+    const user = await protectedRout(req, res);
+    if (!user){
+      return;
+    }
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).send(errors.array()[0].msg);
+    }
+    // res.redirect(307,`http://localhost:3001/date/${req.params.eventId}`);
+    try{
+      // const cookieValue = req.cookies['token'];
+      const response = await axios.patch(`http://localhost:3001/date/${req.params.eventId}`, req.body);
+      res.status(response.status).send(response.data);
+    }catch(error){
+      res.status(500).send(error);
+    }
   }catch(error){
     res.status(500).send(error);
   }
+  
+  
 
 });
 
@@ -209,9 +240,16 @@ app.patch('/events/date/:eventId', updateEventDateValidator, async(req, res) => 
   
   app.get('/comments/:id', async (req, res) => {
     try{
+      const user = await protectedRout(req, res);
+      if (!user){
+        return;
+      }
+      const userPermission = await getUserPermission(user.id);
+      if (userPermission != 'None'){
+        res.status(403).send(JSON.stringify({message: "user dont have permission for this action"}));
+        return;
+      }
       const id = req.params.id;
-      // res.redirect(`${comments_url}/${id}`);
-      // const cookieValue = req.cookies['token'];
       const response = await axios.get(`${comments_url}/${id}`);
       res.status(response.status).send(response.data);
     }catch(error){
@@ -220,8 +258,16 @@ app.patch('/events/date/:eventId', updateEventDateValidator, async(req, res) => 
   });
 
   app.post('/addComment', async (req, res) => {
-    // res.redirect(307, `${comments_url}`);
     try{
+      const user = await protectedRout(req, res);
+      if (!user){
+        return;
+      }
+      const userPermission = await getUserPermission(user.id);
+      if (userPermission != 'None'){
+        res.status(403).send(JSON.stringify({message: "user dont have permission for this action"}));
+        return;
+      }
       const response = await axios.post(`${comments_url}`, req.body);
       res.status(response.status).send(response.data);
     }catch(error){
@@ -236,8 +282,16 @@ app.patch('/events/date/:eventId', updateEventDateValidator, async(req, res) => 
   /********************************Orders*******************************/
 
   app.post('/orders',async (req, res) => {
-    // res.redirect(307, `${orders_url}/`);
     try{
+      const user = await protectedRout(req, res);
+      if (!user){
+        return;
+      }
+      const userPermission = await getUserPermission(user.id);
+      if (userPermission != 'None'){
+        res.status(403).send(JSON.stringify({message: "user dont have permission for this action"}));
+        return;
+      }
       const response = await axios.post(`${orders_url}/`, req.body);
       res.status(response.status).send(response.data);
     }catch(error){
@@ -248,6 +302,15 @@ app.patch('/events/date/:eventId', updateEventDateValidator, async(req, res) => 
   app.post('/pay', async (req, res) => {
     // res.redirect(307, `${orders_url}/pay`);
     try{
+      const user = await protectedRout(req, res);
+      if (!user){
+        return;
+      }
+      const userPermission = await getUserPermission(user.id);
+      if (userPermission != 'None'){
+        res.status(403).send(JSON.stringify({message: "user dont have permission for this action"}));
+        return;
+      }
       const response = await axios.post(`${orders_url}/pay`, req.body);
       res.status(response.status).send(response.data);
     }catch(error){
@@ -256,8 +319,11 @@ app.patch('/events/date/:eventId', updateEventDateValidator, async(req, res) => 
   });
 
   app.get('/orders/:id',async (req, res) => {
-    // res.redirect(`${orders_url}/${req.params.id}`);
     try{
+      const user = await protectedRout(req, res);
+      if (!user){
+        return;
+      }
       const response = await axios.get(`${orders_url}/${req.params.id}`);
       res.status(response.status).send(response.data);
     }catch(error){

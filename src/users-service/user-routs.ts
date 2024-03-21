@@ -163,7 +163,7 @@ export const permissionRoute = async(req: express.Request, res: express.Response
         return;
       }
     let userId = await getUserId(req.body.username);
-    if (!userId){
+    if (!userId || userId == null){
         res.statusCode = 404;
         res.send(JSON.stringify({message: "user dosent exist.", }));
         return;
@@ -228,16 +228,18 @@ export const loginRoute = async(req: express.Request, res: express.Response) => 
     const username = req.body.username;
     const password = req.body.password;
     const userId = await getUserId(username);
-    if (!userId){
-    res.status(404).send(JSON.stringify({message: "username dosent exsist",}));
-    return;
+    if (!userId || userId == null){
+      res.statusCode = 404;
+      res.send(JSON.stringify({message: "username dosent exsist",}));
+      return;
     }
     let user;
     try{
         user = await users.findOne({_id: userId}).exec();
 
     }catch(error){
-        res.status(404).send(JSON.stringify({message: "username dosent exsist",}));
+        res.statusCode = 404;
+        res.send(JSON.stringify({message: "username dosent exsist",}));
         return;
     }
     const passwordMatch = await bcrypt.compare(

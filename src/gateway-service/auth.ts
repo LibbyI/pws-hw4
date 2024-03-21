@@ -36,14 +36,13 @@ const verifyJWT = (token: string) => {
 export const protectedRout = (req: express.Request, res: express.Response) => {
   // let authHeader = req.headers["authorization"] as string;
   let tokenCookieValue = req.cookies['token'];
-  console.log(tokenCookieValue.split(' ')[1])
 
   // authorization header needs to look like that: Bearer <JWT>.
   // So, we just take to <JWT>.
   // TODO: You need to validate it.
   let authHeaderSplited = tokenCookieValue && tokenCookieValue.split(" ");
   const token = authHeaderSplited && authHeaderSplited[1];
-
+  // console.log(token);
 
 
   if (!token) {

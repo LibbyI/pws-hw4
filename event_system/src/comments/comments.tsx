@@ -13,7 +13,8 @@ import { useEffect, useState } from 'react';
 import { TextField, Button, Container } from '@mui/material';
 import {sendEventComment} from "../common/requests.js";
 import { scrabedIUser } from "../../../src/models/user.js";
-
+import { useParams } from 'react-router-dom';
+// import {getUserById} from "../common/requests.js"
 interface Props{
     eventId: String;
     getUser: () => scrabedIUser | null;
@@ -21,7 +22,7 @@ interface Props{
   };
 
 export const AlignItemsList: React.FC<Props>= ({eventId, getUser}) => {
-
+    // const { userId } = useParams();
     const [commentsArray, setCommentsArray] = useState<any[]>([]);
     const fetchComments = async () => {
         try {
@@ -36,12 +37,12 @@ export const AlignItemsList: React.FC<Props>= ({eventId, getUser}) => {
     
 
     const handleAddComment = async  (event: React.FormEvent<HTMLFormElement>) => {
-
+        // TODO: GET USER NAME!!!
         event.preventDefault();
         const user = getUser();
         let username;
         if (user && user.username){
-            username = user?.username;
+            username = user.username;
         }else{
             username = "Anonymous";
         }
