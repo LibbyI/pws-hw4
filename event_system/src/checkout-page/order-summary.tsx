@@ -1,6 +1,6 @@
 import { Card, Container, Typography } from "@mui/material";
-import { IOrder } from "../../../src/models/orders";
-import { Ticket } from "../../../src/models/event";
+import { IOrder } from "../../../backend/src/models/orders";
+import { Ticket } from "../../../backend/src/models/event";
 
 export interface OrderSummaryProps {
     eventName: string;

@@ -15,7 +15,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { login, getUserPermission } from '../common/requests.ts';
-import { scrabedIUser } from '../../../src/models/user.ts';
+import { scrabedIUser } from '../../../backend/src/models/user.ts';
 // import * as dotenv from "dotenv";
 
 // dotenv.config();

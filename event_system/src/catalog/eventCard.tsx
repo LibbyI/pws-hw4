@@ -1,4 +1,4 @@
-import {IEvent} from '../../../src/models/event';
+import {IEvent} from '../../../backend/src/models/event';
 import * as React from 'react';
 import { styled } from '@mui/material/styles';
 import Card from '@mui/material/Card';

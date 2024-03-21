@@ -5,7 +5,7 @@ import Button from '@mui/material/Button';
 import { AsyncButton } from '../common/async-button';
 import { useNavigate } from 'react-router-dom';
 import { payOnOrder } from '../common/requests';
-import { IOrder, paymentDetails } from '../../../src/models/orders';
+import { IOrder, paymentDetails } from '../../../backend/src/models/orders';
 
 export interface PaymentFormProps   {
     order: IOrder;

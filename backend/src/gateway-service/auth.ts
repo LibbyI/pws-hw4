@@ -87,8 +87,10 @@ export const authenticateAndAuthorize = async(req, res, requiredPermission: stri
       return;
     }
     const userPermission = await getUserPermission(user.id);
+
     if (!Object.values(requiredPermission).includes(userPermission)){
       res.status(403).send(JSON.stringify({message: "user dont have permission for this action"}));
+      console.log("user not aoutherized", userPermission);
       return;
     }
   return user;

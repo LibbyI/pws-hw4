@@ -3,9 +3,9 @@ import ButtonAppBar from '../header/header.tsx';
 import AlignItemsList from '../comments/comments.tsx';
 
 import { useNavigate } from 'react-router-dom';
-import { permissionValidTypes, scrabedIUser } from "../../../src/models/user.js";
+import { permissionValidTypes, scrabedIUser } from "../../../backend/src/models/user.js";
 import { useParams } from 'react-router-dom';
-import event, { IEvent, Ticket } from "../../../src/models/event.ts";
+import event, { IEvent, Ticket } from "../../../backend/src/models/event.ts";
 import { TicketCardProps } from "./ticket-card.tsx";
 import { getEventById } from "../common/requests.ts";
 import EventDetails from "./event-details.tsx";

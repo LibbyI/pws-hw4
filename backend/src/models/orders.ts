@@ -1,6 +1,8 @@
 import mongoose from "mongoose";
 import { Ticket } from "./event.js";
 import { TIMEOUT } from "../const.js";
+// import { TIMEOUT } from "../src/const.js";
+// 
 
 export interface paymentDetails{
     cc: string;
