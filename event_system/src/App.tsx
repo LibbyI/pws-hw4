@@ -52,9 +52,9 @@ function App() {
       <Routes>
         <Route path="/" element={<SignUp />}></Route>
         <Route path="/signin" element={<SignIn setUser={setUserState}/>}></Route>
-        <Route path="/:userId/catalog" element={<CatalogPage logout={logout} getUser={getUserState}/>}></Route>
-        <Route path="/:userId/event/:eventId" element={<EventPage logout={logout} getUser={getUserState}/>}></Route>
-        <Route path="/:userId/checkout/:orderId" element={<CheckoutPage/>}></Route>
+        <Route path="/:userId/:permissionType/catalog" element={<CatalogPage logout={logout} getUser={getUserState}/>}></Route>
+        <Route path="/:userId/:permissionType/event/:eventId" element={<EventPage logout={logout} getUser={getUserState}/>}></Route>
+        <Route path="/:userId/:permissionType/checkout/:orderId" element={<CheckoutPage/>}></Route>
       </Routes>
     </BrowserRouter>
   );

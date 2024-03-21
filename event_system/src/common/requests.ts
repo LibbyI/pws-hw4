@@ -13,7 +13,6 @@ const GATEWAY_URL = "http://localhost:3000";
 
 
 export const sendRequest = async (url: string, method: string, body: Object | null = null): Promise<AxiosResponse>  => {
-    try{
         let response;
         switch(method){
             case 'GET':
@@ -41,12 +40,7 @@ export const sendRequest = async (url: string, method: string, body: Object | nu
         }
         // console.log(response);
 
-        return response;  
-    }catch(error){
-        console.error(url, method);
-        console.error(error);
-        
-    }
+        return response; 
 };
 
 export const getEventComments = async(eventId: String):Promise<AxiosResponse | null> => {
