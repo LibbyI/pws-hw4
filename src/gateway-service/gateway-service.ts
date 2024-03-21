@@ -56,7 +56,7 @@ app.use(function (req, res, next) {
 
  }) 
 
- app.get('/isBackoffice/:id', async(req,res) => {
+app.get('/isBackoffice/:id', async(req,res) => {
   try{
     const user = await protectedRout(req, res);
     if (!user){
@@ -244,6 +244,18 @@ app.patch('/events/date/:eventId', updateEventDateValidator, async(req, res) => 
       }
       const id = req.params.id;
       const response = await axios.get(`${comments_url}/${id}`);
+      res.status(response.status).send(response.data);
+    }catch(error){
+      res.status(500).send(error);
+    }
+  });
+
+  app.get('/comments/count/:id', async (req, res) => {
+    try{
+      const id = req.params.id;
+      // res.redirect(`${comments_url}/${id}`);
+      // const cookieValue = req.cookies['token'];
+      const response = await axios.get(`${comments_url}/count/${id}`);
       res.status(response.status).send(response.data);
     }catch(error){
       res.status(500).send(error);

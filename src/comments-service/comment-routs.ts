@@ -37,3 +37,14 @@ export const getComments = async(req, res) => {
         res.status(500).send(error);
       }
 }
+export const getCommentsCount = async(req, res) => {
+  try {
+      const id = req.params.id;
+      let filter : object = {eventId: id};
+      const result = (await comments.find(filter).count().exec()).toString();
+      res.status(200).send(result);
+      return;
+    } catch (error) {
+      res.status(500).send(error);
+    }
+}

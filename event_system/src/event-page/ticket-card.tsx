@@ -6,17 +6,20 @@ import Typography from '@mui/material/Typography';
 import { Ticket } from '../../../src/models/event';
 import { QuantityInput } from './quantity-input';
 import { BuyNowButton } from './buy-now-button';
+import { permissionValidTypes } from '../../../src/models/user';
+import { isBackoffice } from '../common/utils';
 //import { BuyNowButton } from './buy-now-button';
 
 export interface TicketCardProps{
     ticket: Ticket;
     eventId: string;
     userId: string;
+    permissionType: permissionValidTypes;
 }
 
 
 
-export const TicketCard: React.FC<TicketCardProps> = ({ticket, eventId, userId}) => {
+export const TicketCard: React.FC<TicketCardProps> = ({ticket, eventId, userId, permissionType}) => {
   const [selectedTicketQuantity, setSelectedTicketQuantity] = React.useState(Math.min(1, ticket.quantity));
 
 
@@ -33,10 +36,10 @@ export const TicketCard: React.FC<TicketCardProps> = ({ticket, eventId, userId})
             {(ticket.quantity===0) ? "No Tickets left" : `${ticket.quantity} tickets left !`}
         </Typography>
       </CardContent>
-      <CardActions  >
+      {isBackoffice(permissionType) ? (<></>) :<CardActions  >
         <QuantityInput value={selectedTicketQuantity} setValue={setSelectedTicketQuantity} max={ticket.quantity} min={0} />
         <BuyNowButton ticket={{...ticket, quantity: selectedTicketQuantity}} event_id={eventId} user_id={userId} />
-      </CardActions>
+      </CardActions> }
     </Card>
   );
 }

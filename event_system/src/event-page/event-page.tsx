@@ -3,14 +3,16 @@ import ButtonAppBar from '../header/header.tsx';
 import AlignItemsList from '../comments/comments.tsx';
 
 import { useNavigate } from 'react-router-dom';
-import { scrabedIUser } from "../../../src/models/user.js";
+import { permissionValidTypes, scrabedIUser } from "../../../src/models/user.js";
 import { useParams } from 'react-router-dom';
 import event, { IEvent, Ticket } from "../../../src/models/event.ts";
 import { TicketCardProps } from "./ticket-card.tsx";
 import { getEventById } from "../common/requests.ts";
 import EventDetails from "./event-details.tsx";
-import { Box, Container, CssBaseline } from "@mui/material";
+import { Box, Container, CssBaseline, Divider } from "@mui/material";
 import {TicketsGrid} from "./tickets-grid.tsx";
+import { isBackoffice } from "../common/utils.ts";
+import { CommentsCountBox } from "../comments/comments-count.tsx";
 
 
 interface Props{
@@ -28,10 +30,11 @@ const [loading, setLoading] = useState(true);
 const [error, setError] = useState(null);
 
 //********************Hooks**************************/
-const { userId, eventId } = useParams();
-if(!eventId || !userId){
+const { userId, permissionType, eventId } = useParams();
+if(!eventId || !userId || !permissionType || !(Object.values(permissionValidTypes) as string[]).includes(permissionType)){
     return <h1>Invalid URL</h1>
 }//TODO: handle error
+
 
 const navigate = useNavigate();
 
@@ -53,6 +56,8 @@ const goBack = () =>{
     navigate(-1);
 }
 
+const backoffice: boolean = isBackoffice(permissionType as permissionValidTypes);
+
 
 //********************Render**************************/
 
@@ -60,15 +65,17 @@ const goBack = () =>{
         return <h1>Loading...</h1>
     }//TODO: add loader
 
-    if (error|| event === undefined){
+    if (error || event === undefined) {
         return <h1>Error: {error}</h1>
     }//TODO: add error page
 
     return (
-        <Container maxWidth= {false}>
-        <ButtonAppBar goback={goBack} logout={logoutandgotologin}  getUser={getUser}></ButtonAppBar>
-        <EventDetails {...event}></EventDetails>
-        <TicketsGrid tickets={event.tickets.map((t:Ticket):TicketCardProps => {return {ticket:t, eventId:eventId, userId:userId }})}></TicketsGrid>
-        <AlignItemsList eventId={eventId} getUser={getUser}></AlignItemsList>
+        <Container maxWidth={false}>
+            <ButtonAppBar goback={goBack} logout={logoutandgotologin} getUser={getUser}></ButtonAppBar>
+            <Divider>Event Details</Divider>
+            <EventDetails {...event}></EventDetails>
+            <Divider> {backoffice ? "Categories" : "Buy Tickets"}</Divider>
+            <TicketsGrid tickets={event.tickets.map((t: Ticket): TicketCardProps => { return { ticket: t, eventId: eventId, userId: userId, permissionType: permissionType as permissionValidTypes } })}></TicketsGrid>
+            {backoffice? (<CommentsCountBox eventId={eventId}></CommentsCountBox>) : <AlignItemsList eventId={eventId} getUser={getUser}></AlignItemsList>}
         </Container>
-    )};
+);}

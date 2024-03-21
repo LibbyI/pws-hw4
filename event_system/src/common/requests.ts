@@ -54,12 +54,22 @@ export const getEventComments = async(eventId: String):Promise<AxiosResponse | n
         return null;
     }
 };
+export const getEventCommentsCount = async(eventId: string):Promise<AxiosResponse | null> => {
+    try{
+        const url = `${GATEWAY_URL}/comments/count/${eventId}`;
+        const response = await sendRequest(url, "GET");
+        return response;
+        
+    }catch(error){
+        return null;
+    }
+};
 
 export const sendEventComment = async(comment: Icomment):Promise<AxiosResponse | null> => {
     try{
         const body = comment;
         const comment_split = ADD_COMMENT.split(' ');
-        const url = GATEWAY_URL+comment_split[1];
+        const url = GATEWAY_URL;
         const response = await sendRequest(url, comment_split[0], body);
         return response;
         
