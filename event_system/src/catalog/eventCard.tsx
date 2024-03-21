@@ -38,7 +38,7 @@ export interface ExpandMoreProps extends IconButtonProps {
     };
 
     return (
-        <Card sx={{ maxWidth: 345 ,display: 'flex'}} className='card' key={event._id}>
+        <Card sx={{ maxWidth: 345 ,display: 'flex', flexDirection:'column'}} className='card' key={event._id}>
           <CardActionArea onClick={() => navigate(`../event/${event._id}`, { relative: "path" })}>
           <CardHeader
             title = {event.title}
