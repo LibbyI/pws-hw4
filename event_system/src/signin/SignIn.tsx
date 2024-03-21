@@ -86,7 +86,7 @@ export const SignIn: React.FC<Props> = ({setUser}) => {
         alert("empty username or password");
       }
     } catch (error) {
-      
+      alert("somthing went wrong...try again");
       console.error('Error login in user:', error);
     }
   };

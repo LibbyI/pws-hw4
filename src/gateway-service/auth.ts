@@ -34,12 +34,14 @@ const verifyJWT = (token: string) => {
 
 // Middelware for all protected routes. You need to expend it, implement premissions and handle with errors.
 export const protectedRout = (req: express.Request, res: express.Response) => {
-  let authHeader = req.headers["authorization"] as string;
+  // let authHeader = req.headers["authorization"] as string;
+  let tokenCookieValue = req.cookies['token'];
+  console.log(tokenCookieValue.split(' ')[1])
 
   // authorization header needs to look like that: Bearer <JWT>.
   // So, we just take to <JWT>.
   // TODO: You need to validate it.
-  let authHeaderSplited = authHeader && authHeader.split(" ");
+  let authHeaderSplited = tokenCookieValue && tokenCookieValue.split(" ");
   const token = authHeaderSplited && authHeaderSplited[1];
 
 

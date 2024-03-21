@@ -13,40 +13,34 @@ const GATEWAY_URL = "http://localhost:3000";
 
 
 export const sendRequest = async (url: string, method: string, body: Object | null = null): Promise<AxiosResponse>  => {
-    try{
-        let response;
-        switch(method){
-            case 'GET':
-                response = await axios.get(url, {
-                    withCredentials: true
-                  });
+    let response;
+    switch(method){
+        case 'GET':
+            response = await axios.get(url, {
+                withCredentials: true
+                });
+            break;
+        case 'POST':
+                response = await axios.post(url, body, {
+                withCredentials: true
+                });
                 break;
-            case 'POST':
-                 response = await axios.post(url, body, {
-                    withCredentials: true
-                  });
-                 break;
-            case 'PUT':
-                 response = await axios.put(url, body,{
-                    withCredentials: true
-                  });
-                 break;
-            case 'PATCH':
-                 response = await axios.patch(url, body,{
-                    withCredentials: true
-                  });
-                 break;
-            default:
-                throw new Error('Invalid method');
-        }
-        // console.log(response);
-
-        return response;  
-    }catch(error){
-        console.error(url, method);
-        console.error(error);
-        
+        case 'PUT':
+                response = await axios.put(url, body,{
+                withCredentials: true
+                });
+                break;
+        case 'PATCH':
+                response = await axios.patch(url, body,{
+                withCredentials: true
+                });
+                break;
+        default:
+            throw new Error('Invalid method');
     }
+    console.log(response);
+
+    return response;  
 };
 
 export const getEventComments = async(eventId: String):Promise<AxiosResponse | null> => {
@@ -98,7 +92,8 @@ export const login = async(username: String, password: String):Promise<AxiosResp
         return response;
         
     }catch(error){
-        return null;
+        console.error("error loging in");
+        throw error;
     }
 };
 
