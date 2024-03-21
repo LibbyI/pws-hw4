@@ -12,28 +12,49 @@ interface pros {
 }
 
 export const EditEventDateForm: React.FC<pros> = ({originalStartDate, originalEndDate, eventId}) => {
-    const [startDate, setStartDate] = useState(new Date(originalStartDate));
-    const [endDate, setEndDate] = useState(new Date(originalEndDate));
-    const [earlyStartDateError, setEarlyStartDateError] = useState(false);
+    
+    originalStartDate = new Date(originalStartDate);
+    originalEndDate = new Date(originalEndDate);
+    const [startDate, setStartDate] = useState(originalStartDate);
+    const [endDate, setEndDate] = useState(originalEndDate);
+    const [startDateError, setStartDateError] = useState(false);
+    const [endDateError, setEndDateError] = useState(false);
 
-    // const useStyles = makeStyles({
-    //     input: {
-    //       "&:valid": {
-    //         backgroundColor: "yellow"
-    //       },
-    //       "&:invalid": {
-    //         backgroundColor: "red"
-    //       }
-    //     }
-    //   });
+    const handleStartDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+
+        if (new Date(e.target.value) < originalStartDate){
+            setStartDate(originalStartDate);
+            e.target.value = originalStartDate.toISOString().split('T')[0];
+            setStartDateError(true);
+
+        }
+        else{
+            setStartDate(new Date(e.target.value));
+            setStartDateError(false);
+        }
+    }
+
+    const handleEndDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        if (new Date(e.target.value) < startDate){
+            setEndDate(startDate);
+            e.target.value = startDate.toISOString().split('T')[0];
+            setEndDateError(true);
+        }
+        else{
+            setEndDate(new Date(e.target.value));
+            setEndDateError(false);
+        }
+    }
+
       
 
     return (
         <Container sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
         <FormLabel>Start Date</FormLabel>
-        <TextField type='date' required={true} InputProps={{inputProps: {min:originalStartDate}}}></TextField>
+        <TextField type='date' required={true} InputProps={{inputProps: {min:originalStartDate}}} onChange={handleStartDateChange} error= {startDateError}></TextField>
         <FormLabel>End Date</FormLabel>
-        <TextField type='date' required={true} ></TextField>
+        <TextField type='date' required={true} onChange={handleEndDateChange} error={endDateError}></TextField>
         </Container>
     )
 }
+
