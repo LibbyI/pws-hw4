@@ -7,7 +7,7 @@ import { ClientSession } from "mongoose";
 import * as dotenv from "dotenv";
 
 import { HttpError } from "./order-error.js";
-import { PAYMENT_URL } from "../const.js";
+import { PAYMENT_URL , PAYMENT_REFUND_URL } from "../const.js";
 import {orederExpiredDate} from "../const.js";
 import { stat } from "fs";
 dotenv.config();
@@ -49,14 +49,14 @@ export async function addNewOrder(req) : Promise<IOrder> {
     }
 
 
-export async function deleteExpiredOrder(orderId: string) : Promise<IOrder | null> {
+export async function deleteExpiredOrder(orderId: string, status: orderStatus) : Promise<IOrder | null> {
     const db = await mongoose.createConnection(dbURI).asPromise();
     const session = await db.startSession();
     session.startTransaction();
     let deleted_oreder = null;
     try{
         const result_order = await orders.findOneAndDelete(
-            { _id: orderId ,expires_at: {$lte: new Date()}, status: orderStatus.pending}).exec();
+            { _id: orderId ,expires_at: {$lte: new Date()}, status: status}).exec();
             // { arrayFilters:[{$and:[ {"status": orderStatus.pending}, {"expires_at":{$lte: new Date()}} ]}]}).exec();
         if (!result_order){
             throw new HttpError(404, "oredr not found");;
@@ -89,7 +89,7 @@ export const cleanExpiredOrders = async () => {
         let expiredOrder = await orders.find({expires_at: {$lte: new Date()} , status: orderStatus.pending}).exec();
         console.log("found: ",  expiredOrder.length, " expired orders that need to be deleted");
         const orderIds = expiredOrder.map(order => order._id.toString());
-        const deletePromises = orderIds.map(orderId => deleteExpiredOrder(orderId));
+        const deletePromises = orderIds.map(orderId => deleteExpiredOrder(orderId, orderStatus.pending));
         try {
             await Promise.all(deletePromises);
             console.log('All expired orders deleted successfully');
@@ -182,4 +182,86 @@ async function trySaveOrder(order) {
         //TODO: add here async function to return tickets to event
         throw new HttpError(500, "failed to save order");
     }
+}
+
+
+export const refundroute = async (req ,res) => {
+    try{
+        const id = req.params.id;
+        const order: IOrder = await orders.findOne({_id: id}).exec();
+        if(!order){
+            res.status(404).send(JSON.stringify({message: "order id not found"}));
+            return;
+        }
+        const eventObj = await axios.get(`${process.env.EVENTS_SERVICE_URL}/${order.event_id}`);
+        if (eventObj.status != 200){
+            res.status(404).send(JSON.stringify({message: "event id not found"}));
+            return
+        }
+        if(new Date(eventObj.data.start_date) < new Date()){
+            res.status(400).send(JSON.stringify({message: "order start date in the pass"}));
+            return;
+        }
+        // order exist and in the future:
+        const daletedOrder = await atomicrefund(order._id.toString(), order.paiment_token);
+        if (!daletedOrder){
+            res.status(500).send(JSON.stringify({message: "refund didnt sucsseed"}));
+            return;
+        }
+        res.status(200).send(JSON.stringify({message: "refund succssess"}))
+        // return daletedOrder;
+
+    }catch(error){
+        if (error instanceof HttpError) {
+            res.status(error.status).send(error.message);
+            return;
+        }else{
+            res.status(500).send(JSON.stringify({message: "somethig went wrong"}));
+            return;
+        }
+    }
+}
+
+
+export async function atomicrefund(orderId: string, paymentToken: string) : Promise<IOrder | null> {
+    const db = await mongoose.createConnection(dbURI).asPromise();
+    const session = await db.startSession();
+    session.startTransaction();
+    let result_order = null;
+    try{
+        result_order = await orders.findOneAndDelete({ _id: orderId}).exec();
+        if (!result_order){
+            throw new HttpError(404, "oredr not found");;
+        }    
+        const result_event = await events.findOneAndUpdate(
+            { _id: result_order.event_id },
+            { $inc: { "tickets.$[elem].quantity": result_order.ticket.quantity } },
+            { arrayFilters:[{$and:[ {"elem.name": result_order.ticket.name}, {"elem.quantity":{$gte: -result_order.ticket.quantity}} ]}]}).exec();
+
+        if (result_event.tickets.some((t) => {return t.name === result_order.ticket.name && t.quantity < -result_order.ticket.quantity})){
+            throw new HttpError(400, "invalid tickets amount");;
+        }
+        if (result_event.tickets.filter((t)=> t.name === result_order.ticket.name).length === 0){
+            throw new HttpError(404, "Ticket not found");
+        }
+        try{
+            let refundpermit = await axios.post(PAYMENT_REFUND_URL, {orderId: paymentToken});
+        }catch(error){
+            try{
+            let refundpermit = await axios.post(PAYMENT_REFUND_URL, {orderId: paymentToken});
+            }catch(error){
+                throw new HttpError(500, "refund didnt excepted");
+            }
+        }
+        console.log("refund sucssess");
+        // send message to user
+        await session.commitTransaction()
+    }catch(error ){
+        await session.abortTransaction();
+        throw error;
+        return;
+    } finally{
+        session.endSession();
+    }
+    return result_order;
 }

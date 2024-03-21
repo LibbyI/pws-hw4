@@ -16,6 +16,7 @@ export const INTERVAL_CLEAN_TRIGGER = 120000;
 export const ERROR_401 = "ERROR_401";
 
 export const PAYMENT_URL = "https://www.cs-wsp.net/_functions/pay";
+export const PAYMENT_REFUND_URL = "https://www.cs-wsp.net/_functions/refund";
 
 
 export const options = {
