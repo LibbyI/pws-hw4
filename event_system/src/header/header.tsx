@@ -45,7 +45,7 @@ export const ButtonAppBar: React.FC<Props> = ({goback, logout, getUser}) => {
   }, [userId]);
 
   return (
-    <Box sx={{ flexGrow: 1 }}>
+    <Box sx={{ flexGrow: 1, pt:0, pb: 5 }}>
       <AppBar position="static">
         <Toolbar>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
