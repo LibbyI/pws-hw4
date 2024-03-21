@@ -72,12 +72,16 @@ const backoffice: boolean = isBackoffice(permissionType as permissionValidTypes)
 
     return (
         <Container maxWidth={false}>
-            <EditEventDateForm originalStartDate={new Date(event.start_date)} originalEndDate={new Date(event.end_date)} eventId={eventId}></EditEventDateForm>
             <ButtonAppBar goback={goBack} logout={logoutandgotologin} getUser={getUser}></ButtonAppBar>
             <Divider>Event Details</Divider>
             <EventDetails {...event}></EventDetails>
             <Divider> {backoffice ? "Categories" : "Buy Tickets"}</Divider>
             <TicketsGrid tickets={event.tickets.map((t: Ticket): TicketCardProps => { return { ticket: t, eventId: eventId, userId: userId, permissionType: permissionType as permissionValidTypes } })}></TicketsGrid>
             {backoffice? (<CommentsCountBox eventId={eventId}></CommentsCountBox>) : <AlignItemsList eventId={eventId} getUser={getUser}></AlignItemsList>}
+            {backoffice ?
+            <>
+            <Divider> Edit Event Date</Divider>
+            <EditEventDateForm originalStartDate={new Date(event.start_date)} originalEndDate={new Date(event.end_date)} eventId={eventId}></EditEventDateForm>
+            </> : <></>}
         </Container>
 );}

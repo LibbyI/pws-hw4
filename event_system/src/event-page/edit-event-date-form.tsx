@@ -4,7 +4,7 @@ import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import { AsyncButton } from '../common/async-button';
 import { useNavigate } from 'react-router-dom';
-import { payOnOrder } from '../common/requests';
+import { payOnOrder, updateEventDate } from '../common/requests';
 interface pros {
     originalStartDate: Date;
     originalEndDate: Date;
@@ -19,6 +19,8 @@ export const EditEventDateForm: React.FC<pros> = ({originalStartDate, originalEn
     const [endDate, setEndDate] = useState(originalEndDate);
     const [startDateError, setStartDateError] = useState(false);
     const [endDateError, setEndDateError] = useState(false);
+
+    const Navigate = useNavigate();
 
     const handleStartDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 
@@ -46,6 +48,16 @@ export const EditEventDateForm: React.FC<pros> = ({originalStartDate, originalEn
         }
     }
 
+    const handleSave = async () => {
+        if (await updateEventDate(eventId, startDate, endDate) === null){
+           alert("Event date updated failed!");
+        }
+        else{
+            alert("Event date updated successfully!");
+            Navigate(0);
+        }
+    }
+
       
 
     return (
@@ -54,6 +66,7 @@ export const EditEventDateForm: React.FC<pros> = ({originalStartDate, originalEn
         <TextField type='date' required={true} InputProps={{inputProps: {min:originalStartDate}}} onChange={handleStartDateChange} error= {startDateError}></TextField>
         <FormLabel>End Date</FormLabel>
         <TextField type='date' required={true} onChange={handleEndDateChange} error={endDateError}></TextField>
+        <AsyncButton onClick={handleSave}>Save</AsyncButton>
         </Container>
     )
 }
