@@ -3,9 +3,11 @@ import * as dotenv from "dotenv";
 import axios from 'axios';
 import { updateEventDateValidator } from "./requestsValidators.js";
 import { validationResult } from "express-validator";
-import { protectedRout, getUserPermission } from './auth.js'
+import { protectedRout, getUserPermission, authenticateAndAuthorize } from './auth.js'
 import  cookieParser from 'cookie-parser';
 import { HttpError } from "../orders-service/order-error.js";
+import {permissionValidTypes} from "../models/user.js"
+const allPermissions: string[] = Object.values(permissionValidTypes);
 
 dotenv.config();
 const app = express();
@@ -116,10 +118,6 @@ app.post('/api/login', async(req, res) => {
 
 app.post('/api/logout', async(req, res) => {
   try{
-    // const user = await protectedRout(req, res);
-    // if (!user){
-    //   return;
-    // }
       res.clearCookie('token');
       res.status(200).send(); 
     } catch(error){
@@ -129,7 +127,7 @@ app.post('/api/logout', async(req, res) => {
 
 app.get('/api/user/:id' , async(req, res) => {
   try{
-    const user = await protectedRout(req, res);
+    const user = await authenticateAndAuthorize(req, res, [permissionValidTypes.User]);
     if (!user){
       return;
     }
@@ -143,7 +141,7 @@ app.get('/api/user/:id' , async(req, res) => {
 
 app.put('/api/permissions', async (req, res) => {
   try{
-    const user = await protectedRout(req, res);
+    const user = await authenticateAndAuthorize(req, res, [permissionValidTypes.Admin]);
     if (!user){
       return;
     }
@@ -158,7 +156,7 @@ app.put('/api/permissions', async (req, res) => {
 /****************************Events*********************************/
 app.get('/events', async (req, res) => {
   try{
-    const user = await protectedRout(req, res);
+    const user = await authenticateAndAuthorize(req, res, allPermissions);
     if (!user){
       return;
     }
@@ -171,7 +169,7 @@ app.get('/events', async (req, res) => {
 
 app.get('/events/:id', async (req, res) => {
   try{
-    const user = await protectedRout(req, res);
+    const user = await authenticateAndAuthorize(req, res, allPermissions);
     if (!user){
       return;
     }
@@ -184,7 +182,7 @@ app.get('/events/:id', async (req, res) => {
 
 app.post('/events', async (req, res) => {
   try{
-    const user = await protectedRout(req, res);
+    const user = await authenticateAndAuthorize(req, res, [permissionValidTypes.Admin, permissionValidTypes.Manager]);
     if (!user){
       return;
     }
@@ -198,7 +196,7 @@ app.post('/events', async (req, res) => {
 
 app.patch('/tickets/:eventId', async (req, res) => {
   try{
-    const user = await protectedRout(req, res);
+    const user = await authenticateAndAuthorize(req, res, [permissionValidTypes.Admin, permissionValidTypes.Manager]);
     if (!user){
       return;
     }
@@ -212,7 +210,7 @@ app.patch('/tickets/:eventId', async (req, res) => {
 app.patch('/events/date/:eventId', updateEventDateValidator, async(req, res) => {
   // TODO: permissions
   try{
-    const user = await protectedRout(req, res);
+    const user = await authenticateAndAuthorize(req, res, [permissionValidTypes.Admin, permissionValidTypes.Manager]);
     if (!user){
       return;
     }
@@ -240,13 +238,8 @@ app.patch('/events/date/:eventId', updateEventDateValidator, async(req, res) => 
   
   app.get('/comments/:id', async (req, res) => {
     try{
-      const user = await protectedRout(req, res);
+      const user = await authenticateAndAuthorize(req, res, [permissionValidTypes.User]);
       if (!user){
-        return;
-      }
-      const userPermission = await getUserPermission(user.id);
-      if (userPermission != 'None'){
-        res.status(403).send(JSON.stringify({message: "user dont have permission for this action"}));
         return;
       }
       const id = req.params.id;
@@ -259,13 +252,8 @@ app.patch('/events/date/:eventId', updateEventDateValidator, async(req, res) => 
 
   app.post('/addComment', async (req, res) => {
     try{
-      const user = await protectedRout(req, res);
+      const user = await authenticateAndAuthorize(req, res, [permissionValidTypes.User]);
       if (!user){
-        return;
-      }
-      const userPermission = await getUserPermission(user.id);
-      if (userPermission != 'None'){
-        res.status(403).send(JSON.stringify({message: "user dont have permission for this action"}));
         return;
       }
       const response = await axios.post(`${comments_url}`, req.body);
@@ -283,13 +271,8 @@ app.patch('/events/date/:eventId', updateEventDateValidator, async(req, res) => 
 
   app.post('/orders',async (req, res) => {
     try{
-      const user = await protectedRout(req, res);
+      const user = await authenticateAndAuthorize(req, res, [permissionValidTypes.User]);
       if (!user){
-        return;
-      }
-      const userPermission = await getUserPermission(user.id);
-      if (userPermission != 'None'){
-        res.status(403).send(JSON.stringify({message: "user dont have permission for this action"}));
         return;
       }
       const response = await axios.post(`${orders_url}/`, req.body);
@@ -302,13 +285,8 @@ app.patch('/events/date/:eventId', updateEventDateValidator, async(req, res) => 
   app.post('/pay', async (req, res) => {
     // res.redirect(307, `${orders_url}/pay`);
     try{
-      const user = await protectedRout(req, res);
+      const user = await authenticateAndAuthorize(req, res, [permissionValidTypes.User]);
       if (!user){
-        return;
-      }
-      const userPermission = await getUserPermission(user.id);
-      if (userPermission != 'None'){
-        res.status(403).send(JSON.stringify({message: "user dont have permission for this action"}));
         return;
       }
       const response = await axios.post(`${orders_url}/pay`, req.body);
@@ -320,7 +298,7 @@ app.patch('/events/date/:eventId', updateEventDateValidator, async(req, res) => 
 
   app.get('/orders/:id',async (req, res) => {
     try{
-      const user = await protectedRout(req, res);
+      const user = await authenticateAndAuthorize(req, res, [permissionValidTypes.User]);
       if (!user){
         return;
       }

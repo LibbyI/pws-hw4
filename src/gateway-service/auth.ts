@@ -79,3 +79,21 @@ export const getUserPermission = async(id: string) =>{
     return null;
   }
 }
+
+export const authenticateAndAuthorize = async(req, res, requiredPermission: string[]) => {
+  try{
+    const user = await protectedRout(req, res);
+    if (!user){
+      return;
+    }
+    const userPermission = await getUserPermission(user.id);
+    if (!Object.values(requiredPermission).includes(userPermission)){
+      res.status(403).send(JSON.stringify({message: "user dont have permission for this action"}));
+      return;
+    }
+  return user;
+
+  }catch(error){
+    res.status(500).send(error);
+  }
+}

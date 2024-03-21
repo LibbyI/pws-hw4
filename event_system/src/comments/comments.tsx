@@ -28,7 +28,11 @@ export const AlignItemsList: React.FC<Props>= ({eventId, getUser}) => {
         try {
             const response = await getEventComments(eventId);
             const comments = response?.data ;
-            setCommentsArray(comments);
+            if (response == null){
+                setCommentsArray([]);
+            }else{
+                setCommentsArray(comments);
+            }
         } catch (error) {
             console.error('Error fetching comments:', error);
         }
