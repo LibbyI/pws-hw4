@@ -6,9 +6,11 @@ import EventsGrid from "./eventsGrid";
 import { getEvents } from "../common/requests.ts";
 import { json } from "stream/consumers";
 import { set } from "mongoose";
-import { scrabedIUser } from "../../../src/models/user.js";
+import { permissionValidTypes, scrabedIUser } from "../../../src/models/user.js";
 import { useNavigate, useParams } from 'react-router-dom';
 import ButtonAppBar from '../header/header.tsx';
+import { isBackoffice } from "../common/utils.ts";
+import { not } from "joi";
 
 
 interface Props{
@@ -24,9 +26,9 @@ const goBack = () =>{
     navigate(-1);
 }
 
-const { userId } = useParams();
-if(!userId){
-    return <h1>Invalid UserId</h1>
+const { userId, permissionType } = useParams();
+if(!userId || !permissionType || !(Object.values(permissionValidTypes) as string[]).includes(permissionType)){
+    return <h1>Invalid URL</h1>
 }//TODO: handle error
 
 
@@ -41,7 +43,7 @@ const [loading, setLoading] = useState(true);
 const [error, setError] = useState(null);
 
 useEffect(() => {
-    getEvents(true).then((response) => {
+    getEvents(!isBackoffice(permissionType as permissionValidTypes)).then((response) => {
         if (response?.status === 200){
             setEvents(response.data as IEvent[]);
         }

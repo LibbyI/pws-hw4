@@ -1,5 +1,11 @@
 import * as mongoose from "mongoose";
-export const permissionValidTypes = ["None", "A", "M", "W"];
+export enum permissionValidTypes {
+  Admin = "A",
+  Manager = 'M',
+  Worker = 'W',
+  User = 'None'
+};
+
 export interface IUser {
     username: string;
     password: string;
