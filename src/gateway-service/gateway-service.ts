@@ -96,7 +96,9 @@ app.post('/api/login', async(req, res) => {
   try{
     const response = await axios.post(`${users_url}/login`, req.body);
     if (response.status == 200){
-      res.cookie('token', response.data.token, { httpOnly: true , sameSite: 'none', secure: true});
+      // const new_token = response.data.token;
+      const new_token = 'Bearer ' + response.data.token;
+      res.cookie('token', new_token, { httpOnly: true , sameSite: 'none', secure: true});
       res.status(response.status).send(response.data);
     }
     else{
@@ -140,7 +142,11 @@ app.put('/api/permissions', async (req, res) => {
 /****************************Events*********************************/
 app.get('/events', async (req, res) => {
   try{
-    const cookieValue = req.cookies['token'];
+    // const cookieValue = req.cookies['token'];
+    const user = await protectedRout(req, res);
+    if (!user){
+      return;
+    }
     const response = await axios.get(`http://localhost:3001/?availableOnly=${req.query.availableOnly}`);
     res.status(response.status).send(response.data);
   }catch(error){

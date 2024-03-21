@@ -92,7 +92,8 @@ export const login = async(username: String, password: String):Promise<AxiosResp
         return response;
         
     }catch(error){
-        return null;
+        console.error("error loging in");
+        throw error;
     }
 };
 
