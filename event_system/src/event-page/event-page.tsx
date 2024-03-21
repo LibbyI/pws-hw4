@@ -13,6 +13,7 @@ import { Box, Container, CssBaseline, Divider } from "@mui/material";
 import {TicketsGrid} from "./tickets-grid.tsx";
 import { isBackoffice } from "../common/utils.ts";
 import { CommentsCountBox } from "../comments/comments-count.tsx";
+import { EditEventDateForm } from "./edit-event-date-form.tsx";
 
 
 interface Props{
@@ -71,6 +72,7 @@ const backoffice: boolean = isBackoffice(permissionType as permissionValidTypes)
 
     return (
         <Container maxWidth={false}>
+            <EditEventDateForm originalStartDate={new Date(event.start_date)} originalEndDate={new Date(event.end_date)} eventId={eventId}></EditEventDateForm>
             <ButtonAppBar goback={goBack} logout={logoutandgotologin} getUser={getUser}></ButtonAppBar>
             <Divider>Event Details</Divider>
             <EventDetails {...event}></EventDetails>

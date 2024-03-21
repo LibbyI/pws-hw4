@@ -12,8 +12,8 @@ import { permissionValidTypes, scrabedIUser } from "../../backend/src/models/use
 import { EventPage } from './event-page/event-page.tsx';
 import { CheckoutPage } from './checkout-page/checkout-page.tsx'
 import{ logoutreq } from "./common/requests.ts"
+import { makeStyles } from '@mui/material'
 
- 
 function App() {
   let userState = localStorage.getItem("userState");
   if (userState == null)

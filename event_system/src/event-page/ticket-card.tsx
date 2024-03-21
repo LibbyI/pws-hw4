@@ -8,6 +8,7 @@ import { QuantityInput } from './quantity-input';
 import { BuyNowButton } from './buy-now-button';
 import { permissionValidTypes } from '../../../backend/src/models/user';
 import { isBackoffice } from '../common/utils';
+import { TextField } from '@mui/material';
 //import { BuyNowButton } from './buy-now-button';
 
 export interface TicketCardProps{
@@ -24,7 +25,7 @@ export const TicketCard: React.FC<TicketCardProps> = ({ticket, eventId, userId, 
 
 
   return (
-    <Card sx={{background: 'grey'}}>
+    <Card >
       <CardContent>
         <Typography variant="h5" component="div">
             {ticket.name}
