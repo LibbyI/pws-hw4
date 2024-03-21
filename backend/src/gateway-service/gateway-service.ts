@@ -239,11 +239,9 @@ app.patch('/events/date/:eventId', updateEventDateValidator, async(req, res) => 
   app.get('/comments/:id', async (req, res) => {
     try{
       const user = await authenticateAndAuthorize(req, res, [permissionValidTypes.User]);
-      
       if (!user){
         return;
       }
-
       const id = req.params.id;
       const response = await axios.get(`${comments_url}/${id}`);
       res.status(response.status).send(response.data);
@@ -254,6 +252,10 @@ app.patch('/events/date/:eventId', updateEventDateValidator, async(req, res) => 
 
   app.get('/comments/count/:id', async (req, res) => {
     try{
+      const user = await authenticateAndAuthorize(req, res, allPermissions);
+      if (!user){
+        return;
+      }
       const id = req.params.id;
       // res.redirect(`${comments_url}/${id}`);
       // const cookieValue = req.cookies['token'];
