@@ -127,7 +127,7 @@ app.post('/api/logout', async(req, res) => {
 
 app.get('/api/user/:id' , async(req, res) => {
   try{
-    const user = await authenticateAndAuthorize(req, res, [permissionValidTypes.User]);
+    const user = await authenticateAndAuthorize(req, res, allPermissions);
     if (!user){
       return;
     }

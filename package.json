@@ -9,6 +9,8 @@
     "start-gateway": "node ./dist/gateway-service/gateway-service.js",
     "start-events": "node ./dist/events-service/events-service.js",
     "start-users": "node ./dist/users-service/users-service.js",
+    "start-comments": "node ./dist/comments-service/comments-service.js",
+    "start-orders": "node ./dist/orders-service/orders-service.js",
     "dev-gateway": "tsc-watch --onSuccess \"node ./dist/gateway-service/gateway-service.js\" --compiler typescript/bin/tsc",
     "dev-events": "tsc-watch --onSuccess \"node ./dist/events-service/events-service.js\" --compiler typescript/bin/tsc",
     "dev-users": "tsc-watch --onSuccess \"node ./dist/users-service/users-service.js\" --compiler typescript/bin/tsc",
@@ -19,7 +21,7 @@
   "author": "noa_libby",
   "license": "ISC",
   "devDependencies": {
-    "@types/node": "^18.11.9",
+    "@types/node": "^18.19.26",
     "tsc-watch": "^5.0.3",
     "typescript": "^4.9.3"
   },
