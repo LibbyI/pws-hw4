@@ -1,9 +1,9 @@
-import scrabedIUser from "../../src/models/user.js";
+import scrabedIUser from "../../../src/models/user.js";
 import axios, { Axios, AxiosError, AxiosResponse } from 'axios';
-import { GET_USER , LOGIN , SIGNUP , GET_COMMENTS, ADD_COMMENT} from "../../src/const.js"
+import { GET_USER , LOGIN , SIGNUP , GET_COMMENTS, ADD_COMMENT} from "../../../src/const.js"
 import { Swipe } from "@mui/icons-material";
-import {Icomment} from "../../src/models/comments.js"
-import { IOrder } from "../../src/models/orders.js";
+import {Icomment} from "../../../src/models/comments.js"
+import { IOrder,paymentDetails } from "../../../src/models/orders.js";
 // import * as dotenv from "dotenv";
 // dotenv.config();
 // TODO: repalce with dotenv
@@ -148,4 +148,19 @@ export const getUserPermission = async(userId: String):Promise<boolean> => {
     const response = await sendRequest(url, 'GET');
     console.log(response);
     return response.data.backoffice;
+}
+
+export const payOnOrder = async(order: IOrder, paymentDetails: paymentDetails):Promise<AxiosResponse | null > => {
+    try {
+        const url = `${GATEWAY_URL}/pay`;
+        const body = {
+            order: order,
+            paymentDetails: paymentDetails
+        };
+        const response = await sendRequest(url, 'POST', body);
+        return response;
+    } catch (error) {
+      return null;  
+    }
+
 }

@@ -7,7 +7,7 @@ import { scrabedIUser } from "../../../src/models/user.js";
 import { useParams } from 'react-router-dom';
 import event, { IEvent, Ticket } from "../../../src/models/event.ts";
 import { TicketCardProps } from "./ticket-card.tsx";
-import { getEventById } from "../requests.ts";
+import { getEventById } from "../common/requests.ts";
 import EventDetails from "./event-details.tsx";
 import { Box, Container, CssBaseline } from "@mui/material";
 import {TicketsGrid} from "./tickets-grid.tsx";

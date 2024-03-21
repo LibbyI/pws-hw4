@@ -8,10 +8,10 @@ import Avatar from '@mui/material/Avatar';
 import Typography from '@mui/material/Typography';
 import {Icomment} from '../../../src/models/comments';
 import {Comment} from './comment';
-import {getEventComments} from "../requests";
+import {getEventComments} from "../common/requests.js";
 import { useEffect, useState } from 'react';
 import { TextField, Button, Container } from '@mui/material';
-import {sendEventComment} from "../requests";
+import {sendEventComment} from "../common/requests.js";
 import { scrabedIUser } from "../../../src/models/user.js";
 
 interface Props{

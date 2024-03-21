@@ -2,7 +2,7 @@ import { Card, Container, Typography } from "@mui/material";
 import { IOrder } from "../../../src/models/orders";
 import { Ticket } from "../../../src/models/event";
 
-interface OrderSummaryProps {
+export interface OrderSummaryProps {
     eventName: string;
     ticket: Ticket;
 }

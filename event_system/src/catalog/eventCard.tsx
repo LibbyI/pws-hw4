@@ -13,7 +13,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { Button, CardActionArea } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 
-interface ExpandMoreProps extends IconButtonProps {
+export interface ExpandMoreProps extends IconButtonProps {
     expand: boolean;
   }
   
