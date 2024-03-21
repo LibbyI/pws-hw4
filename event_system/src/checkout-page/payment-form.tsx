@@ -32,10 +32,11 @@ export const PaymentForm: React.FC<PaymentFormProps> = ({order}) => {
             const paymentDetails: paymentDetails = {
                 holder: name,
                 cc: cardNumber,
-                exp: expiry,
+                exp: expiry.split('-').reverse().join('/'),
                 cvv: cvv,
                 charge: order.ticket.price * order.ticket.quantity
             }
+                console.log(paymentDetails);
                 await payOnOrder(order, paymentDetails);
                 navigate(0);
                            
@@ -48,23 +49,13 @@ export const PaymentForm: React.FC<PaymentFormProps> = ({order}) => {
   return (
     <Container sx={{ display: 'flex', flexDirection: 'column',alignItems:'center' }}>
         <FormLabel> Name </FormLabel>
-        <TextField placeholder='Name' required = {true}></TextField>
+        <TextField placeholder='Name' required = {true} onChange={(e)=> setName(e.target.value)}></TextField>
         <FormLabel> Card Number</FormLabel>
-        {/* <Container sx={{ display: 'flex', flexDirection: 'row',alignItems:'center' }}>
-        {Array.from(Array(4),() => (
-            <TextField  
-            placeholder='0000' 
-            required={true}
-            error={cardNumberError}
-            color={cardNumberColor as "primary" | "error" | "secondary" | "info" | "success" | "warning"} 
-            ></TextField>
-        ))}
-        </Container> */}
-        <TextField type='number' placeholder='Card Number'></TextField>
+        <TextField type='number' placeholder='Card Number' onChange={(e) => setCardNumber(e.target.value)}></TextField>
         <FormLabel> Expiry Date</FormLabel>
-        <TextField  type='month' ></TextField>
+        <TextField  type='month' onChange={(e)=>setExpiry(e.target.value)}></TextField>
         <FormLabel> CVV</FormLabel>
-        <TextField placeholder='CVV'></TextField>
+        <TextField placeholder='CVV' onChange={(e)=> setCvv(e.target.value)}></TextField>
         <AsyncButton onClick={handlePay}>Pay!</AsyncButton>    
     </Container>
   
