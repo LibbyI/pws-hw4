@@ -8,6 +8,7 @@ export interface Ticket{
     name: string;
     quantity: number;
     price: number;
+    original_quantity: number;
 }
 export interface IEvent {
     _id: string;
@@ -49,7 +50,8 @@ const eventSchema = new mongoose.Schema<IEvent,mongoose.Model<IEvent>>(
       tickets: { type: [{
         name: { type: String, required: true , minlength: [1, 'ticket type cant be empty']},
         quantity: { type: Number, required: true, min: [0, 'quantity must be greater than 0']},
-        price: { type: Number, required: true, min: [0, 'price must be greater than 0']}
+        price: { type: Number, required: true, min: [0, 'price must be greater than 0']},
+        original_quantity: { type: Number, required: true, min: [0, 'original quantity must be greater than 0']}
     }], required: true,
       },
       image: { type: String, required: false }

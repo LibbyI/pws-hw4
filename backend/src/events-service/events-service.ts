@@ -64,7 +64,9 @@ app.get('/:id', async (req, res) => {
 
 app.post('/', async (req, res) => {
   try{
-    const event = new EventType(req.body);
+    console.log({...req.body, original_quantity: req.body.quantity});
+    const ticketsWithOriginalQuantity = req.body.tickets.map((t) => {return {...t, original_quantity: t.quantity}});
+    const event = new EventType({...req.body, tickets: ticketsWithOriginalQuantity});
     await event.validate();
     const result = await event.save();
     res.send(result);
