@@ -16,6 +16,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { login, getUserPermission } from '../common/requests.ts';
 import { scrabedIUser } from '../../../backend/src/models/user.ts';
+import {getCookies , setCookey} from '../common/utils.ts'
 // import * as dotenv from "dotenv";
 
 // dotenv.config();
@@ -61,6 +62,11 @@ export const SignIn: React.FC<Props> = ({setUser}) => {
         if (response?.status == 200){
           console.log('User loged in successfully:', response);
           const user: scrabedIUser = response.data;
+          if (user.username){
+            var expirationDate = new Date();
+            expirationDate.setFullYear(expirationDate.getFullYear() + 10);
+            setCookey("username", user.username, expirationDate);
+          }
           navigate(`/${user.id}/${user.permission}/catalog`);
         
         } else{

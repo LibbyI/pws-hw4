@@ -12,7 +12,7 @@ import { permissionValidTypes, scrabedIUser } from "../../backend/src/models/use
 import { EventPage } from './event-page/event-page.tsx';
 import { CheckoutPage } from './checkout-page/checkout-page.tsx'
 import{ logoutreq } from "./common/requests.ts"
-
+import {setCookey} from "./common/utils.ts";
  
 function App() {
   let userState = localStorage.getItem("userState");
@@ -47,6 +47,9 @@ function App() {
       nextEvent: null,
       permission: "None"});
       await logoutreq();
+      var expirationDate = new Date();
+      expirationDate.setFullYear(expirationDate.getFullYear() - 10);
+      setCookey("username", " ", expirationDate);
   };
 
 
