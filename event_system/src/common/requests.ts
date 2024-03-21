@@ -185,3 +185,17 @@ export const payOnOrder = async(order: IOrder, paymentDetails: paymentDetails):P
     }
 
 }
+
+export const updateEventDate = async(eventId: string, startDate: Date, endDate: Date):Promise<AxiosResponse | null> => {
+    try {
+        const url = `${GATEWAY_URL}/events/date/${eventId}`;
+        const body = {
+            start_date: startDate.toISOString().split('T')[0],
+            end_date: endDate.toISOString().split('T')[0]
+        };
+        const response = await sendRequest(url, 'PATCH', body);
+        return response;
+    } catch (error) {
+        return null;
+    }
+}
