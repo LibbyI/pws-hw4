@@ -4,6 +4,7 @@ export const PUT_ITEM = "PUT /api/inventory";
 export const GET_USER = `GET /api/user/`;
 export const LOGIN = `POST /api/login`;
 export const SIGNUP = `POST /api/signup`;
+export const LOGOUT= `POST /api/logout`;
 export const GET_COMMENTS = `GET /comments/`;
 export const ADD_COMMENT = `POST /addComment/`;
 // export const TIMEOUT = 10000;
