@@ -15,6 +15,7 @@ import { TextField, Button, Container } from '@mui/material';
 import {sendEventComment} from "../common/requests.js";
 import { scrabedIUser } from "../../../backend/src/models/user.js";
 import { useParams } from 'react-router-dom';
+import { getCookies } from '../common/utils.js';
 // import {getUserById} from "../common/requests.js"
 interface Props{
     eventId: String;
@@ -44,10 +45,10 @@ export const AlignItemsList: React.FC<Props>= ({eventId, getUser}) => {
     const handleAddComment = async  (event: React.FormEvent<HTMLFormElement>) => {
         // TODO: GET USER NAME!!!
         event.preventDefault();
-        const user = getUser();
-        let username;
-        if (user && user.username){
-            username = user.username;
+        // const user = getUser();
+        let username = getCookies("username");
+        if (username){
+            username = username;
         }else{
             username = "Anonymous";
         }
