@@ -60,8 +60,8 @@ export const SignIn: React.FC<Props> = ({setUser}) => {
         const response = await login(username, password);
         if (response?.status == 200){
           console.log('User loged in successfully:', response);
-          const user: scrabedIUser = response.data as scrabedIUser;
-          navigate(`/${user.id}/${user.id}/catalog`);
+          const user: scrabedIUser = response.data;
+          navigate(`/${user.id}/${user.permission}/catalog`);
         
         } else{
           const errStatus = response?.status;
