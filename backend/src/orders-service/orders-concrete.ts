@@ -216,8 +216,10 @@ const aggragate = (user_orders: IOrder[] , user_events: IEvent[]) => {
         let aggregated: IorderAndEvent[] = [];;
         for(const orderObj of  user_orders){
             const event = user_events.find(event => event._id === orderObj.event_id);
-            const agg: IorderAndEvent = {_id: orderObj._id, ticket:orderObj.ticket, event: event, expires_at: orderObj.expires_at};
-            aggregated.push(agg);
+            if(event){
+                const agg: IorderAndEvent = {_id: orderObj._id, ticket:orderObj.ticket, event: event, expires_at: orderObj.expires_at};
+                aggregated.push(agg);
+            }
         }
         //sort:
         aggregated.sort((eventA, eventB) => {

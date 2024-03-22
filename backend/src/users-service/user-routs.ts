@@ -44,8 +44,10 @@ export const addRemoveMsgSwitch = async(msg: IuserOrder): Promise<boolean>=>{
 export const removeEvent = async (msg: IuserOrder): Promise<boolean> => {
   try{
     console.log(msg.userId,msg.eventId)
-    const user = await users.findByIdAndUpdate({_id: msg.userId},{ $pull: { eventIds: msg.eventId } },
-      { new: true });
+    // TODO: make it delete only one event(if tere aare many) / check msg not going back to queue 
+    const user = await users.findByIdAndUpdate({_id: msg.userId},{ $pull: { eventIds: { $elemMatch: { $eq: msg.eventId } } }} ,{ new: true });
+    // const user = await users.findByIdAndUpdate({_id: msg.userId},{ $pull: { eventIds: msg.eventId } },{ new: true });
+
     if(user.nearestEvent._id == msg.eventId){
       // check nearest
       const eventReqs = user.eventIds.map(event_id => axios.get(process.env.EVENTS_SERVICE_URL+"/"+event_id));
