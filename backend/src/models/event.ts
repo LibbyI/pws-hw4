@@ -19,7 +19,7 @@ export interface IEvent {
     start_date: Date;
     end_date: Date;
     location: string;
-    tickets: mongoose.Types.DocumentArray<Ticket>;
+    tickets: mongoose.Types.DocumentArray<Ticket> | Ticket[];
     image?: string;
   }
 
