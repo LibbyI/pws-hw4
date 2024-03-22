@@ -33,6 +33,7 @@ export interface IOrder{
 export interface IuserOrder{
     userId : mongoose.Types.ObjectId;
     eventId: string;
+    add: boolean;
   }
 
 const orderSchema = new mongoose.Schema<IOrder,mongoose.Model<IOrder>>(

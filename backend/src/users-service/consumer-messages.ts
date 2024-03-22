@@ -1,6 +1,6 @@
 import * as amqp from 'amqplib';
 import * as dotenv from "dotenv";
-import {addEvent, isUpdatedEventNearest} from "./user-routs.js"
+import {addEvent, isUpdatedEventNearest, addRemoveMsgSwitch} from "./user-routs.js"
 dotenv.config();
 const cloudamqpurl = process.env.COUDAMQP
 export const consumeMessages = async () => {
@@ -40,7 +40,7 @@ export const consumeMessages = async () => {
         console.log(`Consumer >>> received message in ${queue} queue: ${msg.content.toString()}`);
         (async () => {
             try{
-                const succsse = await addEvent(JSON.parse(msg.content.toString()));
+                const succsse = await addRemoveMsgSwitch(JSON.parse(msg.content.toString()));
                 if(succsse){
                     channel.ack(msg);
                     console.log("event id update on user");

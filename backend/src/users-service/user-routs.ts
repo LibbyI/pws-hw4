@@ -25,6 +25,45 @@ export const getUserId = async(req_username: string):Promise<string> | null => {
     }
 }
 
+export const addRemoveMsgSwitch = async(msg: IuserOrder): Promise<boolean>=>{
+  try{
+    if (msg.add == true){
+      console.log("msg.add",msg.add)
+      const bool = await addEvent(msg);
+      return bool;
+    }else{
+      const bool = await removeEvent(msg);
+      return bool;
+
+    }
+  }catch(error){
+    return false;
+  }
+}
+
+export const removeEvent = async (msg: IuserOrder): Promise<boolean> => {
+  try{
+    console.log(msg.userId,msg.eventId)
+    const user = await users.findByIdAndUpdate({_id: msg.userId},{ $pull: { eventIds: msg.eventId } },
+      { new: true });
+    if(user.nearestEvent._id == msg.eventId){
+      // check nearest
+      const eventReqs = user.eventIds.map(event_id => axios.get(process.env.GATEWAY_URL+"/events/"+event_id));
+      const eventResps = await Promise.all(eventReqs);
+      const eventList = eventResps.map(response => {return response.data;});
+      const nearest = getNearest(eventList);
+      user.updateOne({"nearestEvent": nearest});
+      return true;
+    }
+    else{
+      return true;
+    }
+  }catch(error){
+    return false;
+  }
+  return true;
+}
+
 export const addEvent = async (msg: IuserOrder): Promise<boolean> => {
   try{
     console.log(msg.userId,msg.eventId)
@@ -38,7 +77,6 @@ export const addEvent = async (msg: IuserOrder): Promise<boolean> => {
     return false;
   }
   return true;
-
 }
 
 export const isNewEventNearest = async (msg: IuserOrder) =>{

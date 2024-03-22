@@ -130,7 +130,7 @@ export async function handlePaymentRequest(req) {
 
             // console.log(order._id);
             await orders.updateOne({_id: order._id}, {status: "completed", paiment_token: paymentId.paymentToken}).exec();//TODO: maybe sould be async            
-            await publisherChannel.sendUserNewEvnt(JSON.stringify({userId: req.body.order.user_id, eventId: req.body.order.event_id}));
+            await publisherChannel.sendUserNewEvnt(JSON.stringify({userId: req.body.order.user_id, eventId: req.body.order.event_id, add: true}));
 
             await session.commitTransaction();
         }catch(error){
@@ -255,6 +255,8 @@ export async function atomicrefund(orderId: string, paymentToken: string) : Prom
         }
         console.log("refund sucssess");
         // send message to user
+        await publisherChannel.sendUserNewEvnt(JSON.stringify({userId: result_order.user_id, eventId: result_order.event_id, add: false}));
+
         await session.commitTransaction()
     }catch(error ){
         await session.abortTransaction();
