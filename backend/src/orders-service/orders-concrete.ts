@@ -1,5 +1,7 @@
 import axios, { AxiosError } from "axios";
-import OrderType, { IOrder, orderStatus, paymentDetails } from "../models/orders.js";
+import OrderType, { IOrder, orderStatus, paymentDetails, IorderAndEvent } from "../models/orders.js";
+import {scrabedIUser} from "../models/user.js";
+import {IEvent} from "../models/event.js";
 import orders from "../models/orders.js";
 import events from "../models/event.js";
 import * as mongoose from "mongoose";
@@ -12,6 +14,7 @@ import {orederExpiredDate} from "../const.js";
 import { stat } from "fs";
 dotenv.config();
 import {publisherChannel} from "./orders-service.js"
+import exp from "constants";
 const dbURI = `mongodb+srv://libby6831:${process.env.DB_PASS}@cluster0.pyjnubc.mongodb.net/?retryWrites=true&w=majority`;
 
 
@@ -47,6 +50,9 @@ export async function addNewOrder(req) : Promise<IOrder> {
         }
         return order;
     }
+
+
+
 
 
 export async function deleteExpiredOrder(orderId: string, status: orderStatus) : Promise<IOrder | null> {
@@ -182,6 +188,62 @@ async function trySaveOrder(order) {
         //TODO: add here async function to return tickets to event
         throw new HttpError(500, "failed to save order");
     }
+}
+
+
+export const getOrdersAggregateEvents = async (req, res) =>{
+    try{
+        const id = req.params.id;
+        const user: scrabedIUser = (await axios.get(`${process.env.USERS_SERVICE_URL}/${id}`)).data;
+        const eventReqs = user.eventIds.map(event_id => axios.get(process.env.EVENTS_SERVICE_URL+"/"+event_id));
+        const eventResps = await Promise.all(eventReqs);
+        const eventList: IEvent[] = eventResps.map(response => {return response.data;});
+
+        const user_orders = await orders.find({user_id: id}).exec()
+
+        const combinedAndSort = aggragate(user_orders, eventList);
+        res.status(200).send(JSON.stringify({data: combinedAndSort})) ;
+        return;
+
+    }catch(error){
+        res.status(500).send(JSON.stringify({message: "failed to get events"}));
+    }
+
+}
+
+const aggragate = (user_orders: IOrder[] , user_events: IEvent[]) => {
+    try{
+        let aggregated: IorderAndEvent[] = [];;
+        for(const orderObj of  user_orders){
+            const event = user_events.find(event => event._id === orderObj.event_id);
+            const agg: IorderAndEvent = {_id: orderObj._id, ticket:orderObj.ticket, event: event};
+            aggregated.push(agg);
+        }
+        //sort:
+        aggregated.sort((eventA, eventB) => {
+            if(eventA.event?.start_date && eventB.event?.start_date){
+                const dateA: Date = new Date(eventA.event.start_date);
+                const dateB: Date = new Date(eventB.event.start_date);
+                if (dateA < dateB) {
+                    return -1;
+                } else if (dateA > dateB) {
+                    return 1;
+                } else {
+                    return 0;
+                }
+            }else{
+                return 0;
+            }   
+        });
+        console.log("sorted");
+        return aggregated;
+    }catch(error){
+        console.log(error);
+        throw error;
+    }
+    
+ 
+    // IorderAndEvent
 }
 
 

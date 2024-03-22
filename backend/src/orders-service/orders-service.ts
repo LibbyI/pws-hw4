@@ -2,7 +2,7 @@ import express from "express";
 import * as dotenv from "dotenv";
 import * as mongoose from "mongoose";
 import { options } from '../const.js';
-import { addNewOrder, handlePaymentRequest, deleteExpiredOrder, cleanExpiredOrders , refundroute } from "./orders-concrete.js";
+import { addNewOrder, handlePaymentRequest, deleteExpiredOrder, cleanExpiredOrders , refundroute, getOrdersAggregateEvents } from "./orders-concrete.js";
 import  OrderType  from "../models/orders.js";
 import { HttpError } from "./order-error.js";
 import { PublisherChannel } from './publisher-channel.js';
@@ -65,6 +65,15 @@ app.post('/', async (req, res) => {
   }
 
 });
+
+app.get('/personalSpaceOrders/:id', async (req,res) => {
+  try{
+      await getOrdersAggregateEvents(req,res);
+
+  }catch(error){
+    res.status(500).send(error.message);
+  }
+})
 
 // app.get('/delete/:id', async (req, res) => {
 //   try {

@@ -2,6 +2,7 @@ import mongoose from "mongoose";
 import { Ticket } from "./event.js";
 import { TIMEOUT } from "../const.js";
 // import { TIMEOUT } from "../src/const.js";
+import {IEvent} from "./event.js"
 // 
 
 export interface paymentDetails{
@@ -11,8 +12,6 @@ export interface paymentDetails{
     exp: string;
     charge: number;
 }
-
-
 
 export enum orderStatus {
     pending = 'pending',
@@ -35,6 +34,16 @@ export interface IuserOrder{
     eventId: string;
     add: boolean;
   }
+
+
+export interface IorderAndEvent{
+    _id ?: mongoose.Types.ObjectId;
+    ticket: Ticket;
+    event: IEvent;
+}
+
+
+
 
 const orderSchema = new mongoose.Schema<IOrder,mongoose.Model<IOrder>>(
     {
