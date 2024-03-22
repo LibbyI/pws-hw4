@@ -47,7 +47,7 @@ export const consumeMessages = async () => {
                 }
                 else{
                 console.log("error update user");
-                channel.nack(msg, true, false);
+                channel.nack(msg, true, true);
                 }
             }catch(error){
                 console.log(error,msg.content.toString() , "remove from queue");
