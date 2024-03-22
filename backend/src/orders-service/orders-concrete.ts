@@ -202,7 +202,7 @@ export const getOrdersAggregateEvents = async (req, res) =>{
         const user_orders = await orders.find({user_id: id}).exec()
 
         const combinedAndSort = aggragate(user_orders, eventList);
-        res.status(200).send(JSON.stringify({data: combinedAndSort})) ;
+        res.status(200).send(combinedAndSort) ;
         return;
 
     }catch(error){
@@ -216,7 +216,7 @@ const aggragate = (user_orders: IOrder[] , user_events: IEvent[]) => {
         let aggregated: IorderAndEvent[] = [];;
         for(const orderObj of  user_orders){
             const event = user_events.find(event => event._id === orderObj.event_id);
-            const agg: IorderAndEvent = {_id: orderObj._id, ticket:orderObj.ticket, event: event};
+            const agg: IorderAndEvent = {_id: orderObj._id, ticket:orderObj.ticket, event: event, expires_at: orderObj.expires_at};
             aggregated.push(agg);
         }
         //sort:

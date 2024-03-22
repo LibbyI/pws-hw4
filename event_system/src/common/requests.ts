@@ -207,3 +207,13 @@ export const addNewEvent = async(event: IEvent):Promise<AxiosResponse | null> =>
         const response = await sendRequest(url, 'POST', body);
         return response;
 }
+
+export const getUserPersonalSpace = async(userId: string):Promise<AxiosResponse | null> => {
+    try {
+        const url = `${GATEWAY_URL}/personalSpaceOrders/${userId}`;
+        const response = await sendRequest(url, 'GET');
+        return response;
+    } catch (error) {
+        return null;
+    }
+}

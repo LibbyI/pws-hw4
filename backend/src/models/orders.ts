@@ -39,6 +39,7 @@ export interface IuserOrder{
 export interface IorderAndEvent{
     _id ?: mongoose.Types.ObjectId;
     ticket: Ticket;
+    expires_at: Date;
     event: IEvent;
 }
 
