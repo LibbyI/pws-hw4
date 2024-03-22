@@ -4,6 +4,7 @@ import { GET_USER , LOGIN ,LOGOUT, SIGNUP , GET_COMMENTS, ADD_COMMENT} from "../
 import { Swipe } from "@mui/icons-material";
 import {Icomment} from "../../../backend/src/models/comments.js"
 import { IOrder,paymentDetails } from "../../../backend/src/models/orders.js";
+import { IEvent } from "../../../backend/src/models/event.js";
 // import * as dotenv from "dotenv";
 // dotenv.config();
 // TODO: repalce with dotenv
@@ -198,4 +199,11 @@ export const updateEventDate = async(eventId: string, startDate: Date, endDate: 
     } catch (error) {
         return null;
     }
+}
+
+export const addNewEvent = async(event: IEvent):Promise<AxiosResponse | null> => {
+        const url = `${GATEWAY_URL}/events`;
+        const body = {...event, start_date: event.start_date.toISOString().split('T')[0], end_date: event.end_date.toISOString().split('T')[0]}
+        const response = await sendRequest(url, 'POST', body);
+        return response;
 }

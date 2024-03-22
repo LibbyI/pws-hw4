@@ -13,6 +13,7 @@ import { EventPage } from './event-page/event-page.tsx';
 import { CheckoutPage } from './checkout-page/checkout-page.tsx'
 import{ logoutreq } from "./common/requests.ts"
 import {setCookey} from "./common/utils.ts";
+import { NewEventPage } from './new-event-page.tsx/new-event-page.tsx'
 
 
 function App() {
@@ -62,6 +63,7 @@ function App() {
         <Route path="/:userId/:permissionType/catalog" element={<CatalogPage logout={logout} getUser={getUserState}/>}></Route>
         <Route path="/:userId/:permissionType/event/:eventId" element={<EventPage logout={logout} getUser={getUserState}/>}></Route>
         <Route path="/:userId/:permissionType/checkout/:orderId" element={<CheckoutPage/>}></Route>
+        <Route path="/:userId/:permissionType/newEvent" element={<NewEventPage/>}></Route>
       </Routes>
     </BrowserRouter>
   );
