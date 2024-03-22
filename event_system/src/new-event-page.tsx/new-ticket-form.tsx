@@ -17,6 +17,7 @@ export const NewTicketForm: React.FC<{onSubmit: (ticket:Ticket) => void}> = ({on
     }
 
     return(
+        <>
         <Container>
             <FormLabel> Name </FormLabel>
             <TextField placeholder='Name' required = {true} onChange={(e)=> setName(e.target.value)}></TextField>
@@ -24,8 +25,11 @@ export const NewTicketForm: React.FC<{onSubmit: (ticket:Ticket) => void}> = ({on
             <QuantityInput value={price} setValue={setPrice} min={0} max={Infinity}/>
             <FormLabel> Quantity</FormLabel>
             <QuantityInput value={quantity} setValue={setQuantity} min={1} max={Infinity}/>
-            <Button onClick={() => submitHandler()}>Add Ticket</Button>
         </Container>
+        <Button onClick={() => submitHandler()}>Add Ticket</Button>
+        </>
+
+
     )
 
 }
