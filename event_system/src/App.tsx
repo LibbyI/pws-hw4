@@ -13,7 +13,7 @@ import { EventPage } from './event-page/event-page.tsx';
 import { CheckoutPage } from './checkout-page/checkout-page.tsx'
 import{ logoutreq } from "./common/requests.ts"
 import {setCookey} from "./common/utils.ts";
-
+import {DetailedList} from "./personal-space/detailed-list.tsx"
 
 function App() {
   let userState = localStorage.getItem("userState");
@@ -62,6 +62,9 @@ function App() {
         <Route path="/:userId/:permissionType/catalog" element={<CatalogPage logout={logout} getUser={getUserState}/>}></Route>
         <Route path="/:userId/:permissionType/event/:eventId" element={<EventPage logout={logout} getUser={getUserState}/>}></Route>
         <Route path="/:userId/:permissionType/checkout/:orderId" element={<CheckoutPage/>}></Route>
+        <Route path="/:userId/:permissionType/personalSpace" element={<DetailedList getUser={getUserState} logout={logout}/>}></Route>
+      
+        
       </Routes>
     </BrowserRouter>
   );

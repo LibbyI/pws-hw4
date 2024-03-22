@@ -199,3 +199,13 @@ export const updateEventDate = async(eventId: string, startDate: Date, endDate: 
         return null;
     }
 }
+
+export const getUserPersonalSpace = async(userId: string):Promise<AxiosResponse | null> => {
+    try {
+        const url = `${GATEWAY_URL}/personalSpaceOrders/${userId}`;
+        const response = await sendRequest(url, 'GET');
+        return response;
+    } catch (error) {
+        return null;
+    }
+}
