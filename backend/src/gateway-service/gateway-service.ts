@@ -284,6 +284,35 @@ app.patch('/events/date/:eventId', updateEventDateValidator, async(req, res) => 
   });
 
   /********************************Orders*******************************/
+  app.get('/personalSpaceOrders/:id', async (req, res) => {
+    try{
+      const id = req.params.id;
+      const user = await authenticateAndAuthorize(req, res, [permissionValidTypes.User]);
+      if (!user){
+        return;
+      }
+      const response = await axios.get(`${orders_url}/personalSpaceOrders/${id}`);
+      res.status(response.status).send(response.data);
+    }catch(error){
+      res.status(500).send(error);
+    }
+  })
+
+
+  app.delete('/refund/:id', async (req, res) => {
+    // await refundroute(req,res);
+    try{
+      const id = req.params.id;
+      const user = await authenticateAndAuthorize(req, res, [permissionValidTypes.User]);
+      if (!user){
+        return;
+      }
+      const response = await axios.delete(`${orders_url}/refund/${id}`, req.body);
+      res.status(response.status).send(response.data);
+      }catch(error){
+        res.status(500).send(error);
+      }
+  })
 
   app.post('/orders',async (req, res) => {
     try{

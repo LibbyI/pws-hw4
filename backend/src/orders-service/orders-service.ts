@@ -2,7 +2,7 @@ import express from "express";
 import * as dotenv from "dotenv";
 import * as mongoose from "mongoose";
 import { options } from '../const.js';
-import { addNewOrder, handlePaymentRequest, deleteExpiredOrder, cleanExpiredOrders } from "./orders-concrete.js";
+import { addNewOrder, handlePaymentRequest, deleteExpiredOrder, cleanExpiredOrders , refundroute, getOrdersAggregateEvents } from "./orders-concrete.js";
 import  OrderType  from "../models/orders.js";
 import { HttpError } from "./order-error.js";
 import { PublisherChannel } from './publisher-channel.js';
@@ -66,22 +66,35 @@ app.post('/', async (req, res) => {
 
 });
 
-app.get('/delete/:id', async (req, res) => {
-  try {
-    const id = req.params.id;
-    const order = await deleteExpiredOrder(id);
-    res.status(200).send(order);
-    
-  } catch (error) {
-    if (error instanceof HttpError) {
-      res.status(error.status).send(error.message);
-    }
-    else{
-      res.status(500).send("failed to delete order")
-    }
-  }
+app.get('/personalSpaceOrders/:id', async (req,res) => {
+  try{
+      await getOrdersAggregateEvents(req,res);
 
-});
+  }catch(error){
+    res.status(500).send(error.message);
+  }
+})
+
+// app.get('/delete/:id', async (req, res) => {
+//   try {
+//     const id = req.params.id;
+//     const order = await deleteExpiredOrder(id);
+//     res.status(200).send(order);
+    
+//   } catch (error) {
+//     if (error instanceof HttpError) {
+//       res.status(error.status).send(error.message);
+//     }
+//     else{
+//       res.status(500).send("failed to delete order")
+//     }
+//   }
+
+// });
+
+app.delete('/refund/:id', async (req, res) => {
+  await refundroute(req,res);
+})
 
 app.post('/pay', async (req, res) => {
   try {
