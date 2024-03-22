@@ -6,9 +6,9 @@ import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
-import { scrabedIUser } from "../../../backend/src/models/user.ts";
+import { permissionValidTypes, scrabedIUser } from "../../../backend/src/models/user.ts";
 import {getUserById} from "../common/requests.ts";
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useState , useEffect } from 'react'
 
 interface Props{
@@ -21,9 +21,13 @@ interface Props{
 
 export const ButtonAppBar: React.FC<Props> = ({goback, logout, getUser}) => {
     // const user = getUser();
-  const { userId } = useParams();
+  const { userId, permissionType } = useParams();
   const [user, setUser] = useState<any>(null); // Define user state
 
+  if(!userId || !permissionType){
+      return <h1>Invalid URL</h1>
+  }
+  const navigate = useNavigate();
   useEffect(() => {
     const fetchUser = async () => {
       try {
@@ -55,9 +59,13 @@ export const ButtonAppBar: React.FC<Props> = ({goback, logout, getUser}) => {
             Next Event is: {user?.nextEvent?.title}
           </Typography>
           <div style={{ flexGrow: 1 }} /> 
-
+          {
+            [permissionValidTypes.Admin , permissionValidTypes.Manager].includes(permissionType as permissionValidTypes) ? <Button color="inherit" onClick={() => {navigate(`/${userId}/${permissionType}/newEvent`)}}>CREATE EVENT</Button> : <></>
+          }
           <Button color="inherit" onClick={() => {goback();}}>GO BACK</Button>
           <Button color="inherit" onClick={() => {logout();}}>LOGOUT</Button>
+
+
 
         </Toolbar>
       </AppBar>
