@@ -5,6 +5,7 @@ import Button from '@mui/material/Button';
 import { AsyncButton } from '../common/async-button';
 import { useNavigate } from 'react-router-dom';
 import { payOnOrder, updateEventDate } from '../common/requests';
+import { NewTicketForm } from '../new-event-page.tsx/new-ticket-form';
 interface pros {
     originalStartDate: Date;
     originalEndDate: Date;
