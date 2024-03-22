@@ -1,5 +1,4 @@
 import { IncomingMessage, ServerResponse } from 'http';
-import fetch from 'node-fetch';
 
 const exampleData = {
   title: 'This is nice example',
