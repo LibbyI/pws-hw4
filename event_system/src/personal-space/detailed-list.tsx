@@ -3,7 +3,7 @@ import List from '@mui/material/List';
 import Divider from '@mui/material/Divider';
 
 // import {Comment} from './comment';
-import {Detaile} from './order-details.js'
+import {Detaile} from './order-details.tsx'
 import { getUserPersonalSpace} from "../common/requests.js";
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';

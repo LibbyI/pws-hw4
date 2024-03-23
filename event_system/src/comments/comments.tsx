@@ -1,14 +1,14 @@
 import * as React from 'react';
 import List from '@mui/material/List';
 import Divider from '@mui/material/Divider';
-import {Icomment} from '../../../backend/src/models/comments';
+import { Icomment } from '../../../backend/src/models/comments';
 
-import {Comment} from './comment';
-import {getEventComments} from "../common/requests.js";
+import { Comment } from './comment';
+import { getEventComments } from "../common/requests.ts";
 import { useEffect, useState } from 'react';
 import { TextField, Button } from '@mui/material';
-import {sendEventComment} from "../common/requests.js";
-import { getCookies } from '../common/utils.js';
+import { sendEventComment } from "../common/requests.ts";
+import { getCookies } from '../common/utils.ts';
 // import {getUserById} from "../common/requests.js"
 interface Props{
     eventId: String;
