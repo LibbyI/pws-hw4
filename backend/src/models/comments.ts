@@ -1,4 +1,4 @@
-import * as mongoose from "mongoose";
+import { Schema, Model, model } from "mongoose";
 
 export interface Icomment {
     eventId: string;
@@ -7,7 +7,7 @@ export interface Icomment {
     content: string;
   }
 
-const commentsSchema = new mongoose.Schema<Icomment,mongoose.Model<Icomment>>(
+const commentsSchema = new Schema<Icomment, Model<Icomment>>(
     {
       eventId: { type: String, required: true }, 
       author: { type: String, required: true },
@@ -23,4 +23,4 @@ const commentsSchema = new mongoose.Schema<Icomment,mongoose.Model<Icomment>>(
        
     { timestamps: true }
   ); // for adding a timestamp in each document.
-  export default mongoose.model<Icomment>("CommentType", commentsSchema, 'comments');
+  export default model<Icomment>("CommentType", commentsSchema, 'comments');
