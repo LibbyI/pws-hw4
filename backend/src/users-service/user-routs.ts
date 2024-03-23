@@ -10,6 +10,7 @@ import { boolean } from "joi";
 import { IuserOrder } from "../models/orders.js";
 import axios from "axios";
 import { IEvent } from "../models/event.js"
+import { send } from "process";
 dotenv.config();
 
 const secretKey = process.env.SECRET_KEY;
@@ -257,6 +258,7 @@ export const signupRoute = async(req: express.Request, res: express.Response) =>
 
 
 export const loginRoute = async(req: express.Request, res: express.Response) => {
+    res.status(200).send(JSON.stringify({"message": "get into user service"}))
     if (!(req.body.username && req.body.password)){
         res.statusCode = 400;
         res.send(
