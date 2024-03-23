@@ -1,3 +1,4 @@
+// @ts-ignore
 import mongoose from "mongoose";
 import { Ticket } from "./event.js";
 import { TIMEOUT } from "../const.js";
