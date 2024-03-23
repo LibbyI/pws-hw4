@@ -3,8 +3,7 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
+
 import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
@@ -13,10 +12,9 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
-import { login, getUserPermission } from '../common/requests.ts';
+import { login } from '../common/requests.ts';
 import { scrabedIUser } from '../../../backend/src/models/user.ts';
-import {getCookies , setCookey} from '../common/utils.ts'
+import { setCookey} from '../common/utils.ts'
 // import * as dotenv from "dotenv";
 
 // dotenv.config();
@@ -38,11 +36,11 @@ function Copyright(props: any) {
 // TODO remove, this demo shouldn't need to reset the theme.
 const defaultTheme = createTheme();
 
-interface Props{
-  setUser: (params: scrabedIUser) => void;
-};
+// interface Props{
+//   setUser: (params: scrabedIUser) => void;
+// };
 
-export const SignIn: React.FC<Props> = ({setUser}) => {
+export const SignIn: React.FC = () => {
 
 // export default function SignIn(setUser: any) {
   

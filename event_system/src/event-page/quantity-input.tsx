@@ -2,14 +2,13 @@
 import { TextField } from "@mui/material";
 
 interface Props{
-  value: number;
   setValue: (v: number) => void;
   max?: number;
   min?: number;
 }
 
 
-export const QuantityInput: React.FC<Props> = ({value, setValue, max = 0 , min = 0})=>{
+export const QuantityInput: React.FC<Props> = ({setValue, max = 0 , min = 0})=>{
 
   function handleChange(): import("react").ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement> | undefined {
     return (e) => {

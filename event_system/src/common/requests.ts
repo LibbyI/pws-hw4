@@ -1,7 +1,5 @@
-import scrabedIUser from "../../../backend/src/models/user.js";
-import axios, { Axios, AxiosError, AxiosResponse } from 'axios';
+import axios, { AxiosResponse } from 'axios';
 import { GET_USER , LOGIN ,LOGOUT, SIGNUP , GET_COMMENTS, ADD_COMMENT} from "../../../backend/src/const.js"
-import { Swipe } from "@mui/icons-material";
 import {Icomment} from "../../../backend/src/models/comments.js"
 import { IOrder,paymentDetails } from "../../../backend/src/models/orders.js";
 import { IEvent } from "../../../backend/src/models/event.js";

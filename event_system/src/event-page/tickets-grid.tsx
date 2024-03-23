@@ -1,10 +1,7 @@
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Unstable_Grid2';
 
-import { Ticket } from '../../../backend/src/models/event';
 import {TicketCard, TicketCardProps} from './ticket-card';
-import { Title } from '@mui/icons-material';
-import { Typography } from '@mui/material';
 
 export const TicketsGrid: React.FC<{tickets: Array<TicketCardProps>}> = ({tickets}) => {
     return (

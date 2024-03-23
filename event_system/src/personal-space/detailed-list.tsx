@@ -1,31 +1,20 @@
 import * as React from 'react';
 import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
 import Divider from '@mui/material/Divider';
-import ListItemText from '@mui/material/ListItemText';
-import ListItemAvatar from '@mui/material/ListItemAvatar';
-import Avatar from '@mui/material/Avatar';
-import Typography from '@mui/material/Typography';
-import {Icomment} from '../../../backend/src/models/comments';
 
 // import {Comment} from './comment';
 import {Detaile} from './order-details.js'
-import {getEventComments, getUserPersonalSpace} from "../common/requests.js";
+import { getUserPersonalSpace} from "../common/requests.js";
 import { useEffect, useState } from 'react';
-import { TextField, Button, Container } from '@mui/material';
-import {sendEventComment} from "../common/requests.js";
-import { scrabedIUser } from "../../../backend/src/models/user.js";
 import { useParams } from 'react-router-dom';
-import { getCookies } from '../common/utils.js';
-import {IorderAndEvent} from '../../../backend/src/models/orders';
 
 // import {getUserById} from "../common/requests.js"
-interface Props{
-    getUser: () => scrabedIUser | null;
-    logout: () => void;
-  };
+// interface Props{
+//     getUser: () => scrabedIUser | null;
+//     logout: () => void;
+//   };
 
-export const DetailedList: React.FC<Props>= ({getUser, logout}) => {
+export const DetailedList: React.FC= () => {
     const { userId } = useParams();
     const [ordersArray, setordersArray] = useState<any[]>([]);
     const fetchOrders = async () => {

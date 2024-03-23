@@ -4,9 +4,7 @@ import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
-import IconButton from '@mui/material/IconButton';
-import MenuIcon from '@mui/icons-material/Menu';
-import { permissionValidTypes, scrabedIUser } from "../../../backend/src/models/user.ts";
+import { permissionValidTypes } from "../../../backend/src/models/user.ts";
 import {getUserById} from "../common/requests.ts";
 import { useNavigate, useParams } from 'react-router-dom';
 import { useState , useEffect } from 'react'
@@ -14,12 +12,11 @@ import { useState , useEffect } from 'react'
 interface Props{
     goback: () => void;
     logout: () => void;
-    getUser: () => scrabedIUser | null;
   };
 
 
 
-export const ButtonAppBar: React.FC<Props> = ({goback, logout, getUser}) => {
+export const ButtonAppBar: React.FC<Props> = ({goback, logout}) => {
     // const user = getUser();
   const { userId, permissionType } = useParams();
   const [user, setUser] = useState<any>(null); // Define user state

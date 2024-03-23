@@ -13,7 +13,7 @@ const commentsSchema = new mongoose.Schema<Icomment,mongoose.Model<Icomment>>(
       author: { type: String, required: true },
       date: {type: Date, required: true},
       content: {type: String, required: false, validate: {
-        validator: function(value) {
+        validator: function(value: any) {
           return value.length > 0; 
         },
         message: 'cant be empty'

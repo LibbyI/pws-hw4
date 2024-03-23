@@ -8,7 +8,6 @@ import { QuantityInput } from './quantity-input';
 import { BuyNowButton } from './buy-now-button';
 import { permissionValidTypes } from '../../../backend/src/models/user';
 import { isBackoffice } from '../common/utils';
-import { TextField } from '@mui/material';
 //import { BuyNowButton } from './buy-now-button';
 
 export interface TicketCardProps{
@@ -38,7 +37,7 @@ export const TicketCard: React.FC<TicketCardProps> = ({ticket, eventId, userId, 
         </Typography>
       </CardContent>
       {isBackoffice(permissionType) ? (<></>) :<CardActions  >
-        <QuantityInput value={selectedTicketQuantity} setValue={setSelectedTicketQuantity} max={ticket.quantity} min={0} />
+        <QuantityInput setValue={setSelectedTicketQuantity} max={ticket.quantity} min={0} />
         <BuyNowButton ticket={{...ticket, quantity: selectedTicketQuantity}} event_id={eventId} user_id={userId} />
       </CardActions> }
     </Card>

@@ -3,13 +3,13 @@ import ButtonAppBar from '../header/header.tsx';
 import AlignItemsList from '../comments/comments.tsx';
 
 import { useNavigate } from 'react-router-dom';
-import { permissionValidTypes, scrabedIUser } from "../../../backend/src/models/user.js";
+import { permissionValidTypes } from "../../../backend/src/models/user.js";
 import { useParams } from 'react-router-dom';
-import event, { IEvent, Ticket } from "../../../backend/src/models/event.ts";
+import { IEvent, Ticket } from "../../../backend/src/models/event.ts";
 import { TicketCardProps } from "./ticket-card.tsx";
 import { getEventById } from "../common/requests.ts";
 import EventDetails from "./event-details.tsx";
-import { Box, Container, CssBaseline, Divider } from "@mui/material";
+import { Container, Divider } from "@mui/material";
 import {TicketsGrid} from "./tickets-grid.tsx";
 import { isBackoffice } from "../common/utils.ts";
 import { CommentsCountBox } from "../comments/comments-count.tsx";
@@ -18,12 +18,10 @@ import { EditEventDateForm } from "./edit-event-date-form.tsx";
 
 interface Props{
     logout: () => void;
-    getUser: () => scrabedIUser | null;
-
   };
   
 
-export const EventPage: React.FC<Props> = ({logout, getUser}) => {
+export const EventPage: React.FC<Props> = ({logout}) => {
 
 //********************States**************************/ 
 const [event,setEvent] = useState<IEvent>();
@@ -72,12 +70,12 @@ const backoffice: boolean = isBackoffice(permissionType as permissionValidTypes)
 
     return (
         <Container maxWidth={false}>
-            <ButtonAppBar goback={goBack} logout={logoutandgotologin} getUser={getUser}></ButtonAppBar>
+            <ButtonAppBar goback={goBack} logout={logoutandgotologin}></ButtonAppBar>
             <Divider>Event Details</Divider>
             <EventDetails {...event}></EventDetails>
             <Divider> {backoffice ? "Categories" : "Buy Tickets"}</Divider>
             <TicketsGrid tickets={event.tickets.map((t: Ticket): TicketCardProps => { return { ticket: t, eventId: eventId, userId: userId, permissionType: permissionType as permissionValidTypes } })}></TicketsGrid>
-            {backoffice? (<CommentsCountBox eventId={eventId}></CommentsCountBox>) : <AlignItemsList eventId={eventId} getUser={getUser}></AlignItemsList>}
+            {backoffice? (<CommentsCountBox eventId={eventId}></CommentsCountBox>) : <AlignItemsList eventId={eventId}></AlignItemsList>}
             {backoffice ?
             <>
             <Divider> Edit Event Date</Divider>

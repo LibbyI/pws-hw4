@@ -1,16 +1,13 @@
 import React, { useState } from "react";
 import { IEvent, Ticket } from "../../../backend/src/models/event";
-import { Button, Card, Container, FormLabel, Grid, List, ListItem, MenuItem, Paper, Select, TextField, Typography } from "@mui/material";
-import { Form } from "react-router-dom";
+import { List, Button, Container, FormLabel, ListItem, MenuItem, Paper, Select, TextField, Typography } from "@mui/material";
 import { addNewEvent } from "../common/requests";
-import { Axios, AxiosError } from "axios";
+import {  AxiosError } from "axios";
 import { ReactNode } from "react"; // Add this import
 import { AsyncButton } from "../common/async-button";
 import { NewTicketForm } from "./new-ticket-form";
-import { ObjectId } from "mongoose";
-import { TicketsGrid } from "../event-page/tickets-grid";
 import { categoryValidTypes } from "../../../backend/src/models/event";
-import { Grid4x4 } from "@mui/icons-material";
+
 
 export const NewEventForm: React.FC = (): ReactNode => {
     const [event, setEvent] = useState<IEvent>({start_date: new Date(Date.now())} as IEvent);

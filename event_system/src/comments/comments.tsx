@@ -1,29 +1,21 @@
 import * as React from 'react';
 import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
 import Divider from '@mui/material/Divider';
-import ListItemText from '@mui/material/ListItemText';
-import ListItemAvatar from '@mui/material/ListItemAvatar';
-import Avatar from '@mui/material/Avatar';
-import Typography from '@mui/material/Typography';
 import {Icomment} from '../../../backend/src/models/comments';
 
 import {Comment} from './comment';
 import {getEventComments} from "../common/requests.js";
 import { useEffect, useState } from 'react';
-import { TextField, Button, Container } from '@mui/material';
+import { TextField, Button } from '@mui/material';
 import {sendEventComment} from "../common/requests.js";
-import { scrabedIUser } from "../../../backend/src/models/user.js";
-import { useParams } from 'react-router-dom';
 import { getCookies } from '../common/utils.js';
 // import {getUserById} from "../common/requests.js"
 interface Props{
     eventId: String;
-    getUser: () => scrabedIUser | null;
 
   };
 
-export const AlignItemsList: React.FC<Props>= ({eventId, getUser}) => {
+export const AlignItemsList: React.FC<Props>= ({eventId}) => {
     // const { userId } = useParams();
     const [commentsArray, setCommentsArray] = useState<any[]>([]);
     const fetchComments = async () => {
@@ -101,15 +93,15 @@ export const AlignItemsList: React.FC<Props>= ({eventId, getUser}) => {
 
  
 
-const examplearry: Icomment[] = [{
-    eventId: "456",
-    author: "libby",
-    date: new Date("2023-01-07T00:00:00.000Z"),
-    content: "fgsfgsgsfgzfsg"}, {
-    eventId: "456",
-    author: "nao",
-    date: new Date("2023-01-07T00:00:00.000Z"),
-    content: "great!!"}] 
+// const examplearry: Icomment[] = [{
+//     eventId: "456",
+//     author: "libby",
+//     date: new Date("2023-01-07T00:00:00.000Z"),
+//     content: "fgsfgsgsfgzfsg"}, {
+//     eventId: "456",
+//     author: "nao",
+//     date: new Date("2023-01-07T00:00:00.000Z"),
+//     content: "great!!"}] 
 
 
 export default AlignItemsList;

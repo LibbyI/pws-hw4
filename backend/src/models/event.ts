@@ -27,7 +27,7 @@ export interface IEvent {
 const eventSchema = new mongoose.Schema<IEvent,mongoose.Model<IEvent>>(
     {
       title: { type: String, required: true, validate: {
-        validator: function(value) {
+        validator: function(value: any) {
           return value.length > 0; 
         },
         message: 'cant be empty'
@@ -38,7 +38,7 @@ const eventSchema = new mongoose.Schema<IEvent,mongoose.Model<IEvent>>(
       organizer: { type: String, required: true },
       start_date: { type: Date, required: true },
       end_date: { type: Date, required: true, validate: {
-        validator: function(value) {
+        validator: function(value: any) {
           value.a
         },
         message: 'End date must be after start date'

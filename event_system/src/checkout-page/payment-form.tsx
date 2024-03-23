@@ -1,7 +1,7 @@
-import { Container,FormControl, FormLabel } from '@mui/material';
+import { Container, FormLabel } from '@mui/material';
 import React, {useState} from 'react';
 import TextField from '@mui/material/TextField';
-import Button from '@mui/material/Button';
+// import Button from '@mui/material/Button';
 import { AsyncButton } from '../common/async-button';
 import { useNavigate } from 'react-router-dom';
 import { payOnOrder } from '../common/requests';
@@ -16,9 +16,9 @@ export const PaymentForm: React.FC<PaymentFormProps> = ({order}) => {
     const [cardNumber, setCardNumber] = useState('');
     const [expiry, setExpiry] = useState('');
     const [cvv, setCvv] = useState('');
-    const [expiryError, setExpiryError] = useState(false);
-    const [cvvError, setCvvError] = useState(false);
-    const [cardNumberError, setCardNumberError] = useState(false);
+    // const [expiryError, setExpiryError] = useState(false);
+    // const [cvvError, setCvvError] = useState(false);
+    // const [cardNumberError, setCardNumberError] = useState(false);
 
     const navigate = useNavigate();
 

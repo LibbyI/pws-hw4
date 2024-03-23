@@ -1,12 +1,12 @@
-import event, { IEvent } from "../../../backend/src/models/event";
-import { EventCard } from "./eventCard"; 
+import { IEvent } from "../../../backend/src/models/event";
+// import { EventCard } from "./eventCard"; 
 
 import React, { useEffect, useState } from "react";
 import EventsGrid from "./eventsGrid";
 import { getEvents } from "../common/requests.ts";
-import { json } from "stream/consumers";
-import { set } from "mongoose";
-import { permissionValidTypes, scrabedIUser } from "../../../backend/src/models/user.js";
+// import { json } from "stream/consumers";
+// import { set } from "mongoose";
+import { permissionValidTypes } from "../../../backend/src/models/user.js";
 import { useNavigate, useParams } from 'react-router-dom';
 import ButtonAppBar from '../header/header.tsx';
 import { isBackoffice } from "../common/utils.ts";
@@ -14,12 +14,10 @@ import { isBackoffice } from "../common/utils.ts";
 
 interface Props{
     logout: () => void;
-    getUser: () => scrabedIUser | null;
-
   };
 
 
-export const CatalogPage: React.FC<Props> = ({ logout, getUser}) =>{
+export const CatalogPage: React.FC<Props> = ({ logout}) =>{
 const navigate = useNavigate();
 const goBack = () =>{
     navigate(-1);
@@ -62,7 +60,7 @@ useEffect(() => {
     console.log(events);
     return (
         <>
-        <ButtonAppBar goback={goBack} logout={logoutandgotologin} getUser={getUser}></ButtonAppBar>
+        <ButtonAppBar goback={goBack} logout={logoutandgotologin}></ButtonAppBar>
         <EventsGrid {... {events : [...events]}}></EventsGrid>
         </>
     )

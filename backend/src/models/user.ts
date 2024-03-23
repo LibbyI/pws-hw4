@@ -37,7 +37,7 @@ export const userSchema = new mongoose.Schema(
 
   userSchema.pre('save', function (next) {
     var self = this;
-    User.find({username : self.username}, function (err, docs) {
+    User.find({username : self.username}, function (docs: any) {
         if (!docs.length){
             next();
         }else{                

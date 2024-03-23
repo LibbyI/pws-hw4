@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import event from "../../../backend/src/models/event";
+// import event from "../../../backend/src/models/event";
 import { getEventCommentsCount } from "../common/requests";
 import { Box } from "@mui/material";
 

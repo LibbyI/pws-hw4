@@ -2,7 +2,6 @@ import React from "react";
 import { IOrder } from "../../../backend/src/models/orders";
 import { placeNewOrder } from "../common/requests";
 import { useNavigate } from "react-router-dom";
-import { AxiosResponse } from "axios";
 
 import LoadingButton from '@mui/lab/LoadingButton';
 
