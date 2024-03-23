@@ -91,6 +91,7 @@ app.post('/api/signup', async(req, res) => {
 });
 
 app.post('/api/login', async(req, res) => {
+  console.log("got login req");
   try{
     const response = await axios.post(`${users_url}/login`, req.body);
     if (response.status == 200){

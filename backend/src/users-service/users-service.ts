@@ -52,6 +52,7 @@ app.post('/signup', async(req, res) => {
   });
 
 app.post('/login', async(req, res) => {
+  console.log("got login req in user service")
   await loginRoute(req, res);
 });
 
