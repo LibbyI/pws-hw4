@@ -11,6 +11,7 @@ import { Route, BrowserRouter, Routes } from 'react-router-dom';
 // import ReactDOM from "react-dom/client";
 import { CatalogPage } from './catalog/catalogPage.tsx';
 import { scrabedIUser } from "../../backend/src/models/user.js";
+
 import { EventPage } from './event-page/event-page.tsx';
 import { CheckoutPage } from './checkout-page/checkout-page.tsx'
 import{ logoutreq } from "./common/requests.ts"

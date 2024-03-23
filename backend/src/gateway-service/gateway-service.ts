@@ -45,15 +45,7 @@ app.use(function (req, res, next) {
 
 
  app.get('/api/test', async(req,res) => {
-  const user = await protectedRout(req, res);
-  if (!user){
-    return;
-  }
-  const userPermission = await getUserPermission(user.id);
-  res.status = 200;
-  
-  res.send(JSON.stringify({userPermission: userPermission,}));
-
+  res.status(200).send();
  }) 
 
 app.get('/isBackoffice/:id', async(req,res) => {
