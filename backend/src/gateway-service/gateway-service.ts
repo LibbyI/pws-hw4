@@ -18,6 +18,7 @@ const port = process.env.GATEWAY_PORT;
 const users_url = process.env.USERS_SERVICE_URL;
 const comments_url = process.env.COMMENTS_SERVICE_URL;
 const orders_url = process.env.ORDERS_SERVICE_URL;
+const events_url = process.env.EVENTS_SERVICE_URL;
 
 const app_url = process.env.APP_URL
 
@@ -153,7 +154,7 @@ app.get('/events', async (req, res) => {
     if (!user){
       return;
     }
-    const response = await axios.get(`http://localhost:3001/?availableOnly=${req.query.availableOnly}`);
+    const response = await axios.get(`${events_url}/?availableOnly=${req.query.availableOnly}`);
     res.status(response.status).send(response.data);
   }catch(error){
     res.status(500).send(error);
@@ -166,7 +167,7 @@ app.get('/events/:id', async (req, res) => {
     if (!user){
       return;
     }
-    const response = await axios.get(`http://localhost:3001/${req.params.id}`);
+    const response = await axios.get(`${events_url}/${req.params.id}`);
     res.status(response.status).send(response.data);
   }catch(error){
     res.status(500).send(error);
@@ -179,7 +180,7 @@ app.post('/events', async (req, res) => {
     if (!user){
       return;
     }
-    const response = await axios.post('http://localhost:3001/', req.body);
+    const response = await axios.post('${events_url}/', req.body);
     res.status(response.status).send(response.data);
   }catch(error){
     res.status(500).send(error);
@@ -193,7 +194,7 @@ app.patch('/tickets/:eventId', async (req, res) => {
     if (!user){
       return;
     }
-    const response = await axios.patch(`http://localhost:3001/tickets/${req.params.eventId}`, req.body);
+    const response = await axios.patch(`${events_url}/tickets/${req.params.eventId}`, req.body);
     res.status(response.status).send(response.data);
   }catch(error){
     res.status(500).send(error);
@@ -211,10 +212,10 @@ app.patch('/events/date/:eventId', updateEventDateValidator, async(req, res) => 
     if (!errors.isEmpty()) {
       return res.status(400).send(errors.array()[0].msg);
     }
-    // res.redirect(307,`http://localhost:3001/date/${req.params.eventId}`);
+    // res.redirect(307,`${events_url}/date/${req.params.eventId}`);
     try{
       // const cookieValue = req.cookies['token'];
-      const response = await axios.patch(`http://localhost:3001/date/${req.params.eventId}`, req.body);
+      const response = await axios.patch(`${events_url}/date/${req.params.eventId}`, req.body);
       res.status(response.status).send(response.data);
     }catch(error){
       res.status(500).send(error);
