@@ -9,6 +9,7 @@ consumeMessages();
 
 dotenv.config();
 
+const gateway_url = process.env.GATEWAY_URL;
 
 const dbURI = `mongodb+srv://libby6831:${process.env.DB_PASS}@cluster0.pyjnubc.mongodb.net/?retryWrites=true&w=majority`;
 await mongoose.connect(dbURI, options);
@@ -20,7 +21,7 @@ const port = process.env.USERS_PORT;
 // Add headers
 app.use(function (req, res, next) {
   // Website you wish to allow to connect
-  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Origin', gateway_url);
 
 
   // Request methods you wish to allow
