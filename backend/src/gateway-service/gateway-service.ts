@@ -46,7 +46,7 @@ app.use(function (req, res, next) {
 
 
  app.get('/api/test', async(req,res) => {
-  res.status(200).send();
+  res.status(200).send(JSON.stringify({"message": "got aswer!!"}));
  }) 
 
 app.get('/isBackoffice/:id', async(req,res) => {

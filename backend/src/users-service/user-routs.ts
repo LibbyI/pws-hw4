@@ -258,8 +258,6 @@ export const signupRoute = async(req: express.Request, res: express.Response) =>
 
 
 export const loginRoute = async(req: express.Request, res: express.Response) => {
-    res.status(200).send(JSON.stringify({"message": "get into user service"}))
-    return;
     if (!(req.body.username && req.body.password)){
         res.statusCode = 400;
         res.send(
