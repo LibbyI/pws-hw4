@@ -30,6 +30,8 @@
     "react-error-overlay": "^6.0.9",
     "react-payment-inputs": "^1.1.9",
     "typescript": "^5.2.2",
-    "vite": "^5.1.6"
+    "vite": "^5.1.6",
+    "mongoose": "^6.8.0"
+
   }
 }

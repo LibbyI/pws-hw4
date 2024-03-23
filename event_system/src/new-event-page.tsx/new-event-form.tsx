@@ -76,7 +76,7 @@ export const NewEventForm: React.FC = (): ReactNode => {
             <TextField type='url' placeholder='Image URL (optional)' required={false} onChange={(e) => setEvent({...event, image: e.target.value})}></TextField>
             <FormLabel>Add Tickets</FormLabel>
             <NewTicketForm onSubmit={handleAddTicket}/>
-            <TicketList tickets={event.tickets} deleteTicket={(idx) => setEvent({...event, tickets: event.tickets?.filter((_,index) => index !== idx)})}/>
+            <TicketList tickets={event.tickets} deleteTicket={(idx) => setEvent({...event, tickets: event.tickets?.filter((_:any,index:any) => index !== idx)})}/>
 
         </Container>
     );

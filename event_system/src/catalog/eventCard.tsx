@@ -41,10 +41,10 @@ import { useNavigate } from 'react-router-dom';
           />
           <CardContent sx={{ flex: '1 0 auto' }}>
             <Typography variant="body2" color="text.secondary">
-                {`From ${Math.min(...Array.from(event.tickets,(t) => t.price))} $`}           
+                {`From ${Math.min(...Array.from(event.tickets,(t:any) => t.price))} $`}           
             </Typography>
             <Typography variant="body2" color="text.secondary">
-                {`${event.tickets.reduce((acc, t) => acc + t.quantity, 0)} tickets left`}
+                {`${event.tickets.reduce((acc:any, t:any) => acc + t.quantity, 0)} tickets left`}
             </Typography>          
           </CardContent>
           </CardActionArea>

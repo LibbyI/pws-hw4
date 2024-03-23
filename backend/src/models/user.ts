@@ -35,8 +35,8 @@ export const userSchema = new mongoose.Schema(
   ); // for adding a timestamp in each document.
 
 
-  userSchema.pre('save', function (next) {
-    var self = this;
+  userSchema.pre('save', function (next: any) {
+    var self: any = this;
     User.find({username : self.username}, function (docs: any) {
         if (!docs.length){
             next();
