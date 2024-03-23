@@ -1,5 +1,4 @@
 import {body, param, query} from 'express-validator'
-import { isValidObjectId } from 'mongoose'
 
 export const updateEventDateValidator = [
     body('start_date', 'invalid start_date').exists().isDate(),

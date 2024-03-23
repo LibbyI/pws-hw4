@@ -1,4 +1,3 @@
-import * as mongoose from "mongoose";
 import express from "express";
 import userSchema from "../models/user.js";
 import * as dotenv from "dotenv";
