@@ -19,14 +19,14 @@ const users_url = process.env.USERS_SERVICE_URL;
 const comments_url = process.env.COMMENTS_SERVICE_URL;
 const orders_url = process.env.ORDERS_SERVICE_URL;
 
-
+const app_url = process.env.APP_URL
 
 
 app.use(function (req, res, next) {
 
   // Website you wish to allow to connect
   // res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Origin', 'http://localhost:5173');
+  res.setHeader('Access-Control-Allow-Origin', app_url);
 
 
   // Request methods you wish to allow
