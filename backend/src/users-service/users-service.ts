@@ -22,9 +22,13 @@ const port = process.env.USERS_PORT;
 // Add headers
 app.use(function (req, res, next) {
   // Website you wish to allow to connect
-  res.setHeader('Access-Control-Allow-Origin', [gateway_url, app_url]);
+  const allowedOrigins = [gateway_url, app_url];
+  const origin = req.headers.origin;
+  if (allowedOrigins.includes(origin)) {
 
+    res.setHeader('Access-Control-Allow-Origin', origin);
 
+  }
   // Request methods you wish to allow
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
 
