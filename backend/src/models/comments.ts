@@ -1,4 +1,5 @@
-import mongoose from "mongoose";
+// @ts-ignore
+import * as mongoose from "mongoose";
 
 export interface Icomment {
     eventId: string;
