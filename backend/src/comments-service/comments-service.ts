@@ -2,7 +2,7 @@ import express, { Application } from "express";
 import * as dotenv from "dotenv";
 import * as mongoose from "mongoose";
 import { options } from '../const.js';
-import CommentType from "../models/comments.js";
+import CommentType from "../models/comments-model.js";
 import { addComent, getComments, getCommentsCount} from "./comment-routs.js";
 
 dotenv.config();

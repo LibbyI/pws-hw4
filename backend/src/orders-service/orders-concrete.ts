@@ -1,9 +1,10 @@
 import axios, { AxiosError } from "axios";
-import OrderType, { IOrder, orderStatus, paymentDetails, IorderAndEvent } from "../models/orders.js";
+import { IOrder, orderStatus, paymentDetails, IorderAndEvent } from "../models/orders.js";
+import OrderType from "../models/orders-model.js"
 import {scrabedIUser} from "../models/user.js";
 import {IEvent} from "../models/event.js";
-import orders from "../models/orders.js";
-import events from "../models/event.js";
+import orders from "../models/orders-model.js";
+import events from "../models/events-model.js";
 import * as mongoose from "mongoose";
 import { ClientSession } from "mongoose";
 import * as dotenv from "dotenv";

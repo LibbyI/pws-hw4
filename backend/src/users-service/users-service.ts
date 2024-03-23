@@ -2,7 +2,7 @@ import express, { Application } from "express";
 import * as dotenv from "dotenv";
 import * as mongoose from "mongoose";
 import { options } from '../const.js';
-import User from "../models/user.js";
+import User from "../models/user-model.js";
 import { signupRoute, permissionRoute, loginRoute, getUserById, getPremission} from "./user-routs.js";
 import { consumeMessages } from './consumer-messages.js';
 consumeMessages();

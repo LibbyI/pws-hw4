@@ -1,8 +1,8 @@
 import express from "express";
-import userSchema from "../models/user.js";
+import userSchema from "../models/user-model.js";
 import * as dotenv from "dotenv";
-import CommentType, {Icomment} from "../models/comments.js";
-
+import CommentType from "../models/comments-model.js";
+import {Icomment} from "../models/comments.js";
 const comments = CommentType;
 
 

@@ -1,6 +1,6 @@
 import express from "express";
 import * as dotenv from "dotenv";
-import EventType from "../models/event.js";
+import EventType from "../models/events-model.js";
 import * as mongoose from "mongoose";
 import { body, query } from "express-validator";
 import { PublisherChannel } from './publisher-channel.js';

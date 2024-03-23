@@ -1,8 +1,8 @@
 import * as mongoose from "mongoose";
 import * as bcrypt from "bcrypt";
 import express from "express";
-import User from "../models/user.js";
-import userSchema from "../models/user.js";
+import User from "../models/user-model.js";
+import userSchema from "../models/user-model.js";
 import jwt from "jsonwebtoken";
 import * as dotenv from "dotenv";
 import { scrabedIUser , IUser } from '../models/user.js';

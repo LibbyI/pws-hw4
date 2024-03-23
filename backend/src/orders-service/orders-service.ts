@@ -3,7 +3,7 @@ import * as dotenv from "dotenv";
 import * as mongoose from "mongoose";
 import { options } from '../const.js';
 import { addNewOrder, handlePaymentRequest, deleteExpiredOrder, cleanExpiredOrders , refundroute, getOrdersAggregateEvents } from "./orders-concrete.js";
-import  OrderType  from "../models/orders.js";
+import  OrderType  from "../models/orders-model.js";
 import { HttpError } from "./order-error.js";
 import { PublisherChannel } from './publisher-channel.js';
 import {INTERVAL_CLEAN_TRIGGER} from "../const.js";
