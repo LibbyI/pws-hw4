@@ -12,7 +12,7 @@ import axios from "axios";
 import { IEvent } from "../models/event.js"
 import { send } from "process";
 dotenv.config();
-
+import {permissionValidTypes} from "../models/user.js"
 const secretKey = process.env.SECRET_KEY;
 
 const users = User;
@@ -244,7 +244,7 @@ export const signupRoute = async(req: express.Request, res: express.Response) =>
       const newUser = new User({
         username: `${username}`,
         password: `${password}`,
-        permission: "None"
+        permission: permissionValidTypes.User
       });
       try{
         await newUser.save();
