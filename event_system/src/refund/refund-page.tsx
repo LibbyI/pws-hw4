@@ -1,4 +1,4 @@
-import { Container, FormLabel, TextField } from "@mui/material";
+import { Box, Container, FormLabel, TextField } from "@mui/material";
 import { useState } from "react";
 import { Form } from "react-router-dom";
 import { AsyncButton } from "../common/async-button";
@@ -16,7 +16,7 @@ export const RefundPage: React.FC = () => {
             
         } catch (error) {
             if (error instanceof AxiosError){
-                switch (error.response?.status) {
+                switch (error?.status) {
                     case 400:
                         alert("Event date passed. Cannot refund!");
                         break;
@@ -29,15 +29,20 @@ export const RefundPage: React.FC = () => {
                         break;
                 }
             }
+
         }
     }
 
     return (
-        <Container>
-            <h1>Refund</h1>
-            <FormLabel> Order ID </FormLabel>
-            <TextField placeholder='Order ID' required = {true} onChange={(e)=> setOrderId(e.target.value)}></TextField>
-            <AsyncButton onClick={handleRefund}>Refund</AsyncButton>
-        </Container>
+        <>
+        <h1>Refund Page</h1>
+        <Box sx={{display:"flex", flexDirection:"column", p:5 }}>
+
+        <TextField placeholder='please enter your Order ID here' required = {true} onChange={(e)=> setOrderId(e.target.value)}></TextField>
+        <AsyncButton onClick={handleRefund}>Click to Refund order</AsyncButton>
+
+        </Box>
+        </>
+
     );
     }
