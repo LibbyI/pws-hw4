@@ -18,6 +18,7 @@ import{ logoutreq } from "./common/requests.ts"
 import {setCookey} from "./common/utils.ts";
 import { NewEventPage } from './new-event-page.tsx/new-event-page.tsx'
 import {DetailedList} from "./personal-space/detailed-list.tsx"
+import { RefundPage } from './refund/refund-page.tsx';
 
 function App() {
   let userState = localStorage.getItem("userState");
@@ -57,6 +58,8 @@ function App() {
         <Route path="/:userId/:permissionType/checkout/:orderId" element={<CheckoutPage/>}></Route>
         <Route path="/:userId/:permissionType/newEvent" element={<NewEventPage/>}></Route>
         <Route path="/:userId/:permissionType/personalSpace" element={<DetailedList />}></Route>
+        <Route path="/:userId/:permissionType/refund" element={<RefundPage />}></Route>
+
       
         
       </Routes>

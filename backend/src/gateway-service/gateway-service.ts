@@ -1,6 +1,6 @@
 import express, { Application } from "express";
 import * as dotenv from "dotenv";
-import axios from 'axios';
+import axios, { Axios, AxiosError } from 'axios';
 import { updateEventDateValidator } from "./requestsValidators.js";
 import { validationResult } from "express-validator";
 import { protectedRout, getUserPermission, authenticateAndAuthorize } from './auth.js'
@@ -188,7 +188,7 @@ app.post('/events', async (req, res) => {
     if (!user){
       return;
     }
-    const response = await axios.post('${events_url}/', req.body);
+    const response = await axios.post(`${events_url}/`, req.body);
     res.status(response.status).send(response.data);
   }catch(error){
     res.status(500).send(error);
@@ -321,7 +321,7 @@ app.patch('/events/date/:eventId', updateEventDateValidator, async(req, res) => 
 
         }
       }
-  })
+      })
 
   app.post('/orders',async (req, res) => {
     try{
