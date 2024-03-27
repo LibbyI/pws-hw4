@@ -9,6 +9,8 @@ consumeMessages();
 
 dotenv.config();
 
+const orders_url = process.env.ORDERS_SERVICE_URL;
+
 const gateway_url = process.env.GATEWAY_URL;
 const app_url = process.env.APP_URL;
 
@@ -22,7 +24,7 @@ const port = process.env.USERS_PORT;
 // Add headers
 app.use(function (req, res, next) {
   // Website you wish to allow to connect
-  const allowedOrigins = [gateway_url, app_url];
+  const allowedOrigins = [gateway_url, app_url, orders_url];
   const origin = req.headers.origin;
   if (allowedOrigins.includes(origin)) {
 
