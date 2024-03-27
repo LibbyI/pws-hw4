@@ -240,6 +240,17 @@ export const signupRoute = async(req: express.Request, res: express.Response) =>
         );
       }
       const username = req.body.username;
+      try{
+        const user_exsit = await users.findOne({username: username}).exec();
+        if (user_exsit){
+          return res.status(400).send({
+            message: "Username already exists."
+        });
+        }
+      }catch(error){
+        res.status(500).send(JSON.stringify({message: "error connection to db",}));
+        return;
+      }
       const password = await bcrypt.hash(req.body.password, 10);
       const newUser = new User({
         username: `${username}`,
@@ -253,6 +264,7 @@ export const signupRoute = async(req: express.Request, res: express.Response) =>
       }catch(error){
         // res.statusCode = 400;
         res.status(400).send(JSON.stringify({message: "username is already exsist",}));
+        return;
       }
 }
 

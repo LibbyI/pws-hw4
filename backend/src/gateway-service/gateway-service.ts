@@ -86,7 +86,15 @@ app.post('/api/signup', async(req, res) => {
 
     } 
   } catch(error){
-    res.status(500).send(error);
+      if (error.response) {
+        // Axios error with response
+        const { status, data } = error.response;
+        res.status(status).send(data);
+    } else {
+        // Other errors
+        res.status(500).send(error.message);
+    }
+      // res.status(500).send(error);
   }
 
 });
