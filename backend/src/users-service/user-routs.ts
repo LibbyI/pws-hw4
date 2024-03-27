@@ -12,7 +12,7 @@ import axios from "axios";
 import { IEvent } from "../models/event.js"
 import { send } from "process";
 dotenv.config();
-
+import {permissionValidTypes} from "../models/user.js"
 const secretKey = process.env.SECRET_KEY;
 
 const users = User;
@@ -240,11 +240,22 @@ export const signupRoute = async(req: express.Request, res: express.Response) =>
         );
       }
       const username = req.body.username;
+      try{
+        const user_exsit = await users.findOne({username: username}).exec();
+        if (user_exsit){
+          return res.status(400).send({
+            message: "Username already exists."
+        });
+        }
+      }catch(error){
+        res.status(500).send(JSON.stringify({message: "error connection to db",}));
+        return;
+      }
       const password = await bcrypt.hash(req.body.password, 10);
       const newUser = new User({
         username: `${username}`,
         password: `${password}`,
-        permission: "None"
+        permission: permissionValidTypes.User
       });
       try{
         await newUser.save();
@@ -253,6 +264,7 @@ export const signupRoute = async(req: express.Request, res: express.Response) =>
       }catch(error){
         // res.statusCode = 400;
         res.status(400).send(JSON.stringify({message: "username is already exsist",}));
+        return;
       }
 }
 

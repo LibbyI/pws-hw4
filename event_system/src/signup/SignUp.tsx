@@ -53,6 +53,7 @@ export default function SignUp() {
       const password = data.get('password')?.toString();
       if(username && password){
         const response = await signup(username, password);
+        console.log(response);
         if (response?.status == 201){
           console.log('User created successfully:', response);
           navigate('/signin');

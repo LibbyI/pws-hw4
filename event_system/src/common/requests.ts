@@ -3,6 +3,7 @@ import { GET_USER , LOGIN ,LOGOUT, SIGNUP , GET_COMMENTS, ADD_COMMENT} from "../
 import {Icomment} from "../../../backend/src/models/comments.js"
 import { IOrder,paymentDetails } from "../../../backend/src/models/orders.js";
 import { IEvent } from "../../../backend/src/models/event.js";
+import { isElementOfType } from 'react-dom/test-utils';
 // import * as dotenv from "dotenv";
 // dotenv.config();
 // TODO: repalce with dotenv
@@ -146,7 +147,15 @@ export const signup = async(username: String, password: String):Promise<AxiosRes
         const response = await sendRequest(url, signup_split[0], body);
         return response;
     }catch(error){
-        return null;
+        if (axios.isAxiosError(error)) {
+            console.log(error.response)
+            const res  = error.response as AxiosResponse;
+            return res;
+        }else{
+            return null;
+
+        }
+
     }
 };
 
