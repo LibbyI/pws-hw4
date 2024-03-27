@@ -46,6 +46,7 @@ export const NewEventForm: React.FC = (): ReactNode => {
 
     const handleEndDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (new Date(e.target.value) < event.start_date){
+            console.log(event.start_date);
             setEvent({...event, end_date: event.start_date});
             e.target.value = event.start_date.toISOString().split('T')[0];
             alert("End date cannot be before start date");

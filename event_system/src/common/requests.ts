@@ -39,6 +39,11 @@ export const sendRequest = async (url: string, method: string, body: Object | nu
                     withCredentials: true
                   });
                  break;
+            case 'DELETE':
+                response = await axios.delete(GATEWAY_URL+url,{
+                    withCredentials: true
+                });
+                break;
             default:
                 throw new Error('Invalid method');
         }
@@ -194,7 +199,7 @@ export const payOnOrder = async(order: IOrder, paymentDetails: paymentDetails):P
 
 export const updateEventDate = async(eventId: string, startDate: Date, endDate: Date):Promise<AxiosResponse | null> => {
     try {
-        const url = `${GATEWAY_URL}/events/date/${eventId}`;
+        const url = `/events/date/${eventId}`;
         const body = {
             start_date: startDate.toISOString().split('T')[0],
             end_date: endDate.toISOString().split('T')[0]
@@ -207,7 +212,7 @@ export const updateEventDate = async(eventId: string, startDate: Date, endDate: 
 }
 
 export const addNewEvent = async(event: IEvent):Promise<AxiosResponse | null> => {
-        const url = `${GATEWAY_URL}/events`;
+        const url = `/events`;
         const body = {...event, start_date: event.start_date.toISOString().split('T')[0], end_date: event.end_date.toISOString().split('T')[0]}
         const response = await sendRequest(url, 'POST', body);
         return response;
@@ -215,10 +220,20 @@ export const addNewEvent = async(event: IEvent):Promise<AxiosResponse | null> =>
 
 export const getUserPersonalSpace = async(userId: string):Promise<AxiosResponse | null> => {
     try {
-        const url = `${GATEWAY_URL}/personalSpaceOrders/${userId}`;
+        const url = `/personalSpaceOrders/${userId}`;
         const response = await sendRequest(url, 'GET');
         return response;
     } catch (error) {
         return null;
     }
+}
+
+export const refundOrder = async(orderId: string):Promise<AxiosResponse | null> => 
+{
+    const url = `/refund/${orderId}`;
+    console.log(url);
+
+    const response = await sendRequest(url, 'DELETE');
+
+    return response;
 }

@@ -1,4 +1,4 @@
-import axios, { AxiosError } from "axios";
+import axios, { AxiosError, HttpStatusCode } from "axios";
 import { IOrder, orderStatus, paymentDetails, IorderAndEvent } from "../models/orders.js";
 import OrderType from "../models/orders-model.js"
 import {scrabedIUser} from "../models/user.js";
@@ -279,6 +279,7 @@ export const refundroute = async (req ,res) => {
     }catch(error){
         if (error instanceof HttpError) {
             res.status(error.status).send(error.message);
+            console.log(error.message);
             return;
         }else{
             res.status(500).send(JSON.stringify({message: "somethig went wrong"}));
