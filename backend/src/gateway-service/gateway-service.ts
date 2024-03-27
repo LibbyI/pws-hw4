@@ -312,7 +312,14 @@ app.patch('/events/date/:eventId', updateEventDateValidator, async(req, res) => 
       const response = await axios.delete(`${orders_url}/refund/${id}`, req.body);
       res.status(response.status).send(response.data);
       }catch(error){
+        if (error.response) {
+        // Axios error with response
+        const { status, data } = error.response;
+        res.status(status).send(data);
+      }else{
         res.status(500).send(error);
+
+        }
       }
   })
 

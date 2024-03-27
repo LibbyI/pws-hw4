@@ -253,6 +253,11 @@ const aggragate = (user_orders: IOrder[] , user_events: IEvent[]) => {
 export const refundroute = async (req ,res) => {
     try{
         const id = req.params.id;
+        const objectId = new mongoose.Types.ObjectId();
+        if (!mongoose.Types.ObjectId.isValid(id)) {
+            res.status(404).send(JSON.stringify({message: "oreder id is in a wrong format"}));
+            return;
+        }
         const order: IOrder = await orders.findOne({_id: id}).exec();
         if(!order){
             res.status(404).send(JSON.stringify({message: "order id not found"}));
@@ -277,6 +282,7 @@ export const refundroute = async (req ,res) => {
         // return daletedOrder;
 
     }catch(error){
+        console.log(error)
         if (error instanceof HttpError) {
             res.status(error.status).send(error.message);
             return;
