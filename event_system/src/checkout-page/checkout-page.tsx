@@ -5,7 +5,7 @@ import { getEventById, getOrderById } from "../common/requests";
 import { IEvent } from "../../../backend/src/models/event";
 import { OrderSummary } from "./order-summary";
 import { PaymentForm } from "./payment-form";
-import { Container, Card, CardActionArea } from "@mui/material";
+import { Container, Card, CardActionArea, Button } from "@mui/material";
 import { SuccessPage } from "./succsess-page";
 
 export const CheckoutPage: React.FC = () => {
@@ -16,6 +16,7 @@ const [order,setOrder] = useState<IOrder>();
 const [event, setEvent] = useState<IEvent>();
 const [loading, setLoading] = useState(true);
 const [error, setError] = useState(null);
+const [retry, setRetry] = useState(0);
 
 //********************Hooks**************************/
 const { orderId } = useParams();
@@ -42,9 +43,9 @@ useEffect(() => {
 
 if (loading){
     return <h1>Loading...</h1>
-}//TODO: add loader
+}
 
-if (error || order === undefined || event === undefined) {
+ else if (error ||  order === undefined || event === undefined) {
     return (
         <Card>
             <CardActionArea onClick={() => navigate(-1)}>
@@ -52,12 +53,25 @@ if (error || order === undefined || event === undefined) {
             </CardActionArea>
         </Card>
     )
-}//TODO: add error page
+}
+
+
 
 if (order.status === orderStatus.completed) {
     return <SuccessPage orderSummary={{ ticket: order.ticket, eventName: event.title }} orderId={orderId} />
 }
 
+if (retry > 1 ){
+    return (
+        <Card>
+            <CardActionArea onClick={() => navigate(-1)}>
+                <h1>You ran out of payment retries. Please try to place a new oreder from enet page</h1>
+                <Button onClick={() => navigate(-1)}>To event page</Button>
+            </CardActionArea>
+        </Card>
+    )
+
+}
 return(
     <Container>
         <OrderSummary ticket={order.ticket} eventName={event.title}/>

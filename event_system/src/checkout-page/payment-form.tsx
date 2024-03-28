@@ -16,6 +16,8 @@ export const PaymentForm: React.FC<PaymentFormProps> = ({order}) => {
     const [cardNumber, setCardNumber] = useState('');
     const [expiry, setExpiry] = useState('');
     const [cvv, setCvv] = useState('');
+    const [retries, setRetries] = useState(0);
+
     // const [expiryError, setExpiryError] = useState(false);
     // const [cvvError, setCvvError] = useState(false);
     // const [cardNumberError, setCardNumberError] = useState(false);
@@ -37,8 +39,21 @@ export const PaymentForm: React.FC<PaymentFormProps> = ({order}) => {
                 charge: order.ticket.price * order.ticket.quantity
             }
                 console.log(paymentDetails);
-                await payOnOrder(order, paymentDetails);
-                navigate(0);
+                
+                if (await payOnOrder(order, paymentDetails) === null){
+                    if (retries === 0){
+                        alert('Payment failed, please try again');
+                        setRetries(retries + 1);
+                    }
+                    else{
+                        alert('You ran out of payment retries, redirecting to event page');
+                        navigate(-1);
+                    }
+
+                }
+                else{
+                    navigate(0);
+                }
                            
         }
         else{
