@@ -5,6 +5,7 @@ import { AsyncButton } from "../common/async-button";
 import { AxiosError } from "axios";
 import { refundOrder } from "../common/requests";
 
+
 export const RefundPage: React.FC = () => {
     const [orderId, setOrderId] = useState('');
 
@@ -14,9 +15,8 @@ export const RefundPage: React.FC = () => {
             alert("Refund successful!");
             setOrderId('');            
             
-        } catch (error) {
-            if (error instanceof AxiosError){
-                switch (error?.status) {
+        } catch (error: AxiosError | any) {
+                switch ((error as AxiosError).response?.status) {
                     case 400:
                         alert("Event date passed. Cannot refund!");
                         break;
@@ -28,7 +28,6 @@ export const RefundPage: React.FC = () => {
                         alert("something went wrong, please try again later.");
                         break;
                 }
-            }
 
         }
     }
@@ -36,6 +35,7 @@ export const RefundPage: React.FC = () => {
     return (
         <>
         <h1>Refund Page</h1>
+        
         <Box sx={{display:"flex", flexDirection:"column", p:5 }}>
 
         <TextField placeholder='please enter your Order ID here' required = {true} onChange={(e)=> setOrderId(e.target.value)}></TextField>

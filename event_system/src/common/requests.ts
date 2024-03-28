@@ -240,7 +240,6 @@ export const getUserPersonalSpace = async(userId: string):Promise<AxiosResponse 
 export const refundOrder = async(orderId: string):Promise<AxiosResponse | null> => 
 {
     const url = `/refund/${orderId}`;
-    console.log(url);
 
     const response = await sendRequest(url, 'DELETE');
 
