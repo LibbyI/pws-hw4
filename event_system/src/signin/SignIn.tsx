@@ -70,7 +70,7 @@ export const SignIn: React.FC<Props> = ({ setIsLoggedIn }) => {
             setCookey("permissionType", user.permission, expirationDate);
           }
           setIsLoggedIn(true);
-          navigate(`/${user.id}/${user.permission}/catalog`);
+          navigate(`/catalog`);
 
         } else{
           const errStatus = response?.status;

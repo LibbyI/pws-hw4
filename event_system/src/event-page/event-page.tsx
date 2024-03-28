@@ -11,7 +11,7 @@ import { getEventById } from "../common/requests.ts";
 import EventDetails from "./event-details.tsx";
 import { Container, Divider } from "@mui/material";
 import {TicketsGrid} from "./tickets-grid.tsx";
-import { isBackoffice } from "../common/utils.ts";
+import { getCookies, isBackoffice } from "../common/utils.ts";
 import { CommentsCountBox } from "../comments/comments-count.tsx";
 import { EditEventDateForm } from "./edit-event-date-form.tsx";
 
@@ -29,7 +29,9 @@ const [loading, setLoading] = useState(true);
 const [error, setError] = useState(null);
 
 //********************Hooks**************************/
-const { userId, permissionType, eventId } = useParams();
+const userId = getCookies("userId");
+const permissionType = getCookies("permissionType");
+const { eventId } = useParams();
 if(!eventId || !userId || !permissionType || !(Object.values(permissionValidTypes) as string[]).includes(permissionType)){
     return <h1>Invalid URL</h1>
 }//TODO: handle error

@@ -7,9 +7,9 @@ import { getEvents } from "../common/requests.ts";
 // import { json } from "stream/consumers";
 // import { set } from "mongoose";
 import { permissionValidTypes } from "../../../backend/src/models/user.js";
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import Header from '../header/header.tsx';
-import { isBackoffice } from "../common/utils.ts";
+import { getCookies, isBackoffice } from "../common/utils.ts";
 
 
 interface Props{
@@ -20,7 +20,8 @@ interface Props{
 export const CatalogPage: React.FC<Props> = ({ logout}) =>{
 
 
-const { userId, permissionType } = useParams();
+const userId = getCookies("userId");
+const permissionType = getCookies("permissionType");
 if(!userId || !permissionType || !(Object.values(permissionValidTypes) as string[]).includes(permissionType)){
     return <h1>Invalid URL</h1>
 }//TODO: handle error

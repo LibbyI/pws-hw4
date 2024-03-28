@@ -51,12 +51,12 @@ function App() {
         <Route path="/" element={<SignUp />}></Route>
         <Route path="/signin" element={<SignIn setIsLoggedIn={setIsLoggedIn}/>}></Route>
 
-        <Route path="/:userId/:permissionType/catalog" element={<CatalogPage logout={logout} />}></Route>
-        <Route path="/:userId/:permissionType/event/:eventId" element={<EventPage logout={logout}/>}></Route>
-        <Route path="/:userId/:permissionType/checkout/:orderId" element={<CheckoutPage/>}></Route>
-        <Route path="/:userId/:permissionType/newEvent" element={<NewEventPage/>}></Route>
-        <Route path="/:userId/:permissionType/personalSpace" element={<DetailedList />}></Route>
-        <Route path="/:userId/:permissionType/refund" element={<RefundPage />}></Route>      
+        <Route path="/catalog" element={<CatalogPage logout={logout} />}></Route>
+        <Route path="/event/:eventId" element={<EventPage logout={logout}/>}></Route>
+        <Route path="/checkout/:orderId" element={<CheckoutPage/>}></Route>
+        <Route path="/newEvent" element={<NewEventPage/>}></Route>
+        <Route path="/personalSpace" element={<DetailedList />}></Route>
+        <Route path="/refund" element={<RefundPage />}></Route>      
         
       </Routes>
 

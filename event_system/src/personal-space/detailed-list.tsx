@@ -6,7 +6,7 @@ import Divider from '@mui/material/Divider';
 import {Detaile} from './order-details.tsx'
 import { getUserPersonalSpace} from "../common/requests.js";
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { getCookies } from '../common/utils.ts';
 
 // import {getUserById} from "../common/requests.js"
 // interface Props{
@@ -15,7 +15,7 @@ import { useParams } from 'react-router-dom';
 //   };
 
 export const DetailedList: React.FC= () => {
-    const { userId } = useParams();
+    const userId = getCookies("userId");
     const [ordersArray, setordersArray] = useState<any[]>([]);
     const fetchOrders = async () => {
         try {
