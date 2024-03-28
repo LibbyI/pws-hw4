@@ -8,7 +8,7 @@ import events from "../models/events-model.js";
 import * as mongoose from "mongoose";
 import { ClientSession } from "mongoose";
 import * as dotenv from "dotenv";
-
+import { TIMEOUT } from "../const.js";
 import { HttpError } from "./order-error.js";
 import { PAYMENT_URL , PAYMENT_REFUND_URL } from "../const.js";
 import {orederExpiredDate} from "../const.js";
@@ -128,9 +128,11 @@ export async function handlePaymentRequest(req) {
         session.startTransaction();
         try{
             // TODO-change req.body.order._id to order._id 
-            let order = await orders.findOneAndUpdate({_id: orderId, status: "pending"}, {status: "inPayment"}).exec()??
+            const newExpireTime = new Date(Date.now() + TIMEOUT);
+            let order = await orders.findOneAndUpdate({_id: orderId, status: "pending"}, {status: "inPayment", expires_at: newExpireTime}).exec()??
             await addNewOrder(req.body.order);  
-         
+        
+
             const paymentDetails : paymentDetails = {charge: order.ticket.price * order.ticket.quantity, ...req.body.payment_details};
             paymentId = (await axios.post(PAYMENT_URL, paymentDetails)).data;
             // console.log(paymentId.paymentToken, typeof paymentId.paymentToken);
@@ -138,6 +140,7 @@ export async function handlePaymentRequest(req) {
             // console.log(order._id);
             await orders.updateOne({_id: order._id}, {status: "completed", paiment_token: paymentId.paymentToken}).exec();//TODO: maybe sould be async            
             await publisherChannel.sendUserNewEvnt(JSON.stringify({userId: req.body.order.user_id, eventId: req.body.order.event_id, add: true}));
+
 
             await session.commitTransaction();
         }catch(error){
