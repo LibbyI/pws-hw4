@@ -16,7 +16,7 @@ interface Props{
 
 
 
-export const ButtonAppBar: React.FC<Props> = ({goback, logout}) => {
+export const Header: React.FC<Props> = ({goback, logout}) => {
     // const user = getUser();
   const { userId, permissionType } = useParams();
   const [user, setUser] = useState<any>(null); // Define user state
@@ -70,4 +70,4 @@ export const ButtonAppBar: React.FC<Props> = ({goback, logout}) => {
   );
 }
 
-export default ButtonAppBar;
+export default Header;

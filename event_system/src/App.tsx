@@ -58,9 +58,7 @@ function App() {
         <Route path="/:userId/:permissionType/checkout/:orderId" element={<CheckoutPage/>}></Route>
         <Route path="/:userId/:permissionType/newEvent" element={<NewEventPage/>}></Route>
         <Route path="/:userId/:permissionType/personalSpace" element={<DetailedList />}></Route>
-        <Route path="/:userId/:permissionType/refund" element={<RefundPage />}></Route>
-
-      
+        <Route path="/:userId/:permissionType/refund" element={<RefundPage />}></Route>      
         
       </Routes>
     </BrowserRouter>

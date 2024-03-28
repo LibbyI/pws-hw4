@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import ButtonAppBar from '../header/header.tsx';
+import Header from '../header/header.tsx';
 import AlignItemsList from '../comments/comments.tsx';
 
 import { useNavigate } from 'react-router-dom';
@@ -70,7 +70,7 @@ const backoffice: boolean = isBackoffice(permissionType as permissionValidTypes)
 
     return (
         <Container maxWidth={false}>
-            <ButtonAppBar goback={goBack} logout={logoutandgotologin}></ButtonAppBar>
+            <Header goback={goBack} logout={logoutandgotologin}></Header>
             <Divider>Event Details</Divider>
             <EventDetails {...event}></EventDetails>
             <Divider> {backoffice ? "Categories" : "Buy Tickets"}</Divider>

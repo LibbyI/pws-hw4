@@ -8,7 +8,7 @@ import { getEvents } from "../common/requests.ts";
 // import { set } from "mongoose";
 import { permissionValidTypes } from "../../../backend/src/models/user.js";
 import { useNavigate, useParams } from 'react-router-dom';
-import ButtonAppBar from '../header/header.tsx';
+import Header from '../header/header.tsx';
 import { isBackoffice } from "../common/utils.ts";
 
 
@@ -60,7 +60,7 @@ useEffect(() => {
     console.log(events);
     return (
         <>
-        <ButtonAppBar goback={goBack} logout={logoutandgotologin}></ButtonAppBar>
+        <Header goback={goBack} logout={logoutandgotologin}></Header>
         <EventsGrid {... {events : [...events]}}></EventsGrid>
         </>
     )
