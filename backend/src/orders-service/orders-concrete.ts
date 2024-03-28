@@ -133,8 +133,15 @@ export async function handlePaymentRequest(req) {
             await addNewOrder(req.body.order);  
         
 
-            const paymentDetails : paymentDetails = {charge: order.ticket.price * order.ticket.quantity, ...req.body.payment_details};
+
+            let paymentDetails : paymentDetails = {...req.body.paymentDetails as paymentDetails, charge: order.ticket.price * order.ticket.quantity};
+            if(paymentDetails.holder === "fail payment"){ 
+                //TODO: remove this! only for testing
+                console.log("fail payment");
+                throw new HttpError(500, "failed payment");
+            }
             paymentId = (await axios.post(PAYMENT_URL, paymentDetails)).data;
+        
             // console.log(paymentId.paymentToken, typeof paymentId.paymentToken);
 
             // console.log(order._id);
