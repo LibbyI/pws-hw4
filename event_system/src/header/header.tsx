@@ -11,19 +11,23 @@ import { getCookies } from '../common/utils.ts';
 
 interface Props{
     logout: () => void;
+    isLoggedIn: boolean;
   };
 
-export const Header: React.FC<Props> = ({logout}) => {
+export const Header: React.FC<Props> = ({logout, isLoggedIn}) => {
+  if(!isLoggedIn){
+    console.log("Not logged in");
+    return <></>;
+  }
   const userId = getCookies("userId");
   const permissionType = getCookies("permissionType");
 
   const [user, setUser] = useState<any>(null); // Define user state
-  if(userId==null || permissionType==null ){
-      return <></>
-  }
 
   const navigate = useNavigate();
   useEffect(() => {
+
+  
     const fetchUser = async () => {
       try {
         if(userId){

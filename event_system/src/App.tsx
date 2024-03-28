@@ -38,12 +38,17 @@ function App() {
   };
   
   useEffect(() => {
+    const username = getCookies("username");
+    if (username!==null){
+      setIsLoggedIn(true);
+    }
 
-  },[isLoggedIn]);
+
+  },[]);
 
   return (
     <BrowserRouter>
-        {isLoggedIn ? <Header logout={logout}  /> : <></>}
+        <Header logout={logout} isLoggedIn = {isLoggedIn} />
 
 
       <Routes>
