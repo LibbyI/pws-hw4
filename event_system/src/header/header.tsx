@@ -1,6 +1,5 @@
 import * as React from 'react';
 import AppBar from '@mui/material/AppBar';
-import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
@@ -14,17 +13,15 @@ interface Props{
     logout: () => void;
   };
 
-
-
 export const Header: React.FC<Props> = ({logout}) => {
-    // const user = getUser();
-    const userId = getCookies("userId");
-    const permissionType = getCookies("permissionType");
+  const userId = getCookies("userId");
+  const permissionType = getCookies("permissionType");
 
   const [user, setUser] = useState<any>(null); // Define user state
-  if(!userId || !permissionType){
-      return <h1>Invalid URL</h1>
+  if(userId==null || permissionType==null ){
+      return <></>
   }
+
   const navigate = useNavigate();
   useEffect(() => {
     const fetchUser = async () => {

@@ -37,11 +37,12 @@ function Copyright(props: any) {
 // TODO remove, this demo shouldn't need to reset the theme.
 const defaultTheme = createTheme();
 
-// interface Props{
-//   setUser: (params: scrabedIUser) => void;
-// };
 
-export const SignIn: React.FC = () => {
+interface Props {
+  setIsLoggedIn: (value: boolean) => void;
+}
+
+export const SignIn: React.FC<Props> = ({ setIsLoggedIn }) => {
 
 // export default function SignIn(setUser: any) {
   
@@ -68,8 +69,9 @@ export const SignIn: React.FC = () => {
             setCookey("userId", user.id, expirationDate);
             setCookey("permissionType", user.permission, expirationDate);
           }
+          setIsLoggedIn(true);
           navigate(`/${user.id}/${user.permission}/catalog`);
-        
+
         } else{
           const errStatus = response?.status;
           const errmessage = response?.data.message

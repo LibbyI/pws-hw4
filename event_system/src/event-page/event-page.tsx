@@ -46,14 +46,6 @@ useEffect(() => {
 },[]);
 
 //********************Functions**************************/
-const logoutandgotologin = () =>{
-    logout();
-    navigate('/signin')
-}
-
-const goBack = () =>{
-    navigate(-1);
-}
 
 const backoffice: boolean = isBackoffice(permissionType as permissionValidTypes);
 
@@ -70,7 +62,6 @@ const backoffice: boolean = isBackoffice(permissionType as permissionValidTypes)
 
     return (
         <Container maxWidth={false}>
-            <Header goback={goBack} logout={logoutandgotologin}></Header>
             <Divider>Event Details</Divider>
             <EventDetails {...event}></EventDetails>
             <Divider> {backoffice ? "Categories" : "Buy Tickets"}</Divider>
