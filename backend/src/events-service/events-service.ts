@@ -111,6 +111,11 @@ app.post('/', async (req, res) => {
 app.patch('/date/:id', async (req, res) => {
   try {
     console.log(req.body.start_date);
+    const currentDate = (await events.findById(req.params.id).exec()).start_date;
+    if(currentDate > new Date(req.body.start_date)){
+      res.status(400).send("Can only postpone event date");
+      return;
+    }
     const result = await events.findByIdAndUpdate(req.params.id, {start_date: new Date(req.body.start_date), end_date: new Date(req.body.end_date)});
     publisherChannel.updateEventDate(result._id);
     res.send(result);

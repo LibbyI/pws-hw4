@@ -58,7 +58,7 @@ export const Header: React.FC<Props> = ({logout, isLoggedIn}) => {
           </Typography>
           <div style={{ flexGrow: 1 }} /> 
           {
-            [permissionValidTypes.Admin , permissionValidTypes.Manager].includes(permissionType as permissionValidTypes) ? <Button color="inherit" onClick={() => {navigate(`/${userId}/${permissionType}/newEvent`)}}>CREATE EVENT</Button> : <></>
+            [permissionValidTypes.Admin , permissionValidTypes.Manager].includes(permissionType as permissionValidTypes) ? <Button color="inherit" onClick={() => {navigate(`/newEvent`)}}>CREATE EVENT</Button> : <></>
           }
           <Button color="inherit" onClick={() => {navigate(-1);}}>GO BACK</Button>
           <Button color="inherit" onClick={() => {logout();}}>LOGOUT</Button>
