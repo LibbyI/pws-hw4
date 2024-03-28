@@ -8,19 +8,20 @@ import { permissionValidTypes } from "../../../backend/src/models/user.ts";
 import {getUserById} from "../common/requests.ts";
 import { useNavigate, useParams } from 'react-router-dom';
 import { useState , useEffect } from 'react'
+import { getCookies } from '../common/utils.ts';
 
 interface Props{
-    goback: () => void;
     logout: () => void;
   };
 
 
 
-export const Header: React.FC<Props> = ({goback, logout}) => {
+export const Header: React.FC<Props> = ({logout}) => {
     // const user = getUser();
-  const { userId, permissionType } = useParams();
-  const [user, setUser] = useState<any>(null); // Define user state
+    const userId = getCookies("userId");
+    const permissionType = getCookies("permissionType");
 
+  const [user, setUser] = useState<any>(null); // Define user state
   if(!userId || !permissionType){
       return <h1>Invalid URL</h1>
   }
@@ -46,8 +47,7 @@ export const Header: React.FC<Props> = ({goback, logout}) => {
   }, []);
 
   return (
-    <Box sx={{ flexGrow: 1, pt:0, pb: 5 }}>
-      <AppBar position="static">
+    <AppBar position="sticky">
         <Toolbar>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             hello {user?.username}
@@ -59,14 +59,10 @@ export const Header: React.FC<Props> = ({goback, logout}) => {
           {
             [permissionValidTypes.Admin , permissionValidTypes.Manager].includes(permissionType as permissionValidTypes) ? <Button color="inherit" onClick={() => {navigate(`/${userId}/${permissionType}/newEvent`)}}>CREATE EVENT</Button> : <></>
           }
-          <Button color="inherit" onClick={() => {goback();}}>GO BACK</Button>
+          <Button color="inherit" onClick={() => {navigate(-1);}}>GO BACK</Button>
           <Button color="inherit" onClick={() => {logout();}}>LOGOUT</Button>
-
-
-
         </Toolbar>
       </AppBar>
-    </Box>
   );
 }
 

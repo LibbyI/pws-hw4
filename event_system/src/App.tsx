@@ -19,28 +19,11 @@ import {setCookey} from "./common/utils.ts";
 import { NewEventPage } from './new-event-page.tsx/new-event-page.tsx'
 import {DetailedList} from "./personal-space/detailed-list.tsx"
 import { RefundPage } from './refund/refund-page.tsx';
+import Header from './header/header.tsx';
 
 function App() {
-  let userState = localStorage.getItem("userState");
-  if (userState == null)
-    {
-      const userState: scrabedIUser = {id: null, username: null,
-          eventIds: null,
-          token: null,
-          nextEvent: null,
-          permission: "None"};
-      localStorage.setItem("userState", JSON.stringify(userState));
-    }
-  const setUserState = (newuserstate: scrabedIUser) =>{
-    localStorage.setItem("userState", JSON.stringify(newuserstate));
-  }
   
   const logout = async () => {
-    setUserState({id: null, username: null,
-      eventIds: null,
-      token: null,
-      nextEvent: null,
-      permission: "None"});
       await logoutreq();
       var expirationDate = new Date();
       expirationDate.setFullYear(expirationDate.getFullYear() - 10);
@@ -50,7 +33,10 @@ function App() {
 
   return (
     <BrowserRouter>
+      <Header logout={logout} goback={()=>{}}/>
+
       <Routes>
+        
         <Route path="/" element={<SignUp />}></Route>
         <Route path="/signin" element={<SignIn/>}></Route>
         <Route path="/:userId/:permissionType/catalog" element={<CatalogPage logout={logout} />}></Route>
@@ -61,6 +47,7 @@ function App() {
         <Route path="/:userId/:permissionType/refund" element={<RefundPage />}></Route>      
         
       </Routes>
+
     </BrowserRouter>
   );
 }

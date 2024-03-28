@@ -18,21 +18,12 @@ interface Props{
 
 
 export const CatalogPage: React.FC<Props> = ({ logout}) =>{
-const navigate = useNavigate();
-const goBack = () =>{
-    navigate(-1);
-}
+
 
 const { userId, permissionType } = useParams();
 if(!userId || !permissionType || !(Object.values(permissionValidTypes) as string[]).includes(permissionType)){
     return <h1>Invalid URL</h1>
 }//TODO: handle error
-
-
-const logoutandgotologin = () =>{
-    logout();
-    navigate(`/signin`)
-}
 
     
 const [events,setEvents] = useState<IEvent[]>([]);
@@ -60,7 +51,6 @@ useEffect(() => {
     console.log(events);
     return (
         <>
-        <Header goback={goBack} logout={logoutandgotologin}></Header>
         <EventsGrid {... {events : [...events]}}></EventsGrid>
         </>
     )
