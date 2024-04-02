@@ -5,7 +5,7 @@ import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import { permissionValidTypes } from "../../../backend/src/models/user.ts";
 import {getUserById} from "../common/requests.ts";
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useState , useEffect } from 'react'
 import { getCookies, isBackoffice } from '../common/utils.ts';
 

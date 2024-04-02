@@ -3,7 +3,6 @@ import { GET_USER , LOGIN ,LOGOUT, SIGNUP , GET_COMMENTS, ADD_COMMENT} from "../
 import {Icomment} from "../../../backend/src/models/comments.js"
 import { IOrder,paymentDetails } from "../../../backend/src/models/orders.js";
 import { IEvent } from "../../../backend/src/models/event.js";
-import { isElementOfType } from 'react-dom/test-utils';
 // import * as dotenv from "dotenv";
 // dotenv.config();
 // TODO: repalce with dotenv

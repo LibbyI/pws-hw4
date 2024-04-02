@@ -15,7 +15,6 @@ import { useNavigate } from 'react-router-dom';
 import { login } from '../common/requests.ts';
 import { scrabedIUser } from '../../../backend/src/models/user.ts';
 import { setCookey} from '../common/utils.ts'
-import { set } from 'mongoose';
 // import * as dotenv from "dotenv";
 
 // dotenv.config();
