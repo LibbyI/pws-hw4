@@ -21,6 +21,7 @@ export const Header: React.FC<Props> = ({logout, isLoggedIn}) => {
   }
   const userId = getCookies("userId");
   const permissionType = getCookies("permissionType") as permissionValidTypes;
+  const isCatalogPage = window.location.pathname === "/catalog";
 
   const [user, setUser] = useState<any>(null); // Define user state
 
@@ -48,13 +49,10 @@ export const Header: React.FC<Props> = ({logout, isLoggedIn}) => {
   }, []);
 
   return (
-    <AppBar position="sticky">
+    <AppBar position="sticky"   >
         <Toolbar>
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            hello {user?.username}
-          </Typography>
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            Next Event is: {user?.nextEvent?.title} {user?.nextEvent?.start_date}
+          <Typography variant="h5" sx={{display: "flex", justifySelf:"self-start"}} >
+            Hello {user?.username}
           </Typography>
           <div style={{ flexGrow: 1 }} /> 
           {
@@ -65,12 +63,16 @@ export const Header: React.FC<Props> = ({logout, isLoggedIn}) => {
           {
             isBackoffice(permissionType) ? <></> :
             <>
+            <Typography variant="h6" sx={{ flexGrow: 1 }}>
+            Next Event is: {user?.nextEvent?.title} {user?.nextEvent?.start_date.split("T")[0]}
+            </Typography>
             <Button color="inherit" onClick={() => {navigate(`/personalSpace`)}}>PERSONAL SPACE</Button>
             <Button color="inherit" onClick={() => {navigate(`/refund`)}}>Refund</Button>
             </>
 
           }
-          <Button color="inherit" onClick={() => {navigate(-1);}}>GO BACK</Button>
+
+          {isCatalogPage ? <></> : <Button color="inherit" onClick={() => {navigate(-1);}}>GO BACK</Button>}          
           <Button color="inherit" onClick={() => {logout();}}>LOGOUT</Button>
         </Toolbar>
       </AppBar>
