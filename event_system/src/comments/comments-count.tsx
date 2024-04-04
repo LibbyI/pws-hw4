@@ -23,7 +23,7 @@ export const CommentsCountBox : React.FC<{eventId: string}> = ({eventId}) => {
         
     return (
         <Box>
-            {loading ? "Loading..." : error ? "Error" : <h1> {`Number of comments: ${commentsCount}`}</h1>}
+            {loading ? "Loading Number of Comments" : error ? "Error" : <h4> {`Number of comments: ${commentsCount}`}</h4>}
         </Box>
     );
 

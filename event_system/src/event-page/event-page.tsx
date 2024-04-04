@@ -26,7 +26,7 @@ const [error, setError] = useState(null);
 
 //********************Hooks**************************/
 const userId = getCookies("userId");
-const permissionType = getCookies("permissionType");
+const permissionType = getCookies("permissionType") as permissionValidTypes;
 const { eventId } = useParams();
 if(!eventId || !userId || !permissionType || !(Object.values(permissionValidTypes) as string[]).includes(permissionType)){
     return <h1>Invalid URL</h1>
@@ -44,7 +44,7 @@ useEffect(() => {
 
 //********************Functions**************************/
 
-const backoffice: boolean = isBackoffice(permissionType as permissionValidTypes);
+const backoffice: boolean = isBackoffice(permissionType);
 
 
 //********************Render**************************/
@@ -63,10 +63,12 @@ const backoffice: boolean = isBackoffice(permissionType as permissionValidTypes)
             <EventDetails {...event}></EventDetails>
             <Divider> {backoffice ? "Categories" : "Buy Tickets"}</Divider>
             <TicketsGrid tickets={event.tickets.map((t: Ticket): TicketCardProps => { return { ticket: t, eventId: eventId, userId: userId, permissionType: permissionType as permissionValidTypes } })}></TicketsGrid>
+            <Divider> Comments</Divider>
             {backoffice? (<CommentsCountBox eventId={eventId}></CommentsCountBox>) : <AlignItemsList eventId={eventId}></AlignItemsList>}
-            {backoffice ?
+            {permissionType===permissionValidTypes.Manager || permissionType===permissionValidTypes.Admin ?
             <>
             <Divider> Edit Event Date</Divider>
+
             <EditEventDateForm originalStartDate={new Date(event.start_date)} originalEndDate={new Date(event.end_date)} eventId={eventId}></EditEventDateForm>
             </> : <></>}
         </Container>

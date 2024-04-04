@@ -56,12 +56,10 @@ export const Header: React.FC<Props> = ({logout, isLoggedIn}) => {
           </Typography>
           <div style={{ flexGrow: 1 }} /> 
           {
-            [permissionValidTypes.Admin , permissionValidTypes.Manager].includes(permissionType) ?
-             <Button color="inherit" onClick={() => {navigate(`/newEvent`)}}>CREATE EVENT</Button> : 
-             <></>
-          }
-          {
-            isBackoffice(permissionType) ? <></> :
+            isBackoffice(permissionType) ? 
+            <>
+            <Button color="inherit" onClick={() => {navigate(`/newEvent`)}}>CREATE EVENT</Button>
+            </> :
             <>
             <Typography variant="h6" sx={{ flexGrow: 1 }}>
             Next Event is: {user?.nextEvent?.title} {user?.nextEvent?.start_date.split("T")[0]}

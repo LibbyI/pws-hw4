@@ -24,6 +24,7 @@ export const EditEventDateForm: React.FC<pros> = ({originalStartDate, originalEn
     const handleStartDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 
         if (new Date(e.target.value) < originalStartDate){
+            alert("Start date cannot be earlier than the original start date")
             setStartDate(originalStartDate);
             e.target.value = originalStartDate.toISOString().split('T')[0];
             setStartDateError(true);
@@ -37,6 +38,7 @@ export const EditEventDateForm: React.FC<pros> = ({originalStartDate, originalEn
 
     const handleEndDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (new Date(e.target.value) < startDate){
+            alert("End date cannot be earlier than the start date")
             setEndDate(startDate);
             e.target.value = startDate.toISOString().split('T')[0];
             setEndDateError(true);
