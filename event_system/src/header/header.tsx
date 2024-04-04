@@ -54,7 +54,7 @@ export const Header: React.FC<Props> = ({logout, isLoggedIn}) => {
             hello {user?.username}
           </Typography>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            Next Event is: {user?.nextEvent?.title}
+            Next Event is: {user?.nextEvent?.title} {user?.nextEvent?.start_date}
           </Typography>
           <div style={{ flexGrow: 1 }} /> 
           {
