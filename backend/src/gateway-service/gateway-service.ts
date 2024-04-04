@@ -184,7 +184,7 @@ app.get('/events/:id', async (req, res) => {
 
 app.post('/events', async (req, res) => {
   try{
-    const user = await authenticateAndAuthorize(req, res, [permissionValidTypes.Admin, permissionValidTypes.Manager]);
+    const user = await authenticateAndAuthorize(req, res, [permissionValidTypes.Admin, permissionValidTypes.Manager,  permissionValidTypes.Worker]);
     if (!user){
       return;
     }
