@@ -10,7 +10,6 @@ import { Route, BrowserRouter, Routes } from 'react-router-dom';
 
 // import ReactDOM from "react-dom/client";
 import { CatalogPage } from './catalog/catalogPage.tsx';
-import { scrabedIUser } from "../../backend/src/models/user.ts";
 
 import { EventPage } from './event-page/event-page.tsx';
 import { CheckoutPage } from './checkout-page/checkout-page.tsx'
@@ -20,9 +19,7 @@ import { NewEventPage } from './new-event-page.tsx/new-event-page.tsx'
 import {DetailedList} from "./personal-space/detailed-list.tsx"
 import { RefundPage } from './refund/refund-page.tsx';
 import Header from './header/header.tsx';
-import { Cookie } from '@mui/icons-material';
 import { useEffect, useState } from 'react';
-import { get } from 'mongoose';
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -56,8 +53,8 @@ function App() {
         <Route path="/" element={<SignUp />}></Route>
         <Route path="/signin" element={<SignIn setIsLoggedIn={setIsLoggedIn}/>}></Route>
 
-        <Route path="/catalog" element={<CatalogPage logout={logout} />}></Route>
-        <Route path="/event/:eventId" element={<EventPage logout={logout}/>}></Route>
+        <Route path="/catalog" element={<CatalogPage />}></Route>
+        <Route path="/event/:eventId" element={<EventPage/>}></Route>
         <Route path="/checkout/:orderId" element={<CheckoutPage/>}></Route>
         <Route path="/newEvent" element={<NewEventPage/>}></Route>
         <Route path="/personalSpace" element={<DetailedList />}></Route>

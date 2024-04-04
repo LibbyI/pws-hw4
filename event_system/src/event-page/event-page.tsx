@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from "react";
-import Header from '../header/header.tsx';
 import AlignItemsList from '../comments/comments.tsx';
 
-import { useNavigate } from 'react-router-dom';
 import { permissionValidTypes } from "../../../backend/src/models/user.js";
 import { useParams } from 'react-router-dom';
 import { IEvent, Ticket } from "../../../backend/src/models/event.ts";
@@ -16,12 +14,10 @@ import { CommentsCountBox } from "../comments/comments-count.tsx";
 import { EditEventDateForm } from "./edit-event-date-form.tsx";
 
 
-interface Props{
-    logout: () => void;
-  };
+
   
 
-export const EventPage: React.FC<Props> = ({logout}) => {
+export const EventPage: React.FC = () => {
 
 //********************States**************************/ 
 const [event,setEvent] = useState<IEvent>();
@@ -37,7 +33,6 @@ if(!eventId || !userId || !permissionType || !(Object.values(permissionValidType
 }//TODO: handle error
 
 
-const navigate = useNavigate();
 
 //********************UseEffect**************************/
 

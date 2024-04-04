@@ -7,6 +7,7 @@ import  OrderType  from "../models/orders-model.js";
 import { HttpError } from "./order-error.js";
 import { PublisherChannel } from './publisher-channel.js';
 import {INTERVAL_CLEAN_TRIGGER} from "../const.js";
+import { PAYMENT_URL } from "../const.js";
 
 export const publisherChannel = new PublisherChannel();
 
@@ -17,7 +18,10 @@ const port = process.env.ORDERS_PORT;
 export const orders = OrderType;
 
 const dbURI = `mongodb+srv://libby6831:${process.env.DB_PASS}@cluster0.pyjnubc.mongodb.net/?retryWrites=true&w=majority`;
+const orders_url = process.env.ORDERS_SERVICE_URL;
 
+const gateway_url = process.env.GATEWAY_URL;
+const app_url = process.env.APP_URL;
 await mongoose.connect(dbURI, options);
 
 setInterval(() => {
@@ -29,9 +33,15 @@ setInterval(() => {
 // Add headers
 app.use(function (req, res, next) {
     // Website you wish to allow to connect
-    res.setHeader('Access-Control-Allow-Origin', '*');
+    // res.setHeader('Access-Control-Allow-Origin', '*');
   
+    const allowedOrigins = [gateway_url, app_url, orders_url, PAYMENT_URL];
+    const origin = req.headers.origin;
+    if (allowedOrigins.includes(origin)) {
   
+      res.setHeader('Access-Control-Allow-Origin', origin);
+  
+    }
     // Request methods you wish to allow
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
   

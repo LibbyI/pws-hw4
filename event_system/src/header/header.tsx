@@ -5,7 +5,7 @@ import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import { permissionValidTypes } from "../../../backend/src/models/user.ts";
 import {getUserById} from "../common/requests.ts";
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useState , useEffect } from 'react'
 import { getCookies, isBackoffice } from '../common/utils.ts';
 import { Divider } from '@mui/material';
@@ -54,6 +54,10 @@ export const Header: React.FC<Props> = ({logout, isLoggedIn}) => {
           <Typography variant="h5" sx={{display: "flex", justifySelf:"self-start"}} >
             Hello {user?.username}
           </Typography>
+          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+            Next Event is: {user?.nextEvent?.title} {user?.nextEvent?.start_date}
+          </Typography>
+          <div style={{ flexGrow: 1 }} /> 
           <Divider orientation="vertical"  sx={{flexGrow: 1}}flexItem />
 
 

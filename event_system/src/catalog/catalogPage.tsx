@@ -7,17 +7,13 @@ import { getEvents } from "../common/requests.ts";
 // import { json } from "stream/consumers";
 // import { set } from "mongoose";
 import { permissionValidTypes } from "../../../backend/src/models/user.js";
-import { useNavigate } from 'react-router-dom';
-import Header from '../header/header.tsx';
 import { getCookies, isBackoffice } from "../common/utils.ts";
 
 
-interface Props{
-    logout: () => void;
-  };
 
 
-export const CatalogPage: React.FC<Props> = ({ logout}) =>{
+
+export const CatalogPage: React.FC = () =>{
 
 
 const userId = getCookies("userId");

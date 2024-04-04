@@ -16,7 +16,7 @@ const [order,setOrder] = useState<IOrder>();
 const [event, setEvent] = useState<IEvent>();
 const [loading, setLoading] = useState(true);
 const [error, setError] = useState(null);
-const [retry, setRetry] = useState(0);
+const [retry] = useState(0);
 
 //********************Hooks**************************/
 const { orderId } = useParams();
