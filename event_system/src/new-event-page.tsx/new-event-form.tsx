@@ -7,7 +7,6 @@ import { ReactNode } from "react"; // Add this import
 import { AsyncButton } from "../common/async-button";
 import { NewTicketForm } from "./new-ticket-form";
 import { categoryValidTypes } from "../../../backend/src/models/event";
-import { WidthFull } from "@mui/icons-material";
 
 
 export const NewEventForm: React.FC = (): ReactNode => {
