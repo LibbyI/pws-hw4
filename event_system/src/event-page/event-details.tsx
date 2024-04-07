@@ -41,12 +41,14 @@ export default function EventDetails(event: IEvent) {
         </Typography>
       </Box>
             <Divider orientation="vertical" flexItem />
+      {event.image === "" ? <></> : 
       <Box sx={{ display: 'flex' , flexDirection: 'column',  p:5, flex: 1 }}>
         <CardMedia 
         component="img"
         image= {event.image}
       />
       </Box>
+    }
       </Box>
 
     </Card>

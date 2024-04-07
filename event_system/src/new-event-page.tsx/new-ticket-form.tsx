@@ -18,7 +18,7 @@ export const NewTicketForm: React.FC<{onSubmit: (ticket:Ticket) => void}> = ({on
 
     return(
         <>
-        <Container>
+        <Container sx={{display:'flex', alignItems:'self-start'}}>
             <FormLabel> Name </FormLabel>
             <TextField placeholder='Name' required = {true} onChange={(e)=> setName(e.target.value)}></TextField>
             <FormLabel> Price</FormLabel>

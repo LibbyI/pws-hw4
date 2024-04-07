@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { IEvent, Ticket } from "../../../backend/src/models/event";
-import { List, Button, Container, FormLabel, ListItem, MenuItem, Paper, Select, TextField, Typography } from "@mui/material";
+import { List, Button, Container, FormLabel, ListItem, MenuItem, Paper, Select, TextField, Typography, Divider } from "@mui/material";
 import { addNewEvent } from "../common/requests";
 import {  AxiosError } from "axios";
 import { ReactNode } from "react"; // Add this import
@@ -57,8 +57,9 @@ export const NewEventForm: React.FC = (): ReactNode => {
     }
 
     return (
+        <Container sx={{display: 'flex', flexDirection: 'column', justifyContent:'space-evenly', height:'100%'}}>
+        <Container sx={{display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
         <Container sx={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
-            <AsyncButton onClick={handleSave} >Save</AsyncButton>
             <FormLabel>Event Name</FormLabel>
             <TextField placeholder='Event Name' required={true} onChange={(e) => setEvent({...event, title: e.target.value})} error = {event.title === ""}></TextField>
             <FormLabel>Event Description</FormLabel>
@@ -66,7 +67,8 @@ export const NewEventForm: React.FC = (): ReactNode => {
             <FormLabel>Category</FormLabel>
             <CategoryDropDown setCategory={(category) => setEvent({...event, category: category})} category={event.category}></CategoryDropDown>
             <FormLabel>Organizer</FormLabel>
-            <TextField placeholder='Orgenizer' required={true} onChange={(e) => setEvent({...event, organizer: e.target.value})} error = {event.organizer === ""}></TextField>
+            </Container>
+            <Container sx={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
             <FormLabel>Start Date</FormLabel>
             <TextField type='date' required={true} onChange={(e) => setEvent({...event, start_date:new Date( e.target.value)})} defaultValue={Date.now()}></TextField>
             <FormLabel>End Date</FormLabel>
@@ -75,11 +77,21 @@ export const NewEventForm: React.FC = (): ReactNode => {
             <TextField placeholder='Event Location' required={true} onChange={(e) => setEvent({...event, location: e.target.value})}></TextField>
             <FormLabel>Event Image</FormLabel>
             <TextField type='url' placeholder='Image URL (optional)' required={false} onChange={(e) => setEvent({...event, image: e.target.value})}></TextField>
-            <FormLabel>Add Tickets</FormLabel>
+
+            </Container>
+        
+        </Container>
+        <Divider orientation="horizontal" flexItem ></Divider>
+        <Container sx={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
             <NewTicketForm onSubmit={handleAddTicket}/>
-            <TicketList tickets={event.tickets} deleteTicket={(idx) => setEvent({...event, tickets: event.tickets?.filter((_:any,index:any) => index !== idx)})}/>
+            <Divider orientation="horizontal">Tickets</Divider>
+            {event.tickets?.length === 0 ? <Typography>No tickets added to this event yet.</Typography> : <TicketList tickets={event.tickets} deleteTicket={(idx) => setEvent({...event, tickets: event.tickets?.filter((_:any,index:any) => index !== idx)})}/>}
+            
 
         </Container>
+        <AsyncButton onClick={handleSave} >Save</AsyncButton>
+        </Container>
+
     );
 };
 
