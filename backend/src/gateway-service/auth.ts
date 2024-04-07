@@ -49,6 +49,7 @@ export const protectedRout = (req: express.Request, res: express.Response) => {
     res.status = 401;
     res.send(
       JSON.stringify({
+        status: 401,
         message: "No token.",
       })
     );
@@ -60,7 +61,8 @@ export const protectedRout = (req: express.Request, res: express.Response) => {
     res.status = 401;
     res.send(
       JSON.stringify({
-        message: "Failed to verify JWT.",
+        status: 401,
+        message: "Failed to verify JWTq.",
       })
     );
     return;

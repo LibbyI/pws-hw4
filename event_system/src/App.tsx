@@ -21,17 +21,19 @@ import { RefundPage } from './refund/refund-page.tsx';
 import Header from './header/header.tsx';
 import { useEffect, useState } from 'react';
 
+
+
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   
-  const logout = async () => {
-      await logoutreq();
-      var expirationDate = new Date();
-      expirationDate.setFullYear(expirationDate.getFullYear() - 10);
-      setCookey("username", " ", expirationDate);
-      setCookey("userId", " ", expirationDate);
-      setCookey("permissionType", " ", expirationDate);
-      window.location.href = "/";
+    const logout = async () => {
+    await logoutreq();
+    var expirationDate = new Date();
+    expirationDate.setFullYear(expirationDate.getFullYear() - 10);
+    setCookey("username", " ", expirationDate);
+    setCookey("userId", " ", expirationDate);
+    setCookey("permissionType", " ", expirationDate);
+    window.location.href = "/";
   };
   
   useEffect(() => {
@@ -42,27 +44,36 @@ function App() {
 
 
   },[]);
+  try{
+    return (
+      <BrowserRouter>
+          <Header logout={logout} isLoggedIn = {isLoggedIn} />
+  
+  
+        <Routes>
+          
+          <Route path="/" element={<SignUp />}></Route>
+          <Route path="/signin" element={<SignIn setIsLoggedIn={setIsLoggedIn}/>}></Route>
+  
+          <Route path="/catalog" element={<CatalogPage />}></Route>
+          <Route path="/event/:eventId" element={<EventPage/>}></Route>
+          <Route path="/checkout/:orderId" element={<CheckoutPage/>}></Route>
+          <Route path="/newEvent" element={<NewEventPage/>}></Route>
+          <Route path="/personalSpace" element={<DetailedList />}></Route>
+          <Route path="/refund" element={<RefundPage />}></Route>      
+          
+        </Routes>
+  
+      </BrowserRouter>
+    );
 
-  return (
-    <BrowserRouter>
-        <Header logout={logout} isLoggedIn = {isLoggedIn} />
+  }catch(error){
+    console.log("here!!");
 
-
-      <Routes>
-        
-        <Route path="/" element={<SignUp />}></Route>
-        <Route path="/signin" element={<SignIn setIsLoggedIn={setIsLoggedIn}/>}></Route>
-
-        <Route path="/catalog" element={<CatalogPage />}></Route>
-        <Route path="/event/:eventId" element={<EventPage/>}></Route>
-        <Route path="/checkout/:orderId" element={<CheckoutPage/>}></Route>
-        <Route path="/newEvent" element={<NewEventPage/>}></Route>
-        <Route path="/personalSpace" element={<DetailedList />}></Route>
-        <Route path="/refund" element={<RefundPage />}></Route>      
-        
-      </Routes>
-
-    </BrowserRouter>
-  );
+    logout();
+    console.log("here!!");
+    return;
+  }
+  
 }
 export default App

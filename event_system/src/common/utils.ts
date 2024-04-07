@@ -13,7 +13,7 @@ export const getCookies = (reqCookie: string) =>{
         const [name, value] = cookie.split("=");
         cookieMap[name] = value;
     });
-    console.log("cookieMap", cookieMap);
+    // console.log("cookieMap", cookieMap);
     return cookieMap[reqCookie]??null;
 }
 

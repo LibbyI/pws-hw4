@@ -18,9 +18,7 @@ export const CatalogPage: React.FC = () =>{
 
 const userId = getCookies("userId");
 const permissionType = getCookies("permissionType");
-if(!userId || !permissionType || !(Object.values(permissionValidTypes) as string[]).includes(permissionType)){
-    return <h1>Invalid URL</h1>
-}//TODO: handle error
+
 
     
 const [events,setEvents] = useState<IEvent[]>([]);

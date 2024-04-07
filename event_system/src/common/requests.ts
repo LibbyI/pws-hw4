@@ -1,8 +1,10 @@
-import axios, { AxiosResponse } from 'axios';
+import axios, { AxiosError, AxiosResponse } from 'axios';
 import { GET_USER , LOGIN ,LOGOUT, SIGNUP , GET_COMMENTS, ADD_COMMENT} from "../../../backend/src/const.js"
 import {Icomment} from "../../../backend/src/models/comments.js"
 import { IOrder,paymentDetails } from "../../../backend/src/models/orders.js";
 import { IEvent } from "../../../backend/src/models/event.js";
+import { setCookey} from "../common/utils.ts";
+
 // import * as dotenv from "dotenv";
 // dotenv.config();
 // TODO: repalce with dotenv
@@ -10,12 +12,19 @@ import { IEvent } from "../../../backend/src/models/event.js";
 
 const GATEWAY_URL = import.meta.env.VITE_GATEWAY_URL;
 
-
+const logouterr = async () => {
+    var expirationDate = new Date();
+    expirationDate.setFullYear(expirationDate.getFullYear() - 10);
+    setCookey("username", " ", expirationDate);
+    setCookey("userId", " ", expirationDate);
+    setCookey("permissionType", " ", expirationDate);
+    window.location.href = "/";
+  }
 
 export const sendRequest = async (url: string, method: string, body: Object | null = null): Promise<AxiosResponse>  => {
         // const GATEWAY_URL = process.env.REACT_APP_GATEWAY_URL;
         // const GATEWAY_URL = "http://localhost:3000";
-
+    // try{
         let response;
         switch(method){
             case 'GET':
@@ -48,8 +57,19 @@ export const sendRequest = async (url: string, method: string, body: Object | nu
                 throw new Error('Invalid method');
         }
         // console.log(response);
+        if (response.data.status == 401){
+            console.log(response.data.status, "loggedout")
+            console.error("logouterr")
 
+            logouterr();
+        }
         return response; 
+    // }catch(error) {
+    //     console.log(error, (error as AxiosError).status, (error as AxiosError).response?.status)
+    //         if (axios.isAxiosError(error) && error.status == 401){
+    //             logout();
+    //         }
+    //     }    
 };
 
 export const getEventComments = async(eventId: String):Promise<AxiosResponse | null> => {
@@ -154,7 +174,6 @@ export const signup = async(username: String, password: String):Promise<AxiosRes
             return null;
 
         }
-
     }
 };
 
