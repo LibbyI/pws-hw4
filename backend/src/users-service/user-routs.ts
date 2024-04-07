@@ -123,6 +123,7 @@ export const isNewEventNearest = async (msg: IuserOrder) =>{
 export const isUpdatedEventNearest = async (eventId: string) =>{
 
   try{
+    const allEvents = await axios.get(process.env.EVENTS_SERVICE_URL + "/"+"?availableOnly=false");
     const newEvent = await axios.get(process.env.EVENTS_SERVICE_URL+"/"+eventId);
     const possibleEffectedUsers = await users.find({ eventIds: { $in: [eventId] } }).exec();
     const usersIds = possibleEffectedUsers.map(user => user._id.toString());
@@ -131,11 +132,10 @@ export const isUpdatedEventNearest = async (eventId: string) =>{
       if (!userObj.nearestEvent || userObj.nearestEvent._id == newEvent.data._id){
         // check all
         const uniqueEventIds = [...new Set(userObj.eventIds)];
-        const eventReqs = uniqueEventIds.map(event_id => axios.get(process.env.EVENTS_SERVICE_URL+"/"+event_id));
-        const eventResps = await Promise.all(eventReqs);
-        const eventList = eventResps.map(response => {return response.data;});
+        const eventList = allEvents.data.filter(ev => uniqueEventIds.includes(ev._id));
         const nearest = getNearest(eventList);
-        userObj.updateOne({"nearestEvent": nearest});
+        await userObj.updateOne({"nearestEvent": nearest});
+
       }
     }
     return true;
