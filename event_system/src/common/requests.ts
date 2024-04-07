@@ -12,7 +12,7 @@ import { setCookey} from "../common/utils.ts";
 
 const GATEWAY_URL = import.meta.env.VITE_GATEWAY_URL;
 
-const logouterr = async () => {
+export const logouterr = async () => {
     var expirationDate = new Date();
     expirationDate.setFullYear(expirationDate.getFullYear() - 10);
     setCookey("username", " ", expirationDate);

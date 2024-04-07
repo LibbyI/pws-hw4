@@ -20,7 +20,7 @@ import {DetailedList} from "./personal-space/detailed-list.tsx"
 import { RefundPage } from './refund/refund-page.tsx';
 import Header from './header/header.tsx';
 import { useEffect, useState } from 'react';
-
+import {logouterr} from "./common/requests.ts"
 
 
 function App() {
@@ -70,7 +70,7 @@ function App() {
   }catch(error){
     console.log("here!!");
 
-    logout();
+    logouterr();
     console.log("here!!");
     return;
   }
