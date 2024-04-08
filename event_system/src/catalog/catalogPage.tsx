@@ -16,7 +16,6 @@ import { getCookies, isBackoffice } from "../common/utils.ts";
 export const CatalogPage: React.FC = () =>{
 
 
-const userId = getCookies("userId");
 const permissionType = getCookies("permissionType");
 
 
