@@ -1,4 +1,4 @@
-import axios, { AxiosError, AxiosResponse } from 'axios';
+import axios, { AxiosResponse } from 'axios';
 import { GET_USER , LOGIN ,LOGOUT, SIGNUP , GET_COMMENTS, ADD_COMMENT} from "../../../backend/src/const.js"
 import {Icomment} from "../../../backend/src/models/comments.js"
 import { IOrder,paymentDetails } from "../../../backend/src/models/orders.js";
