@@ -30,6 +30,7 @@ export const QuantityInput: React.FC<Props> = ({setValue, max = 0 , min = 0})=>{
   }
 
   return ( <TextField type='number' 
+  defaultValue={max === 0 ? 0 : 1}
   inputProps = {{ type: 'number', min: min, max: max, inputmode: "numeric" }}
   onChange={handleChange()} />
   )
