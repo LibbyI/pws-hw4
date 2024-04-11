@@ -7,10 +7,13 @@ import { ReactNode } from "react"; // Add this import
 import { AsyncButton } from "../common/async-button";
 import { NewTicketForm } from "./new-ticket-form";
 import { categoryValidTypes } from "../../../backend/src/models/event";
+import { useNavigate } from "react-router-dom";
 
 
 export const NewEventForm: React.FC = (): ReactNode => {
     const [event, setEvent] = useState<IEvent>({start_date: new Date(Date.now())} as IEvent);
+  const navigate = useNavigate();
+
 
     const handleSave = async () => {
         if(!event.title || !event.description || !event.organizer || !event.location || !event.category || !event.start_date || !event.end_date || !event.tickets){
@@ -21,6 +24,9 @@ export const NewEventForm: React.FC = (): ReactNode => {
 
         try {
             await addNewEvent(event);
+            alert("Event added successfully, redirecting to catalog");
+            navigate('/catalog');
+            
             
         } catch (error ) {
             if (error instanceof AxiosError){
@@ -67,6 +73,7 @@ export const NewEventForm: React.FC = (): ReactNode => {
             <FormLabel>Category</FormLabel>
             <CategoryDropDown setCategory={(category) => setEvent({...event, category: category})} category={event.category}></CategoryDropDown>
             <FormLabel>Organizer</FormLabel>
+            <TextField placeholder='Organizer' required={true} onChange={(e) => setEvent({...event, organizer: e.target.value})}></TextField>
             </Container>
             <Container sx={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
             <FormLabel>Start Date</FormLabel>
